@@ -1,0 +1,4262 @@
+
+
+
+
+CFRG                                                           T. Looker
+Internet-Draft                                                  V. Kalos
+Intended status: Informational                                     MATTR
+Expires: 25 April 2024                                      A. Whitehead
+                                                                 Portage
+                                                               M. Lodder
+                                                                 CryptID
+                                                         23 October 2023
+
+
+                        The BBS Signature Scheme
+                 draft-irtf-cfrg-bbs-signatures-latest
+
+Abstract
+
+   BBS is a digital signature scheme categorized as a form of short
+   group signature that supports several unique properties.  Notably,
+   the scheme supports signing multiple messages whilst producing a
+   single output digital signature.  Through this capability, the
+   possessor of a signature is able to generate proofs that selectively
+   disclose subsets of the originally signed set of messages, whilst
+   preserving the verifiable authenticity and integrity of the messages.
+   Furthermore, these proofs are said to be zero-knowledge in nature as
+   they do not reveal the underlying signature; instead, what they
+   reveal is a proof of knowledge of the undisclosed signature.
+
+Discussion Venues
+
+   This note is to be removed before publishing as an RFC.
+
+   Source for this draft and an issue tracker can be found at
+   https://github.com/decentralized-identity/bbs-signature.
+
+Status of This Memo
+
+   This Internet-Draft is submitted in full conformance with the
+   provisions of BCP 78 and BCP 79.
+
+   Internet-Drafts are working documents of the Internet Engineering
+   Task Force (IETF).  Note that other groups may also distribute
+   working documents as Internet-Drafts.  The list of current Internet-
+   Drafts is at https://datatracker.ietf.org/drafts/current/.
+
+   Internet-Drafts are draft documents valid for a maximum of six months
+   and may be updated, replaced, or obsoleted by other documents at any
+   time.  It is inappropriate to use Internet-Drafts as reference
+   material or to cite them other than as "work in progress."
+
+   This Internet-Draft will expire on 25 April 2024.
+
+Copyright Notice
+
+   Copyright (c) 2023 IETF Trust and the persons identified as the
+   document authors.  All rights reserved.
+
+   This document is subject to BCP 78 and the IETF Trust's Legal
+   Provisions Relating to IETF Documents (https://trustee.ietf.org/
+   license-info) in effect on the date of publication of this document.
+   Please review these documents carefully, as they describe your rights
+   and restrictions with respect to this document.  Code Components
+   extracted from this document must include Revised BSD License text as
+   described in Section 4.e of the Trust Legal Provisions and are
+   provided without warranty as described in the Revised BSD License.
+
+Table of Contents
+
+   1.  Introduction
+     1.1.  Terminology
+     1.2.  Notation
+     1.3.  Document Organization
+   2.  Conventions
+   3.  Scheme Definition
+     3.1.  Parameters
+     3.2.  Interfaces
+     3.3.  Considerations
+       3.3.1.  Subgroup Selection
+       3.3.2.  Generators
+       3.3.3.  Messages
+       3.3.4.  Serializing to Octets
+     3.4.  Key Generation Operations
+       3.4.1.  Secret Key
+       3.4.2.  Public Key
+     3.5.  BBS Signatures Interface
+       3.5.1.  Signature Generation (Sign)
+       3.5.2.  Signature Verification (Verify)
+       3.5.3.  Proof Generation (ProofGen)
+       3.5.4.  Proof Verification (ProofVerify)
+     3.6.  Core Operations
+       3.6.1.  CoreSign
+       3.6.2.  CoreVerify
+       3.6.3.  CoreProofGen
+       3.6.4.  CoreProofVerify
+     3.7.  Proof Protocol Subroutines
+       3.7.1.  Proof Initialization
+       3.7.2.  Proof Finalization
+       3.7.3.  Proof Verification Initialization
+       3.7.4.  Challenge Calculation
+     3.8.  Defining New Interfaces
+   4.  Utility Operations
+     4.1.  Interface Utilities
+       4.1.1.  Generators Calculation
+       4.1.2.  Messages to Scalars
+     4.2.  Core Utilities
+       4.2.1.  Random Scalars
+       4.2.2.  Hash to Scalar
+       4.2.3.  Domain Calculation
+       4.2.4.  Serialization
+   5.  Security Considerations
+     5.1.  Validating Public Keys
+     5.2.  Point Deserialization
+     5.3.  Skipping Membership Checks
+     5.4.  Side Channel Attacks
+     5.5.  Randomness Considerations
+     5.6.  Presentation Header Selection
+     5.7.  Implementing hash_to_curve_g1
+     5.8.  Choice of Underlying Curve
+     5.9.  ProofGen Security
+     5.10. Randomness Requirements
+     5.11. Using a Commitment
+     5.12. Mapping Messages to Scalars
+   6.  Ciphersuites
+     6.1.  Ciphersuite Format
+       6.1.1.  Ciphersuite ID
+       6.1.2.  Additional Parameters
+     6.2.  BLS12-381 Ciphersuites
+       6.2.1.  BLS12-381-SHAKE-256
+       6.2.2.  BLS12-381-SHA-256
+   7.  Test Vectors
+     7.1.  Mocked Random Scalars
+     7.2.  Messages
+     7.3.  BLS12-381-SHAKE-256 Test Vectors
+       7.3.1.  Key Pair
+       7.3.2.  Map Messages to Scalars
+       7.3.3.  Message Generators
+       7.3.4.  Signature Fixtures
+       7.3.5.  Proof Fixtures
+     7.4.  BLS12381-SHA-256 Test Vectors
+       7.4.1.  Key Pair
+       7.4.2.  Map Messages to Scalars
+       7.4.3.  Message Generators
+       7.4.4.  Signature Fixtures
+       7.4.5.  Proof Fixtures
+   8.  IANA Considerations
+   9.  Acknowledgements
+   10. Normative References
+   11. Informative References
+   Appendix A.  BLS12-381 hash_to_curve Definition Using SHAKE-256
+     A.1.  BLS12-381 G1
+   Appendix B.  Use Cases
+     B.1.  Non-correlating Security Token
+     B.2.  Improved Bearer Security Token
+     B.3.  Selectively Disclosure Enabled Identity Credentials
+   Appendix C.  Additional Test Vectors
+     C.1.  BLS12-381-SHAKE-256 Ciphersuite
+       C.1.1.  Signature Test Vectors
+       C.1.2.  Proof Test Vectors
+       C.1.3.  Hash to Scalar Test Vectors
+     C.2.  BLS12-381-SHA-256 Ciphersuite
+       C.2.1.  Signature Test Vectors
+       C.2.2.  Proof Test Vectors
+       C.2.3.  Hash to Scalar Test Vectors
+   Appendix D.  Proof Generation and Verification Algorithmic
+           Explanation
+   Appendix E.  Document History
+   Authors' Addresses
+
+1.  Introduction
+
+   A digital signature scheme is a fundamental cryptographic primitive
+   that is used to provide data integrity and verifiable authenticity in
+   various protocols.  The core premise of digital signature technology
+   is built upon asymmetric cryptography where-by the possessor of a
+   private key is able to sign a message, where anyone in possession of
+   the corresponding public key matching that of the private key is able
+   to verify the signature.
+
+   The name BBS is derived from the authors of the original academic
+   work of Dan Boneh, Xavier Boyen, and Hovav Shacham, where the scheme
+   was first described.
+
+   Beyond the core properties of a digital signature scheme, BBS
+   signatures provide multiple additional unique properties, three key
+   ones are:
+
+   *Selective Disclosure* - The scheme allows a signer to sign multiple
+   messages and produce a single -constant size- output signature.  A
+   holder/prover then possessing the messages and the signature can
+   generate a proof whereby they can choose which messages to disclose,
+   while revealing no-information about the undisclosed messages.  The
+   proof itself guarantees the integrity and authenticity of the
+   disclosed messages (e.g. that they were originally signed by the
+   signer).
+
+   *Unlinkable Proofs* - The proofs generated by the scheme are known as
+   zero-knowledge, proofs-of-knowledge of the signature, meaning a
+   verifying party in receipt of a proof is unable to determine which
+   signature was used to generate the proof, removing a common source of
+   correlation.  In general, each proof generated is indistinguishable
+   from random even for two proofs generated from the same signature.
+
+   *Proof of Possession* - The proofs generated by the scheme prove to a
+   verifier that the party who generated the proof (holder/prover) was
+   in possession of a signature without revealing it.  The scheme also
+   supports binding a presentation header to the generated proof.  The
+   presentation header can include arbitrary information such as a
+   cryptographic nonce, an audience/domain identifier and or time based
+   validity information.
+
+   Refer to the Appendix B for an elaboration on situations where these
+   properties are useful
+
+   Below is a basic diagram describing the main entities involved in the
+   scheme
+
+     (1) sign                                      (3) ProofGen
+      +-----                                         +-----
+      |    |                                         |    |
+      |    |                                         |    |
+      |   \ /                                        |   \ /
+   +----------+                                   +-----------+
+   |          |                                   |           |
+   |          |                                   |           |
+   |          |                                   |           |
+   |  Signer  |---(2)* Send signature + msgs----->|  Holder/  |
+   |          |                                   |  Prover   |
+   |          |                                   |           |
+   |          |                                   |           |
+   +----------+                                   +-----------+
+                                                        |
+                                                        |
+                                                        |
+                                         (4)* Send proof + disclosed msgs
+                                                        |
+                                                        |
+                                                       \ /
+                                                  +-----------+
+                                                  |           |
+                                                  |           |
+                                                  |           |
+                                                  | Verifier  |
+                                                  |           |
+                                                  |           |
+                                                  |           |
+                                                  +-----------+
+                                                     |   / \
+                                                     |    |
+                                                     |    |
+                                                     +-----
+                                                (5) ProofVerify
+
+      Figure 1: Basic diagram capturing the main entities involved in
+                              using the scheme
+
+   *Note* The protocols implied by the items annotated by an asterisk
+   are out of scope for this specification
+
+1.1.  Terminology
+
+   The following terminology is used throughout this document:
+
+   SK  The secret key for the signature scheme.
+
+   PK  The public key for the signature scheme.
+
+   message  An octet string, representing a signed message.
+
+   L  The total number of signed messages.
+
+   R  The number of message indexes that are disclosed (revealed) in a
+      proof-of-knowledge of a signature.
+
+   U  The number of message indexes that are undisclosed in a proof-of-
+      knowledge of a signature.
+
+   scalar  An integer between 0 and r-1, where r is the prime order of
+      the selected groups, defined by each ciphersuite (see also
+      Notation (#notation)).
+
+   generator  A valid point on the selected subgroup of the curve being
+      used that is employed to commit a value.
+
+   signature  The digital signature output.
+
+   nonce  A cryptographic nonce
+
+   presentation_header (ph)  A payload generated and bound to the
+      context of a specific spk.
+
+   dst  The domain separation tag.
+
+   I2OSP  An operation that transforms a non-negative integer into an
+      octet string, defined in Section 4 of [RFC8017].  Note, the output
+      of this operation is in big-endian order.
+
+   OS2IP  An operation that transforms a octet string into an non-
+      negative integer, defined in Section 4 of [RFC8017].  Note, the
+      input of this operation must be in big-endian order.
+
+   INVALID, ABORT  Error indicators.  INVALID refers to an error
+      encountered during the Deserialization or Procedure steps of an
+      operation.  An INVALID value can be returned by a subroutine and
+      handled by the calling operation.  ABORT indicates that one or
+      more of the initial constraints defined by the operation are not
+      met.  In that case, the operation will stop execution.  An
+      operation calling a subroutine that aborted must also immediately
+      abort.
+
+1.2.  Notation
+
+   The following notation and primitives are used:
+
+   a || b  Denotes the concatenation of octet strings a and b.
+
+   I \ J  For sets I and J, denotes the difference of the two sets i.e.,
+      all the elements of I that do not appear in J, in the same order
+      as they were in I.
+
+   X[a..b]  Denotes a slice of the array X containing all elements from
+      and including the value at index a until and including the value
+      at index b.  Note when this syntax is applied to an octet string,
+      each element in the array X is assumed to be a single byte.
+
+   range(a, b)  For integers a and b, with a <= b, denotes the ascending
+      ordered list of all integers between a and b inclusive (i.e., the
+      integers "i" such that a <= i <= b).
+
+   length(input)  Takes as input either an array or an octet string.  If
+      the input is an array, returns the number of elements of the
+      array.  If the input is an octet string, returns the number of
+      bytes of the inputted octet string.
+
+   Terms specific to pairing-friendly elliptic curves that are relevant
+   to this document are restated below, originally defined in
+   [I-D.irtf-cfrg-pairing-friendly-curves].
+
+   E1, E2  elliptic curve groups defined over finite fields.  This
+      document assumes that E1 has a more compact representation than
+      E2, i.e., because E1 is defined over a smaller field than E2.  For
+      a pairing-friendly curve, this document denotes operations in E1
+      and E2 in additive notation, i.e., P + Q denotes point addition
+      and x * P denotes scalar multiplication.
+
+   G1, G2  subgroups of E1 and E2 (respectively) having prime order r.
+
+   GT  a subgroup, of prime order r, of the multiplicative group of a
+      field extension.
+
+   e  G1 x G2 -> GT: a non-degenerate bilinear map.
+
+   r  The prime order of the G1 and G2 subgroups.
+
+   BP1, BP2  base (constant) points on the G1 and G2 subgroups
+      respectively.
+
+   Identity_G1, Identity_G2, Identity_GT  The identity element for the
+      G1, G2, and GT subgroups respectively.
+
+   hash_to_curve_g1(ostr, dst) -> P  A cryptographic hash function that
+      takes an arbitrary octet string as input and returns a point in
+      G1, using the hash_to_curve operation defined in
+      [I-D.irtf-cfrg-hash-to-curve] and the inputted dst as the domain
+      separation tag for that operation (more specifically, the inputted
+      dst will become the DST parameter for the hash_to_field operation,
+      called by hash_to_curve).
+
+   point_to_octets_g1(P) -> ostr, point_to_octets_g2(P) -> ostr  returns
+      the canonical representation of the point P for the respective
+      subgroup as an octet string.  This operation is also known as
+      serialization.
+
+   octets_to_point_g1(ostr) -> P, octets_to_point_g2(ostr) -> P  returns
+      the point P for the respective subgroup corresponding to the
+      canonical representation ostr, or INVALID if ostr is not a valid
+      output of the respective point_to_octets_g* function.  This
+      operation is also known as deserialization.
+
+   subgroup_check(P) -> VALID or INVALID  returns VALID when the point P
+      is an element of the subgroup of order r, and INVALID otherwise.
+      This function can always be implemented by checking that r * P is
+      equal to the identity element.  In some cases, faster checks may
+      also exist, e.g., [Bowe19].
+
+1.3.  Document Organization
+
+   This document is organized as follows:
+
+   *  Scheme Definition (#scheme-definition) defines the core operations
+      and parameters for the BBS signature scheme.
+
+   *  Utility Operations (#utility-operations) defines utilities used by
+      the BBS signature scheme.
+
+   *  Security Considerations (#security-considerations) describes a set
+      of security considerations associated to the signature scheme.
+
+   *  Ciphersuites (#ciphersuites) defines the format of a ciphersuite,
+      alongside a concrete ciphersuite based on the BLS12-381 curve.
+
+2.  Conventions
+
+   The keywords MUST, MUST NOT, REQUIRED, SHALL, SHALL NOT, SHOULD,
+   SHOULD NOT, RECOMMENDED, MAY, and OPTIONAL, when they appear in this
+   document, are to be interpreted as described in [RFC2119].
+
+3.  Scheme Definition
+
+   This section defines the BBS signature scheme, including the
+   parameters required to define a concrete ciphersuite.
+
+3.1.  Parameters
+
+   The schemes operations defined in this section depend on the
+   following parameters:
+
+   *  A pairing-friendly elliptic curve, plus associated functionality
+      given in Section 1.2 (#notation).
+
+   *  A hash-to-curve suite as defined in [I-D.irtf-cfrg-hash-to-curve],
+      using the aforementioned pairing-friendly curve.  This defines the
+      hash_to_curve and expand_message operations, used by this
+      document.
+
+   *  get_random(n): returns a random octet string with a length of n
+      bytes, sampled uniformly at random using a cryptographically
+      secure pseudo-random number generator (CSPRNG) or a pseudo random
+      function.  See [RFC4086] for recommendations and requirements on
+      the generation of random numbers.
+
+3.2.  Interfaces
+
+   The BBS signature scheme is organized as follows:
+
+   *  A set of low level (core) operations, taking care of the main
+      cryptographic functionality.
+
+   *  An Application Interface (API), that uses the core operations in a
+      secure way.
+
+   Each of the core operations (see Section 3.6), expect a list of
+   points (called the generators, see Section 3.3.2) and a list of
+   messages represented as scalar values (see Section 3.3.3).  It is the
+   job of the Interface to:
+
+   1.  Create the necessary generators.
+
+   2.  Map the messages to scalars (see Section 3.3.3).
+
+   This allows for extensibility of the core scheme without exposing the
+   resulting complexity to all applications.  A document extending the
+   core functionality of the BBS scheme by defining a new Interface,
+   MUST ensure that it adheres to the requirements described in
+   Section 3.8.
+
+3.3.  Considerations
+
+3.3.1.  Subgroup Selection
+
+   In definition of this signature scheme there are two possible
+   variations based upon the sub-group selection, namely where public
+   keys are defined in G2 and signatures in G1 OR the opposite where
+   public keys are defined in G1 and signatures in G2.  Some pairing
+   cryptography based digital signature schemes such as
+   [I-D.irtf-cfrg-bls-signature] elect to allow for both variations,
+   because they optimize for different things.  However, in the case of
+   this scheme, due to the operations involved in both signature and
+   proof generation being computational in-efficient when performed in
+   G2 and in the pursuit of simplicity, the scheme is limited to a
+   construction where public keys are in G2 and signatures in G1.
+
+3.3.2.  Generators
+
+   Throughout the operations of this signature scheme, each message that
+   is signed is paired with a specific point of G1, called a generator.
+   Specifically, if a generator H_1 is multiplied with msg_1 during
+   signing, then H_1 MUST be multiplied with msg_1 in all other
+   operations (signature verification, proof generation and proof
+   verification).  As a result, the messages must be passed to the
+   operations of the BBS scheme in the same order.
+
+   Aside from the message generators, the scheme uses one additional
+   generator Q_1 to sign the signature's domain, which binds both the
+   signature and generated proofs to a specific context and
+   cryptographically protects any potential application-specific
+   information (for example, messages that must always be disclosed
+   etc.).
+
+3.3.3.  Messages
+
+   In this document, the messages to be signed are defined as octet-
+   strings.  Each message must be mapped to a scalar value before passed
+   to one of the core BBS operations (Section 3.6).  There are various
+   ways to map a message to a scalar value.  The BBS Signatures
+   Interface defined in this document (see Section 3.5), makes use of a
+   hash function (see Section 4.1.2).  See Section 5.12 for more details
+   and guidance on using alternative mapping methods.
+
+3.3.4.  Serializing to Octets
+
+   When serializing one or more values to produce an octet string, each
+   element will be encoded using a specific operation determined by its
+   type.  More concretely,
+
+   *  Points in G* will be serialized using the point_to_octets_g*
+      implementation for a particular ciphersuite.
+
+   *  Non-negative integers will be serialized using I2OSP with an
+      output length of 8 bytes.
+
+   *  Scalars will be serialized using I2OSP with a constant output
+      length defined by a particular ciphersuite.
+
+   We also use strings in double quotes to represent ASCII-encoded
+   literals.  For example "BBS" will be used to refer to the octet
+   string, 010000100100001001010011.
+
+   Those rules will be used explicitly on every operation.  See also
+   Serialize (#serialize).
+
+3.4.  Key Generation Operations
+
+3.4.1.  Secret Key
+
+   This operation generates a secret key (SK) deterministically from a
+   secret octet string (key_material).  This operation is the
+   RECOMMENDED way of generating a secret key, but its use is not
+   required for compatibility, and implementations MAY use a different
+   key generation procedure.  For security, such an alternative MUST
+   output a secret key that is statistically close to uniformly random
+   in the range from 1 to r-1.  An example of an HKDF-based alternative
+   is the KeyGen operation defined in Section 2.3 of
+   [I-D.irtf-cfrg-bls-signature] (with an appropriate, BBS specific,
+   salt value, like "BBS_SIG_KEYGEN_SALT_").
+
+   For security, key_material MUST be random and infeasible to guess,
+   e.g. generated by a trusted source of randomness and with enough
+   entropy.  See [RFC4086] for suggestions on generating randomness.
+   key_material MUST be at least 32 bytes long, but it MAY be longer.
+
+   KeyGen takes an optional input, key_info.  This parameter MAY be used
+   to derive distinct keys from the same key material.
+
+   Because KeyGen is deterministic, implementations MAY choose either to
+   store the resulting SK or to store key_material and key_info and call
+   KeyGen to derive SK when necessary.
+
+SK = KeyGen(key_material, key_info, key_dst)
+
+Inputs:
+
+- key_material (REQUIRED), a secret octet string. See requirements
+                           above.
+- key_info (OPTIONAL), an octet string. Defaults to an empty string if
+                       not supplied.
+- key_dst (OPTIONAL), an octet string representing the domain separation tag.
+                      Defaults to the octet string ciphersuite_id || "KEYGEN_DST_"
+                      if not supplied.
+
+Outputs:
+
+- SK, a uniformly random integer such that 0 < SK < r.
+
+Procedure:
+
+1. if length(key_material) < 32, return INVALID
+2. if length(key_info) > 65535, return INVALID
+3. derive_input = key_material || I2OSP(length(key_info), 2) || key_info
+4. SK = hash_to_scalar(derive_input, key_dst)
+5. if SK is INVALID, return INVALID
+6. return SK
+
+3.4.2.  Public Key
+
+   This operation takes a secret key (SK) and outputs a corresponding
+   public key (PK).
+
+   PK = SkToPk(SK)
+
+   Inputs:
+
+   - SK (REQUIRED), a secret integer such that 0 < SK < r.
+
+   Outputs:
+
+   - PK, a public key encoded as an octet string.
+
+   Procedure:
+
+   1. W = SK * BP2
+   2. return point_to_octets_g2(W)
+
+3.5.  BBS Signatures Interface
+
+   This section defines a BBS Signatures Interface (see Section 3.2),
+   that makes use of the core operations defined in Section 3.6, to
+   perform the functions of signing and verifying the signature, as well
+   as generating and validating the BBS proof.  To create the generators
+   (see Section 3.3.2) it uses the create_generators operation defined
+   in Section 4.1.1.  Each inputted message is an octet string.  To map
+   the messages to scalars, it uses the messages_to_scalars operation
+   defined in Section 4.1.2.
+
+3.5.1.  Signature Generation (Sign)
+
+   The Sign operation returns a BBS signature from a secret key (SK),
+   over a header and a set of messages.
+
+signature = Sign(SK, PK, header, messages)
+
+Inputs:
+
+- SK (REQUIRED), a secret key in the form outputted by the KeyGen
+                 operation.
+- PK (REQUIRED), an octet string of the form outputted by SkToPk
+                 provided the above SK as input.
+- header (OPTIONAL), an octet string containing context and application
+                     specific information. If not supplied, it defaults
+                     to an empty string.
+- messages (OPTIONAL), a vector of octet strings. If not supplied, it
+                       defaults to the empty array "()".
+
+Parameters:
+
+- api_id, the octet string ciphersuite_id || "H2G_HM2S_", where
+          ciphersuite_id is defined by the ciphersuite and "H2G_HM2S_"is
+          an ASCII string comprised of 9 bytes.
+
+Outputs:
+
+- signature, a signature encoded as an octet string; or INVALID.
+
+Procedure:
+
+1. message_scalars = messages_to_scalars(messages, api_id)
+2. generators = create_generators(length(messages)+1, PK, api_id)
+
+3. signature = CoreSign(SK, PK, header, message_scalars,
+                                              generators, api_id)
+4. if signature is INVALID, return INVALID
+5. return signature
+
+3.5.2.  Signature Verification (Verify)
+
+   The Verify operation validates a BBS signature, given a public key
+   (PK), a header and a set of messages.
+
+result = Verify(PK, signature, header, messages)
+
+Inputs:
+
+- PK (REQUIRED), an octet string of the form outputted by the SkToPk
+                 operation.
+- signature (REQUIRED), an octet string of the form outputted by the
+                        Sign operation.
+- header (OPTIONAL), an octet string containing context and application
+                     specific information. If not supplied, it defaults
+                     to an empty string.
+- messages (OPTIONAL), a vector of octet strings. If not supplied, it
+                       defaults to the empty array "()".
+
+Parameters:
+
+- api_id, the octet string ciphersuite_id || "H2G_HM2S_", where
+          ciphersuite_id is defined by the ciphersuite and "H2G_HM2S_"is
+          an ASCII string comprised of 9 bytes.
+
+Outputs:
+
+- result, either VALID or INVALID.
+
+Procedure:
+
+1. message_scalars = messages_to_scalars(messages, api_id)
+2. generators = create_generators(length(messages)+1, PK, api_id)
+
+3. result = CoreVerify(PK, signature, generators, header,
+                                         message_scalars, api_id)
+4. return result
+
+3.5.3.  Proof Generation (ProofGen)
+
+   The ProofGen operation creates BBS proof, which is a zero-knowledge,
+   proof-of-knowledge, of a BBS signature, while optionally disclosing
+   any subset of the signed messages.  Validating the proof (see
+   ProofVerify defined in Section 3.5.4) guarantees authenticity and
+   integrity of the header and disclosed messages, as well as knowledge
+   of a valid BBS signature.
+
+   Other than the Signer's public key (PK), the BBS signature, the
+   header and the messages, the operation also accepts a presentation
+   header value, that will be bound the the resulting proof
+   (seeSection 5.6).  To indicate which of the messages should be
+   disclosed, the operation accepts a list of integers in ascending
+   order, representing the indexes of those messages
+
+proof = ProofGen(PK, signature, header, ph, messages, disclosed_indexes)
+
+Inputs:
+
+- PK (REQUIRED), an octet string of the form outputted by the SkToPk
+                 operation.
+- signature (REQUIRED), an octet string of the form outputted by the
+                        Sign operation.
+- header (OPTIONAL), an octet string containing context and application
+                     specific information. If not supplied, it defaults
+                     to an empty string.
+- ph (OPTIONAL), an octet string containing the presentation header. If
+                 not supplied, it defaults to an empty string.
+- messages (OPTIONAL), a vector of octet strings. If not supplied, it
+                       defaults to the empty array "()".
+- disclosed_indexes (OPTIONAL), vector of unsigned integers in ascending
+                                order. Indexes of disclosed messages. If
+                                not supplied, it defaults to the empty
+                                array "()".
+
+Parameters:
+
+- api_id, the octet string ciphersuite_id || "H2G_HM2S_", where
+          ciphersuite_id is defined by the ciphersuite and "H2G_HM2S_"is
+          an ASCII string comprised of 9 bytes.
+
+Outputs:
+
+- proof, an octet string; or INVALID.
+
+Procedure:
+
+1. message_scalars = messages_to_scalars(messages, api_id)
+2. generators = create_generators(length(messages)+1, PK, api_id)
+
+3. proof = CoreProofGen(PK, signature, generators, header, ph,
+                             message_scalars, disclosed_indexes, api_id)
+4. if proof is INVALID, return INVALID
+5. return proof
+
+3.5.4.  Proof Verification (ProofVerify)
+
+   The ProofVerify operation validates a BBS proof, given the Signer's
+   public key (PK), a header and presentation header values, the
+   disclosed messages and the indexes those messages had in the original
+   vector of signed messages.
+
+result = ProofVerify(PK, proof, header, ph,
+                     disclosed_messages,
+                     disclosed_indexes)
+
+Inputs:
+
+- PK (REQUIRED), an octet string of the form outputted by the SkToPk
+                 operation.
+- proof (REQUIRED), an octet string of the form outputted by the
+                    ProofGen operation.
+- header (OPTIONAL), an optional octet string containing context and
+                     application specific information. If not supplied,
+                     it defaults to an empty string.
+- ph (OPTIONAL), an octet string containing the presentation header. If
+                 not supplied, it defaults to an empty string.
+- disclosed_messages (OPTIONAL), a vector of octet strings. If not
+                                 supplied, it defaults to the empty
+                                 array "()".
+- disclosed_indexes (OPTIONAL), vector of unsigned integers in ascending
+                                order. Indexes of disclosed messages. If
+                                not supplied, it defaults to the empty
+                                array "()".
+
+Parameters:
+
+- api_id, the octet string ciphersuite_id || "H2G_HM2S_", where
+          ciphersuite_id is defined by the ciphersuite and "H2G_HM2S_"is
+          an ASCII string comprised of 9 bytes.
+- (octet_point_length, octet_scalar_length), defined by the ciphersuite.
+
+Outputs:
+
+- result, either VALID or INVALID.
+
+Deserialization:
+
+1. proof_len_floor = 2 * octet_point_length + 3 * octet_scalar_length
+2. if length(proof) < proof_len_floor, return INVALID
+3. U = floor((length(proof) - proof_len_floor) / octet_scalar_length)
+4. R = length(disclosed_indexes)
+
+Procedure:
+
+1. message_scalars = messages_to_scalars(disclosed_messages, api_id)
+2. generators = create_generators(U + R + 1, PK, api_id)
+
+3. result = CoreProofVerify(PK, proof, generators, header, ph,
+                             message_scalars, disclosed_indexes, api_id)
+4. return result
+
+3.6.  Core Operations
+
+   The operations defined in this section perform the low-level
+   cryptographic functionality of BBS Signatures.  Those core functions
+   MUST only be invoked by an Application Interface that conform to the
+   requirements outlined in Section 3.8.
+
+   The operations of this section make use of functions and sub-routines
+   defined in Utility Operations (#utility-operations).  More
+   specifically,
+
+   *  hash_to_scalar is defined in Section 4.2.2
+
+   *  calculate_domain and calculate_challenge are defined in
+      Section 4.2.3 and Section 3.7.4 correspondingly.
+
+   *  serialize, signature_to_octets, octets_to_signature,
+      proof_to_octets, octets_to_proof and octets_to_pubkey are defined
+      in Section 4.2.4
+
+   Each core operation will accept a vector of generators (points of G1)
+   and optionally, a vector of messages.  The generators MUST be unique
+   and pseudo-random i.e., with no known relationship to each other.
+   See Section 4.1.1.1 for more details.  Each message is represented as
+   a scalar value.  See Section 4.1.2 for ways to map a message to a
+   scalar and the corresponding security requirements.
+
+   *Note* Some of the utility functions used by the core operations of
+   this section could fail (ABORT).  In that case, the calling operation
+   MUST also immediately abort.
+
+3.6.1.  CoreSign
+
+   This operation computes a deterministic signature from a secret key
+   (SK), a set of generators (points of G1) and optionally a header and
+   a vector of messages.
+
+   This operation also accepts an optional commitment input (see
+   Section 5.11).  The commitment is a point of G1 (other than the
+   identity), that if used, it will be integrity protected by the
+   signature.  This value serves only as an extension point and it is
+   not used by this document.  Applications using the Interface defined
+   in Section 3.5 MUST ignore this value.  Extensions that want to take
+   advantage of this extension point MUST follow the requirements
+   defined in Section 5.11.
+
+   Note that this operation requires the generators to be at least one
+   more than the messages, but does not enforce an exact equality, in
+   contrast to the CoreVerify (Section 3.6.2), CoreProofGen
+   (Section 3.6.3) and CoreProofVerify (Section 3.6.4) operations.  This
+   is to accommodate extensions that use the commitment value.  If the
+   commitment input is not used, the generators MUST be exactly one more
+   than the messages.
+
+signature = CoreSign(SK, PK, generators, header, messages,
+                                                    commitment, api_id)
+
+Inputs:
+
+- SK (REQUIRED), a secret key in the form outputted by the KeyGen
+                 operation.
+- PK (REQUIRED), an octet string of the form outputted by SkToPk
+                 provided the above SK as input.
+- generators (REQUIRED), vector of pseudo-random points in G1.
+- header (OPTIONAL), an octet string containing context and application
+                     specific information. If not supplied, it defaults
+                     to an empty string.
+- messages (OPTIONAL), a vector of scalars representing the messages.
+                       If not supplied, it defaults to the empty
+                       array "()".
+- commitment (OPTIONAL), a point of G1. If not supplied, it defaults to
+                         the identity point of G1 ("Identity_G1").
+- api_id (OPTIONAL), an octet string. If not supplied it defaults to the
+                     empty octet string ("").
+
+Parameters:
+
+- P1, fixed point of G1, defined by the ciphersuite.
+
+Outputs:
+
+- signature, a vector comprised of a point of G1 and a scalar.
+
+Definitions:
+
+1. signature_dst, an octet string representing the domain separation
+                  tag: api_id || "H2S_" where "H2S_" is an ASCII string
+                  comprised of 4 bytes.
+
+Deserialization:
+
+1. L = length(messages)
+2. if length(generators) < L + 1, return INVALID
+2. (msg_1, ..., msg_L) = messages
+3. (Q_1, H_1, ..., H_L) = (generators[1], ..., generators[L+1])
+
+Procedure:
+
+1. domain = calculate_domain(PK, generators, header, api_id)
+
+2. let comm be an empty octet string ("")
+3. if commitment != Identity_G1, comm = serialize(commitment)
+
+4. e = hash_to_scalar(serialize((SK, domain, msg_1, ..., msg_L, comm)),
+                                                          signature_dst)
+5. B = P1 + Q_1 * domain + H_1 * msg_1 + ... + H_L * msg_L + commitment
+6. A = B * (1 / (SK + e))
+7. return signature_to_octets((A, e))
+
+   *Note* When computing step 12 of the above procedure there is an
+   extremely small probability (around 2^(-r)) that the condition (SK +
+   e) = 0 mod r will be met.  How implementations evaluate the inverse
+   of the scalar value 0 may vary, with some returning an error and
+   others returning 0 as a result.  If the returned value from the
+   inverse operation 1/(SK + e) does evaluate to 0 the value of A will
+   equal Identity_G1 thus an invalid signature.  Implementations MAY
+   elect to check (SK + e) = 0 mod r prior to step 9, and or A !=
+   Identity_G1 after step 9 to prevent the production of invalid
+   signatures.
+
+3.6.2.  CoreVerify
+
+   This operation checks that a signature is valid for a given set of
+   generators, header and vector of messages, against a supplied public
+   key (PK).  The set of messages MUST be supplied in this operation in
+   the same order they were supplied to Sign (#signature-generation-
+   sign) when creating the signature.
+
+result = CoreVerify(PK, signature, generators, header, messages, api_id)
+
+Inputs:
+
+- PK (REQUIRED), an octet string of the form outputted by the SkToPk
+                 operation.
+- signature (REQUIRED), an octet string of the form outputted by the
+                        Sign operation.
+- generators (REQUIRED), vector of pseudo-random points in G1.
+- header (OPTIONAL), an octet string containing context and application
+                     specific information. If not supplied, it defaults
+                     to an empty string.
+- messages (OPTIONAL), a vector of scalars representing the messages.
+                       If not supplied, it defaults to the empty
+                       array "()".
+- api_id (OPTIONAL), an octet string. If not supplied it defaults to the
+                     empty octet string ("").
+
+Parameters:
+
+- P1, fixed point of G1, defined by the ciphersuite.
+
+Outputs:
+
+- result, either VALID or INVALID.
+
+Deserialization:
+
+1. signature_result = octets_to_signature(signature)
+2. if signature_result is INVALID, return INVALID
+3. (A, e) = signature_result
+4. W = octets_to_pubkey(PK)
+5. if W is INVALID, return INVALID
+6. L = length(messages)
+7. if length(generators) != L + 1, return INVALID
+8. (msg_1, ..., msg_L) = messages
+9. (Q_1, H_1, ..., H_L) = generators
+
+Procedure:
+
+1. domain = calculate_domain(PK, generators, header, api_id)
+2. B = P1 + Q_1 * domain + H_1 * msg_1 + ... + H_L * msg_L
+3. if e(A, W + BP2 * e) * e(B, -BP2) != Identity_GT, return INVALID
+4. return VALID
+
+3.6.3.  CoreProofGen
+
+   This operation computes a zero-knowledge proof-of-knowledge of a
+   signature, while optionally selectively disclosing from the original
+   set of signed messages.  The "prover" may also supply a presentation
+   header, see Presentation header selection (#presentation-header-
+   selection) for more details.  Validating the resulting proof (using
+   the ProofVerify algorithm defined in Section 3.5.4), guarantees the
+   integrity and authenticity of the revealed messages, as well as the
+   possession of a valid signature (for the public key PK) by the
+   prover.
+
+   The ProofGen operation will accept that signature as an input.  It is
+   RECOMMENDED to validate that signature, using the inputted public key
+   PK, with the Verify operation defined in Section 3.5.2.
+
+   The operation works by first initializing the proof using the
+   ProofInit subroutine defined in Section 3.7.1.  The result will be
+   passed to the challenge calculation operation
+   (ProofChallengeCalculate, defined in Section 3.7.4).  The outputted
+   challenge, together with the initialization result, will be used by
+   the ProofFinalize subroutine defined in Section 3.7.2, which will
+   return the proof value.
+
+   The messages supplied in this operation MUST be in the same order as
+   when supplied to Sign (#signature-generation-sign).  To specify which
+   of those messages will be disclosed, the prover can supply the list
+   of indexes (disclosed_indexes) that the disclosed messages have in
+   the array of signed messages.  Each element in disclosed_indexes MUST
+   be a non-negative integer, in the range from 1 to length(messages).
+
+   The operation calculates multiple random scalars using the
+   calculate_random_scalars utility operation defined in Section 4.2.1.
+   See also Section 5.10 for considerations and requirements on random
+   scalars generation.
+
+   To allow for flexibility in implementations, although ProofGen
+   defines a specific value for expand_len, applications may use any
+   value larger than ceil((ceil(log2(r))+k)/8) (for example, for the
+   BLS12-381-SHAKE-256 and BLS12-381-SHA-256 ciphersuites, an
+   implementation can elect to use a value of 64, instead of 48, as to
+   allow for certain optimizations).
+
+proof = CoreProofGen(PK, signature, generators, header, ph, messages,
+                                              disclosed_indexes, api_id)
+
+Inputs:
+
+- PK (REQUIRED), an octet string of the form outputted by the SkToPk
+                 operation.
+- signature (REQUIRED), an octet string of the form outputted by the
+                        Sign operation.
+- generators (REQUIRED), vector of pseudo-random points in G1.
+- header (OPTIONAL), an octet string containing context and application
+                     specific information. If not supplied, it defaults
+                     to an empty string.
+- ph (OPTIONAL), an octet string containing the presentation header. If
+                 not supplied, it defaults to an empty string.
+- messages (OPTIONAL), a vector of scalars representing the messages.
+                       If not supplied, it defaults to the empty
+                       array "()".
+- disclosed_indexes (OPTIONAL), vector of unsigned integers in ascending
+                                order. Indexes of disclosed messages. If
+                                not supplied, it defaults to the empty
+                                array "()".
+- api_id (OPTIONAL), an octet string. If not supplied it defaults to the
+                     empty octet string ("").
+
+Outputs:
+
+- proof, an octet string; or INVALID.
+
+Deserialization:
+
+1.  signature_result = octets_to_signature(signature)
+2.  if signature_result is INVALID, return INVALID
+3.  (A, e) = signature_result
+
+4.  L = length(messages)
+5.  R = length(disclosed_indexes)
+6.  if R > L, return INVALID
+7.  U = L - R
+8.  undisclosed_indexes = range(1, L) \ disclosed_indexes
+9.  (i1, ..., iR) = disclosed_indexes
+10. (j1, ..., jU) = undisclosed_indexes
+
+11. disclosed_messages = (messages[i1], ..., messages[iR])
+12. undisclosed_messages = (messages[j1], ..., messages[jU])
+
+Procedure:
+
+1. random_scalars = calculate_random_scalars(3+U)
+2. init_res = ProofInit(PK, signature_res, generators, random_scalars,
+                          header, messages, undisclosed_indexes, api_id)
+3. if init_res is INVALID, return INVALID
+4. challenge = ProofChallengeCalculate(init_res, disclosed_indexes,
+                                         disclosed_messages, ph, api_id)
+5. proof = ProofFinalize(init_res, challenge, e, random_scalars,
+                                                   undisclosed_messages)
+6. return proof
+
+3.6.4.  CoreProofVerify
+
+   This operation checks that a proof is valid for a header, vector of
+   disclosed messages (along side their index corresponding to their
+   original position when signed) and presentation header against a
+   public key (PK).
+
+   The operation works by first initializing the proof verification
+   using the ProofVerifyInit subroutine defined in Section 3.7.3.  The
+   result will be inputted to the challenge calculation operation
+   (ProofChallengeCalculate, defined in Section 3.7.4).  The resulting
+   challenge and the 2 first component of the received proof (points of
+   G1) will be checked for correctness (steps 4 and 5 in the following
+   procedure), to verify the proof.
+
+   The operation accepts the messages that the prover indicated to be
+   disclosed.  Those messages MUST be in the same order as when supplied
+   to Sign (#signature-generation-sign) (as a subset of the signed
+   messages).  Lastly, it also accepts the indexes that the disclosed
+   messages had in the original array of messages supplied to Sign
+   (#signature-generation-sign) (i.e., the disclosed_indexes list
+   supplied to ProofGen (#proof-generation-proofgen)).  Every element in
+   this list MUST be a non-negative integer in the range from 1 to L, in
+   ascending order.
+
+result = CoreProofVerify(PK, proof, generators, header, ph,
+                          disclosed_messages, disclosed_indexes, api_id)
+
+Inputs:
+
+- PK (REQUIRED), an octet string of the form outputted by the SkToPk
+                 operation.
+- proof (REQUIRED), an octet string of the form outputted by the
+                    ProofGen operation.
+- generators (REQUIRED), vector of pseudo-random points in G1.
+- header (OPTIONAL), an optional octet string containing context and
+                     application specific information. If not supplied,
+                     it defaults to an empty string.
+- ph (OPTIONAL), an octet string containing the presentation header. If not
+                 supplied, it defaults to an empty string.
+- disclosed_messages (OPTIONAL), a vector of scalars representing the
+                                 messages. If not supplied, it defaults
+                                 to the empty array "()".
+- disclosed_indexes (OPTIONAL), vector of unsigned integers in ascending
+                                order. Indexes of disclosed messages. If
+                                not supplied, it defaults to the empty
+                                array "()".
+- api_id (OPTIONAL), an octet string. If not supplied it defaults to the
+                     empty octet string ("").
+
+Parameters:
+
+- P1, fixed point of G1, defined by the ciphersuite.
+
+Outputs:
+
+- result, either VALID or INVALID.
+
+Deserialization:
+
+1. proof_result = octets_to_proof(proof)
+2. if proof_result is INVALID, return INVALID
+3. (Abar, Bbar, r2^, r3^, commitments, cp) = proof_result
+4. W = octets_to_pubkey(PK)
+5. if W is INVALID, return INVALID
+6. (i1, ..., iR) = disclosed_indexes
+
+Procedure:
+
+1. init_res = ProofVerifyInit(PK, proof_result, generators, header,
+                                    messages, disclosed_indexes, api_id)
+2. if init_res is INVALID, return INVALID
+3. challenge = ProofChallengeCalculate(init_res, disclosed_indexes,
+                                                   messages, ph, api_id)
+4. if cp != challenge, return INVALID
+5. if e(Abar, W) * e(Bbar, -BP2) != Identity_GT, return INVALID
+6. return VALID
+
+3.7.  Proof Protocol Subroutines
+
+   This section describes the subroutines used by the ProofGen and
+   ProVerify algorithms defined in Section 3.5.3 and Section 3.5.4
+   respectively.
+
+3.7.1.  Proof Initialization
+
+   This operation initializes the proof and returns part of the input
+   that will be passed to the challenge calculation operation (i.e.,
+   ProofChallengeCalculate, Section 3.7.4), during the ProofGen
+   operation defined in Section 3.5.3.  As one of its inputs, it accepts
+   a list of random scalars (random_scalars) and a list of unsigned
+   integers, in ascending order, representing the indexes of the
+   messages the Prover choses to disclose (undisclosed_indexes see
+   Section 3.5.3).  The list of random scalars MUST have exactly 3 more
+   items than the list of undisclosed indexes (i.e., it must hold that
+   length(random_scalars) = length(undisclosed_indexes) + 3).
+
+   This operation makes use of the create_generators function, defined
+   in Section 4.1.1 and the calculate_domain function defined in
+   Section 4.2.3.
+
+init_res = ProofInit(PK, signature, generators, random_scalars,
+                          header, messages, undisclosed_indexes, api_id)
+
+Inputs:
+
+- PK (REQUIRED), an octet string of the form outputted by the SkToPk
+                 operation.
+- signature (REQUIRED), vector representing a BBS signature, consisting
+                        of a point of G1 and a scalar, in that order.
+- generators (REQUIRED), vector of points in G1.
+- random_scalars (REQUIRED), vector of scalar values.
+- header (OPTIONAL), octet string. If not supplied it defaults to the
+                     empty octet string ("").
+- messages (OPTIONAL), vector of scalar values. If not supplied, it
+                       defaults to the empty array "()".
+- undisclosed_indexes (OPTIONAL), vector of unsigned integers in
+                                  ascending order. If not supplied, it
+                                  defaults to the empty array "()".
+- api_id (OPTIONAL), an octet string. If not supplied it defaults to the
+                     empty octet string ("").
+
+Parameters:
+
+- P1, fixed point of G1, defined by the ciphersuite.
+
+Outputs:
+
+- init_res, vector consisting of 3 points of G1 and a scalar, in that
+            order; or INVALID.
+
+Deserialization:
+
+1.  (A, e) = signature
+2.  L = length(messages)
+3.  U = length(undisclosed_indexes)
+4.  (j1, ..., jU) = undisclosed_indexes
+5.  if length(random_scalars) != U + 3, return INVALID
+6.  (r1, r2, r3, m~_j1, ..., m~_jU) = random_scalars
+7.  (msg_1, ..., msg_L) = messages
+
+8.  if length(generators) != L + 1, return INVALID
+9.  (Q_1, MsgGenerators) = generators
+10. (H_1, ..., H_L) = MsgGenerators
+11. (H_j1, ..., H_jU) = (MsgGenerators[j1], ..., MsgGenerators[jU])
+
+ABORT if:
+
+1. for i in undisclosed_indexes, i < 1 or i > L
+2. U > L
+
+Procedure:
+
+1. domain = calculate_domain(PK, Q_1, (H_1, ..., H_L), header, api_id)
+2. B = P1 + Q_1 * domain + H_1 * msg_1 + ... + H_L * msg_L
+3. Abar = A * r1
+4. Bbar = B * r1 - Abar * e
+5. T =  Abar * r2 + Bbar * r3 + H_j1 * m~_j1 + ... + H_jU * m~_jU
+6. return (Abar, Bbar, T, domain)
+
+3.7.2.  Proof Finalization
+
+   This operation finalizes the proof calculation during the ProofGen
+   operation defined in Section 3.5.3 and returns the serialized proof
+   value, using the proof_to_octets serialization operation defined in
+   Section 4.2.4.4.
+
+proof = ProofFinalize(init_res, challenge, e_value, random_scalars,
+                                                   undisclosed_messages)
+
+Inputs:
+
+- init_res (REQUIRED), vector representing the value returned after
+                       initializing the proof generation or verification
+                       operations, consisting of 3 points of G1 and a
+                       scalar value, in that order.
+- challenge (REQUIRED), scalar value.
+- e_value (REQUIRED), scalar value.
+- random_scalars (REQUIRED), vector of scalar values.
+- undisclosed_messages (OPTIONAL), vector of scalar values. If not
+                                   supplied, it defaults to the empty
+                                   array "()".
+
+Outputs:
+
+- proof, an octet string; or INVALID.
+
+Deserialization:
+
+1. U = length(undisclosed_messages)
+2. if length(random_scalars) != U + 3, return INVALID
+3. (r1, r2, r3, m~_1, ..., m~_U) = random_scalars
+4. (undisclosed_1, ..., undisclosed_U) = undisclosed_messages
+5. (Abar, Bbar) = (init_res[0], init_res[1])
+
+Procedure:
+
+1. r4 = - r1^-1 (mod r)
+2. r2^ = r2 + e_value * r4 * challenge (mod r)
+3. r3^ = r3 + r4 * challenge (mod r)
+4. for j in (1, ..., U): m^_j = m~_j + undisclosed_j * challenge (mod r)
+5. proof = (Abar, Bbar, r2^, r3^, (m^_j1, ..., m^_jU), challenge)
+6. return proof_to_octets(proof)
+
+3.7.3.  Proof Verification Initialization
+
+   This operation initializes the proof verification operation and
+   returns part of the input that will be passed to the challenge
+   calculation operation (i.e., ProofChallengeCalculate, Section 3.7.4),
+   during the ProofVerify operation defined in Section 3.5.4.
+
+   This operation makes use of the create_generators function, defined
+   in Section 4.1.1 and the calculate_domain function defined in
+   Section 4.2.3.
+
+init_res = ProofVerifyInit(PK,
+                           proof,
+                           generators,
+                           header,
+                           disclosed_messages,
+                           disclosed_indexes,
+                           api_id)
+
+Inputs:
+
+- PK (REQUIRED), an octet string of the form outputted by the SkToPk
+                 operation.
+- proof (REQUIRED), vector representing a BBS proof, consisting of 2
+                    points of G1, 2 scalars, another nested but possibly
+                    empty vector of scalars and another scalar, in that
+                    order.
+- generators (REQUIRED), vector of points in G1.
+- header (OPTIONAL), octet string. If not supplied it defaults to the
+                     empty octet string ("").
+- disclosed_messages (OPTIONAL), vector of scalar values. If not
+                                 supplied, it defaults to the empty
+                                 array "()".
+- disclosed_indexes (OPTIONAL), vector of unsigned integers in ascending
+                                order. If not supplied, it defaults to
+                                the empty array "()".
+- api_id (OPTIONAL), an octet string. If not supplied it defaults to the
+                     empty octet string ("").
+
+Parameters:
+
+- P1, fixed point of G1, defined by the ciphersuite.
+
+Outputs:
+
+- init_res, vector consisting of 3 points of G1 and a scalar, in that
+            order.
+
+Deserialization:
+
+1.  (Abar, Bbar, r2^, r3^, commitments, c) = proof_result
+2.  U = length(commitments)
+3.  R = length(disclosed_indexes)
+4.  L = R + U
+5.  (i1, ..., iR) = disclosed_indexes
+6.  (j1, ..., jU) = range(1, L) \ disclosed_indexes
+7.  (msg_i1, ..., msg_iR) = disclosed_messages
+8.  (m^_j1, ...., m^_jU) = commitments
+
+9.  if length(generators) != L + 1, return INVALID
+10. (Q_1, MsgGenerators) = generators
+11. (H_1, ..., H_L) = MsgGenerators
+12. (H_i1, ..., H_iR) = (MsgGenerators[i1], ..., MsgGenerators[iR])
+13. (H_j1, ..., H_jU) = (MsgGenerators[j1], ..., MsgGenerators[jU])
+
+ABORT if:
+
+1. for i in (i1, ..., iR), i < 1 or i > L
+2. length(disclosed_messages) != R
+
+Procedure:
+
+1. domain = calculate_domain(PK, Q_1, (H_1, ..., H_L), header, api_id)
+2. D = P1 + Q_1 * domain + H_i1 * msg_i1 + ... + H_iR * msg_iR
+3. T =  Abar * r2^ + Bbar * r3^ + H_j1 * m^_j1 + ... +  H_jU * m^_jU
+4. T = T + D * c
+5. return (Abar, Bbar, T, domain)
+
+3.7.4.  Challenge Calculation
+
+   This operation calculates the challenge scalar value, used during
+   ProofGen (#proof-generation-proofgen) and ProofVerify (#proof-
+   verification-proofverify), as part of the Fiat-Shamir heuristic, for
+   making the proof protocol non-interactive (in a interactive setting,
+   the challenge would be a random value supplied by the verifier).
+
+   This operation makes use of the serialize function, defined in
+   Section 4.6.1 (#serialize).
+
+challenge = ProofChallengeCalculate(init_res, i_array, msg_array, ph,
+                                                                 api_id)
+
+Inputs:
+- init_res (REQUIRED), vector representing the value returned after
+                       initializing the proof generation or verification
+                       operations, consisting of 3 points of G1 and a
+                       scalar value, in that order.
+- i_array (REQUIRED), array of non-negative integers (the indexes of
+                      the disclosed messages).
+- msg_array (OPTIONAL), array of scalars (the disclosed messages after
+                        mapped to scalars).
+- ph (OPTIONAL), an octet string. If not supplied, it must default to
+                 the empty octet string ("").
+- api_id (OPTIONAL), an octet string. If not supplied it defaults to the
+                     empty octet string ("").
+
+Outputs:
+
+- challenge, a scalar.
+
+Definitions:
+
+1. challenge_dst, an octet string representing the domain separation
+                  tag: api_id || "H2S_" where "H2S_" is an ASCII string
+                  comprised of 4 bytes.
+
+Deserialization:
+
+1. R = length(i_array)
+2. (i1, ..., iR) = i_array
+3. (msg_i1, ..., msg_iR) = msg_array
+4. (Abar, Bbar, C, domain) = init_res
+
+ABORT if:
+
+1. R > 2^64 - 1 or R != length(msg_array)
+2. length(ph) > 2^64 - 1
+
+Procedure:
+
+1. c_arr = (Abar, Bbar, C, R, i1, ..., iR, msg_i1, ..., msg_iR, domain)
+2. c_octs = serialize(c_array) || I2OSP(length(ph), 8) || ph
+3. return hash_to_scalar(c_octs, challenge_dst)
+
+   *Note*: If the presentation header (ph) is not supplied in
+   ProofChallengeCalculate, 8 bytes representing a length of 0 (i.e.,
+   0x0000000000000000), must still be appended after the c_octs value,
+   during the concatenation step of the above procedure (step 3).
+
+3.8.  Defining New Interfaces
+
+   This document defines a BBS Interface to be a set of operations that
+   use the core functions defined in Section 3.6, to generate and
+   validate BBS signatures and proofs.  These core operations require a
+   set of generators, and optionally, a set of scalars representing the
+   messages.
+
+   The Interface operations are tasked with creating the generators, as
+   well as mapping the received set of messages to a set of scalar
+   values.  The created generators MUST follow the requirements listed
+   in Section 4.1.1.1.  If a set of messages is supplied, the mapping to
+   scalars procedure MUST follow the requirements listed in
+   Section 4.1.2.1.
+
+   Each Interface MUST also define a unique ID as a parameter, called
+   api_id.  It is REQUIRED from the operations that create generators
+   and map messages to scalars, to also define a unique ID (see
+   Section 4.1).  The api_id MUST have the following format:
+
+  ciphersuite_id || CREATE_GENERATORS_ID || MAP_TO_SCALAR_ID || ADD_INFO
+
+   Where ciphersuite_id is defined by the ciphersuite,
+   CREATE_GENERATORS_ID is the unique IDs of the operation that creates
+   the generators, MAP_TO_SCALAR_ID is the unique ID of the operation
+   that maps the messages to scalars and the ADD_INFO value is an
+   optional octet string indicating any additional information used to
+   uniquely qualify the Interface.  When ADD_INFO is present, it MUST
+   only contain ASCII encoded characters with codes between 0x21 and
+   0x7e (inclusive) and MUST end with an underscore (ASCII code: 0x5f),
+   other than the last character the string MUST not contain any other
+   underscores (ASCII code: 0x5f).  The api_id value, MUST be used by
+   all subroutines an Interface calls, to ensure proper domain
+   separation.
+
+   Interfaces are meant to make it easier to use BBS Signature as part
+   of other protocols with different requirements (for example,
+   different types of input messages or different ways to create the
+   generators), or to extend BBS Signatures with additional
+   functionality (for example, using blinded messages as in [CDL16]).
+   Documents defining new BBS Interfaces, other than adhering to the
+   requirements listed in this section, should also include a detailed
+   and peer reviewed analyses showcasing that, under reasonable
+   cryptographic assumptions, the documented scheme is secure under the
+   required security definitions and threat model of each protocol.  In
+   other words, Interfaces must be treated like Ciphersuites
+   (Section 6), in the sense that applications should avoid creating
+   their own, proprietary Interfaces.
+
+4.  Utility Operations
+
+   This section defines utility operations that are used by either the
+   BBS Interface or the BBS Core Operations.
+
+4.1.  Interface Utilities
+
+   This section defines the create_generators and messages_to_scalars
+   operations that are used by the BBS Signatures Interface defined in
+   Section 3.5.  It also defines requirements for alternative operations
+   that calculate generators and map messages to scalars.
+
+   Each operation MUST define a unique ID, called CREATE_GENERATORS_ID
+   for the operation that will calculate the generators and
+   MAP_TO_SCALAR_ID for the operation that will map messages to scalars.
+   Those IDs will be used to construct the Interface ID (see
+   Section 3.8).
+
+4.1.1.  Generators Calculation
+
+   The create_generators procedure defines how to create a set of
+   randomly sampled points from the G1 subgroup, called the generators.
+   It makes use of the primitives defined in
+   [I-D.irtf-cfrg-hash-to-curve] (more specifically of hash_to_curve and
+   expand_message) to hash a seed to a set of generators.  Those
+   primitives are implicitly defined by the ciphersuite, through the
+   choice of a hash-to-curve suite (see the hash_to_curve_suite
+   parameter in Section 6.1).
+
+   Since create_generators generates constant points, as an
+   optimization, implementations MAY cache its result for a specific
+   count (which can be arbitrarily large, depending on the application).
+   Care must be taken, to guarantee that the generators will be fetched
+   from the cache in the same order they had when they where created
+   (i.e., an application should not short or in any way rearrange the
+   cached generators).
+
+generators = create_generators(count, api_id)
+
+Inputs:
+
+- count (REQUIRED), unsigned integer. Number of generators to create.
+- seed (OPTIONAL), octet string. If not supplied it defaults to the
+                   empty octet string ("").
+- api_id (OPTIONAL), octet string. If not supplied it defaults to the
+                     empty octet string ("").
+
+Parameters:
+
+- hash_to_curve_g1, the hash_to_curve operation for the G1 subgroup,
+                    defined by the suite specified by the
+                    hash_to_curve_suite parameter of the ciphersuite.
+- expand_message, the expand_message operation defined by the suite
+                  specified by the hash_to_curve_suite parameter of the
+                  ciphersuite.
+- expand_len, defined by the ciphersuite.
+
+Outputs:
+
+- generators, an array of generators.
+
+Definitions:
+
+1. seed_dst, an octet string representing the domain separation tag:
+             api_id || "SIG_GENERATOR_SEED_" where "SIG_GENERATOR_SEED_"
+             is an ASCII string comprised of 19 bytes.
+2. generator_dst, an octet string representing the domain separation
+                  tag: api_id || "SIG_GENERATOR_DST_", where
+                  "SIG_GENERATOR_DST_" is an ASCII string comprised of
+                  18 bytes.
+3. generator_seed, an octet string representing the domain separation
+                   tag: api_id || "MESSAGE_GENERATOR_SEED", where
+                   "MESSAGE_GENERATOR_SEED" is an ASCII string comprised
+                   of 22 bytes.
+
+ABORT if:
+
+1. count > 2^64 - 1
+
+Procedure:
+
+1. v = expand_message(generator_seed, seed_dst, expand_len)
+2. for i in range(1, count):
+3.    v = expand_message(v || I2OSP(i, 8), seed_dst, expand_len)
+4.    generator_i = hash_to_curve_g1(v, generator_dst)
+5. return (generator_1, ..., generator_count)
+
+   The value of v MAY also be cached in order to efficiently extend an
+   existing list of cached generator points.
+
+   The CREATE_GENERATORS_ID of the above operation is define as,
+
+   CREATE_GENERATORS_ID = "H2G_"
+
+4.1.1.1.  Defining new Generators
+
+   When defining a new create_generators procedure, the most important
+   property is that the points are pseudo-randomly chosen from the G1
+   group, given reasonable assumptions and cryptographic primitives.
+   More specifically, the required properties are
+
+   *  The generators should be indistinguishable from uniformly radom
+      points of G1.  This means that given only the points H_1, ..., H_i
+      it should be infeasible to guess H_(i+1) (or any H_j with j > i),
+      for any i.
+
+   *  The returned points must be unique with very high probability,
+      that would not lessen the targeted security level of the
+      ciphersuite.  Specifically, for a security level k, the
+      probability of a collision should be at most 1/2^k.
+
+   *  It should be infeasible to guess the discrete logarithm of the
+      returned points, for any base, even with knowledge of the public
+      parameters that were used to create those generators (like the
+      generator_seed value in Section 4.1.1).  Note that pseudo
+      randomness does not necessarily imply this property.  For example,
+      an implementation that repeatably hashes a public seed value to
+      create exponents r_1, r_2, ..., r_count (where r_1 = hash(seed),
+      r_2 = hash(r_1), ...) and then returns the points H_1 = P1 * r_1,
+      H_2 = P_1 * r_2, ..., H_count = P_1 * r_count would be insecure
+      (given knowledge of the seed), but given knowledge of only the
+      points H_1, ..., H_count, the sequence would appear random.
+
+   *  The returned points must be different from the Identity point of
+      G1 as well as the constant point P1 defined by the ciphersuite.
+
+   Every operation that is used to return generator points for use with
+   the core BBS operations (Section 3.6), MUST return points that
+   conform to the aforementioned rules.  Such operation must also follow
+   the rules outlined bellow,
+
+   *  It MUST be deterministic and constant time for a specific number
+      of generators.
+
+   *  It MUST use proper domain separation for both the
+      create_generators procedure, as well as all of the internally-
+      called procedures.
+
+4.1.2.  Messages to Scalars
+
+   The messages_to_scalars operation is used to map a list of messages
+   to their respective scalar values, which are required by the core BBS
+   operations defined in Section 3.6.
+
+msg_scalar = messages_to_scalars(messages, api_id)
+
+Inputs:
+
+- messages (REQUIRED), a vector of octet strings.
+- api_id (OPTIONAL), octet string. If not supplied it defaults to the
+                     empty octet string ("").
+
+Outputs:
+
+- msg_scalars, a list of scalars.
+
+Definitions:
+
+1. map_dst, an octet string representing the domain separation tag:
+            api_id || "MAP_MSG_TO_SCALAR_AS_HASH_" where
+            "MAP_MSG_TO_SCALAR_AS_HASH_" is an ASCII string comprised of
+            26 bytes.
+
+ABORT if:
+
+1. length(messages) > 2^64 - 1
+
+Procedure:
+
+1. L =  length(messages)
+2. for i in (1, ..., L):
+3.     msg_scalar_i = hash_to_scalar(messages[i], map_dst)
+4. return (msg_scalar_1, ..., msg_scalar_L)
+
+   The MAP_TO_SCALAR_ID of the above operation is defines as,
+
+   MAP_TO_SCALAR_ID = "HM2S_"
+
+4.1.2.1.  Define a new Map to Scalar
+
+   The most important property that a new operation that will map a
+   vector of messages to a vector of scalars, MUST have is that each
+   message should be mapped to a scalar independently from all the other
+   messages.  More specifically, the following MUST hold,
+
+For every set of messages and every message msg',
+let messages' be the list of messages with msg' appended at the end and
+C1 = messages_to_scalars(messages').
+
+Let also msg_prime_scalar = messages_to_scalars((msg')),
+and C2 = messages_to_scalars(messages).
+
+If we append msg_prime_scalar at the end of C2, it must always hold that
+C1 == C2.
+
+   Additionally, the new operation MUST conform to the following
+   requirements:
+
+   *  The returned scalars MUST be independent.  More specifically,
+      knowledge of any subset of the returned scalars MUST NOT reveal
+      any information about the scalars not in that subset.
+
+   *  Unique inputs MUST result to unique outputs.
+
+   *  If the inputted vector of messages does not include any
+      duplicates, the outputted scalars MUST NOT include any duplicates
+      either.
+
+   *  It MUST be deterministic and constant time on the length of the
+      inputted vector of messages.
+
+4.2.  Core Utilities
+
+   This section defines utility procedures that are used by the Core
+   operations defined in Section 3.6.
+
+4.2.1.  Random Scalars
+
+   This operation returns the requested number of pseudo-random scalars,
+   using the get_random operation (see Parameters (#parameters)).  The
+   operation makes multiple calls to get_random.  It is REQUIRED that
+   each call will be independent from each other, as to ensure
+   independence of the returned pseudo-random scalars.
+
+   *Note*: The security of the proof generation algorithm (ProofGen
+   (#proof-generation-proofgen)) is highly dependant on the quality of
+   the get_random function.  Care must be taken to ensure that a
+   cryptographically secure pseudo-random generator is chosen, and that
+   its outputs are not leaked to an adversary.  See also Section 5.10
+   (#randomness-requirements) for more details.
+
+random_scalars = calculate_random_scalars(count)
+
+Inputs:
+
+- count (REQUIRED), non negative integer. The number of pseudo random
+                    scalars to return.
+
+Parameters:
+
+- get_random, a pseudo random function with extendable output, returning
+              uniformly distributed pseudo random bytes.
+- expand_len, defined by the ciphersuite.
+
+Outputs:
+
+- random_scalars, a list of pseudo random scalars,
+
+Procedure:
+
+1. for i in (1, ..., count):
+2.     r_i = OS2IP(get_random(expand_len)) mod r
+3. return (r_1, r_2, ..., r_count)
+
+4.2.2.  Hash to Scalar
+
+   This operation describes how to hash an arbitrary octet string to n
+   scalar values in the multiplicative group of integers mod r (i.e.,
+   values in the range [1, r-1]).  This procedure acts as a helper
+   function, used internally in various places within the operations
+   described in the spec.  To hash a message to a scalar that would be
+   passed as input to the Sign (#sisignature-generation-signgn), Verify
+   (#signature-verification-verify), ProofGen (#proof-generation-
+   proofgen) and ProofVerify (#proof-verification-proofverify)
+   functions, one must use MapMessageToScalarAsHash
+   (#mapmessagetoscalar) instead.
+
+   The operation takes as input an octet string representing the message
+   to hash (msg), the number of the scalars to return (count) as well as
+   an optional domain separation tag (dst).  The length of the dst MUST
+   be less than 255 octets.  See section 5.3.3 of
+   [I-D.irtf-cfrg-hash-to-curve] for guidance on using larger dst
+   values.  If a dst is not supplied, its value MUST default to the
+   octet string returned from ciphersuite_id || "H2S_", where
+   ciphersuite_id is the octet string representing the unique ID of the
+   ciphersuite and "H2S_" is an ASCII string comprised of 4 bytes.
+
+   *Note* This operation makes use of expand_message defined in
+   [I-D.irtf-cfrg-hash-to-curve].  The operation expand_message may fail
+   (abort).  In that case, hash_to_scalar MUST also ABORT.
+
+ hashed_scalar = hash_to_scalar(msg_octets, dst)
+
+ Inputs:
+
+ - msg_octets (REQUIRED), an octet string. The message to be hashed.
+ - dst (REQUIRED), an octet string representing a domain separation tag.
+
+ Parameters:
+
+ - hash_to_curve_suite, the hash to curve suite id defined by the
+                        ciphersuite.
+ - expand_message, the expand_message operation defined by the suite
+                   specified by the hash_to_curve_suite parameter.
+ - expand_len, defined by the ciphersuite.
+
+ Outputs:
+
+ - hashed_scalar, a scalar.
+
+ ABORT if:
+
+ - length(dst) > 255
+
+ Procedure:
+
+ 1. uniform_bytes = expand_message(msg_octets, dst, expand_len)
+ 2. return OS2IP(uniform_bytes) mod r
+
+4.2.3.  Domain Calculation
+
+   This operation calculates the domain value, a scalar representing the
+   distillation of all essential contextual information for a signature.
+   The same domain value must be calculated by all parties (the signer,
+   the prover, and the verifier) for both the signature and proofs to be
+   validated.
+
+   The input to the domain value includes an octet string called the
+   header, chosen by the signer and meant to encode any information that
+   is required to be revealed by the prover (such as an expiration date,
+   or an identifier for the target audience).  This is in contrast to
+   the signed message values, which may be withheld during a proof.
+
+   When a signature is calculated, the domain value is combined with a
+   specific generator point (Q_1, see Sign (#signature-generation-sign))
+   to protect the integrity of the public parameters and the header.
+
+   This operation makes use of the serialize function, defined in
+   Section 4.6.1 (#serialize).
+
+  domain = calculate_domain(PK, Q_1, H_Points, header, api_id)
+
+  Inputs:
+
+  - PK (REQUIRED), an octet string, representing the public key of the
+                   Signer of the form outputted by the SkToPk operation.
+  - Q_1 (REQUIRED), point of G1 (the first point returned from
+                    create_generators).
+  - H_Points (REQUIRED), array of points of G1.
+  - header (OPTIONAL), an octet string. If not supplied, it must default
+                       to the empty octet string ("").
+  - api_id (OPTIONAL), octet string. If not supplied it defaults to the
+                       empty octet string ("").
+
+  Outputs:
+
+  - domain, a scalar.
+
+  Definitions:
+
+  1. domain_dst, an octet string representing the domain separation tag:
+                 api_id || "H2S_" where "H2S_" is an ASCII string
+                 comprised of 4 bytes.
+
+  Deserialization:
+
+  1. L = length(H_Points)
+  2. (H_1, ..., H_L) = H_Points
+
+  ABORT if:
+
+  1. length(header) > 2^64 - 1 or L > 2^64 - 1
+
+  Procedure:
+
+  1. dom_array = (L, Q_1, H_1, ..., H_L)
+  2. dom_octs = serialize(dom_array) || api_id
+  3. dom_input = PK || dom_octs || I2OSP(length(header), 8) || header
+  4. return hash_to_scalar(dom_input, domain_dst)
+
+   *Note*: If the header is not supplied in calculate_domain, it
+   defaults to the empty octet string ("").  This means that in the
+   concatenation step of the above procedure (step 3), 8 bytes
+   representing a length of 0 (i.e., 0x0000000000000000), will still
+   need to be appended at the end, even though a header value is not
+   provided.
+
+4.2.4.  Serialization
+
+4.2.4.1.  Serialize
+
+   This operation describes how to transform multiple elements of
+   different types (i.e., elements that are not already in a octet
+   string format) to a single octet string (see Section 3.3.4).  The
+   inputted elements can be points, scalars (see Terminology
+   (#terminology)) or integers between 0 and 2^64-1.  The resulting
+   octet string will then either be used as an input to a hash function
+   (i.e., in Sign (#signature-generation-sign), ProofGen (#proof-
+   generation-proofgen) etc.), or to serialize a signature or proof (see
+   SignatureToOctets (#signaturetooctets) and ProofToOctets
+   (#prooftooctets)).
+
+octets_result = serialize(input_array)
+
+Inputs:
+
+- input_array (REQUIRED), an array of elements to be serialized. Each
+                          element must be either a point of G1 or G2, a
+                          scalar, an ASCII string or an integer value
+                          between 0 and 2^64 - 1.
+
+Parameters:
+
+- octet_scalar_length, non-negative integer. The length of a scalar
+                       octet representation, defined by the ciphersuite.
+- r, the prime order of the subgroups G1 and G2, defined by the
+     ciphersuite.
+- point_to_octets_g*, operations that serialize a point of G1 or G2 to
+                      an octet string of fixed length, defined by the
+                      ciphersuite.
+
+Outputs:
+
+- octets_result, a scalar value or INVALID.
+
+Procedure:
+
+1.  let octets_result be an empty octet string.
+2.  for el in input_array:
+3.      if el is a point of G1: el_octs = point_to_octets_g1(el)
+4.      else if el is a point of G2: el_octs = point_to_octets_g2(el)
+5.      else if el is a scalar: el_octs = I2OSP(el, octet_scalar_length)
+6.      else if el is an integer between 0 and 2^64 - 1:
+7.          el_octs = I2OSP(el, 8)
+8.      else: return INVALID
+9.      octets_result = octets_result || el_octs
+10. return octets_result
+
+4.2.4.2.  Signature to Octets
+
+   This operation describes how to encode a signature to an octet
+   string.
+
+   _Note_ this operation deliberately does not perform the relevant
+   checks on the inputs A and e because its assumed these are done prior
+   to its invocation, e.g as is the case with the Sign (#signature-
+   generation-sign) operation.
+
+signature_octets = signature_to_octets(signature)
+
+Inputs:
+
+- signature (REQUIRED), a valid signature, in the form (A, e), where
+                        A is a point in G1 and e is a non-zero scalar mod r.
+
+Outputs:
+
+- signature_octets, an octet string or INVALID.
+
+Procedure:
+
+1. (A, e) = signature
+2. return serialize((A, e))
+
+4.2.4.3.  Octets to Signature
+
+   This operation describes how to decode an octet string, validate it
+   and return the underlying components that make up the signature.
+
+  signature = octets_to_signature(signature_octets)
+
+  Inputs:
+
+  - signature_octets (REQUIRED), an octet string of the form output from
+                                 signature_to_octets operation.
+
+  Outputs:
+
+  signature, a signature in the form (A, e), where A is a point in G1
+             and e is a non-zero scalar mod r.
+
+  Procedure:
+
+  1.  expected_len = octet_point_length + octet_scalar_length
+  2.  if length(signature_octets) != expected_len, return INVALID
+  3.  A_octets = signature_octets[0..(octet_point_length - 1)]
+  4.  A = octets_to_point_g1(A_octets)
+  5.  if A is INVALID, return INVALID
+  6.  if A == Identity_G1, return INVALID
+  7.  index = octet_point_length
+  8.  end_index = index + octet_scalar_length - 1
+  9.  e = OS2IP(signature_octets[index..end_index])
+  10. if e = 0 OR e >= r, return INVALID
+  11. return (A, e)
+
+4.2.4.4.  Proof to Octets
+
+   This operation describes how to encode a proof, as computed at step
+   25 in ProofGen (#proof-generation-proofgen), to an octet string.  The
+   input to the operation MUST be a valid proof.
+
+   The inputted proof value must consist of the following components, in
+   that order:
+
+   1.  Two (2) valid points of the G1 subgroup, different from the
+       identity point of G1 (i.e., Abar, Bbar, in ProofGen)
+
+   2.  Three (3) integers representing scalars in the range of 1 to r-1
+       inclusive (i.e., c, r2^, r3^, in ProofGen).
+
+   3.  A number of integers representing scalars in the range of 1 to
+       r-1 inclusive, corresponding to the undisclosed from the proof
+       messages (i.e., m^_j1, ..., m^_jU, in ProofGen, where U the
+       number of undisclosed messages).
+
+proof_octets = proof_to_octets(proof)
+
+Inputs:
+
+- proof (REQUIRED), a BBS proof in the form calculated by ProofGen in
+                    step 27 (see above).
+
+Parameters:
+
+- octet_scalar_length (REQUIRED), non-negative integer. The length of
+                                  a scalar octet representation, defined
+                                  by the ciphersuite.
+
+Outputs:
+
+- proof_octets, an octet string or INVALID.
+
+Procedure:
+
+1. (Abar, Bbar, r2^, r3^, (m^_1, ..., m^_U), c) = proof
+2. return serialize((Abar, Bbar, r2^, r3^, m^_1, ..., m^_U, c))
+
+4.2.4.5.  Octets to Proof
+
+   This operation describes how to decode an octet string representing a
+   proof, validate it and return the underlying components that make up
+   the proof value.
+
+   The proof value outputted by this operation consists of the following
+   components, in that order:
+
+   1.  Two (2) valid points of the G1 subgroup, each of which must not
+       equal the identity point.
+
+   2.  Two (2) integers representing scalars in the range of 1 to r-1
+       inclusive.
+
+   3.  A set of integers representing scalars in the range of 1 to r-1
+       inclusive, corresponding to the undisclosed from the proof
+       message commitments.  This set can be empty (i.e., "()").
+
+   4.  One (1) integer representing a scalar in the range of 1 to r-1
+       inclusive, corresponding to the proof's challenge (c).
+
+proof = octets_to_proof(proof_octets)
+
+Inputs:
+
+- proof_octets (REQUIRED), an octet string of the form outputted from the
+                           proof_to_octets operation.
+
+Parameters:
+
+- r (REQUIRED), non-negative integer. The prime order of the G1 and
+                G2 groups, defined by the ciphersuite.
+- octet_scalar_length (REQUIRED), non-negative integer. The length of
+                                  a scalar octet representation, defined
+                                  by the ciphersuite.
+- octet_point_length (REQUIRED), non-negative integer. The length of
+                                 a point in G1 octet representation,
+                                 defined by the ciphersuite.
+
+Outputs:
+
+- proof, a proof value in the form described above or INVALID
+
+Procedure:
+
+1.  proof_len_floor = 2 * octet_point_length + 3 * octet_scalar_length
+2.  if length(proof_octets) < proof_len_floor, return INVALID
+
+// Points (i.e., (Abar, Bbar) in ProofGen) de-serialization.
+3.  index = 0
+4.  for i in range(0, 1):
+5.      end_index = index + octet_point_length - 1
+6.      A_i = octets_to_point_g1(proof_octets[index..end_index])
+7.      if A_i is INVALID or Identity_G1, return INVALID
+8.      index += octet_point_length
+
+// Scalars (i.e., (r2^, r3^, m^_j1, ..., m^_jU, c) in
+// ProofGen) de-serialization.
+9.  j = 0
+10. while index < length(proof_octets):
+11.     end_index = index + octet_scalar_length - 1
+12.     s_j = OS2IP(proof_octets[index..end_index])
+13.     if s_j = 0 or if s_j >= r, return INVALID
+14.     index += octet_scalar_length
+15.     j += 1
+
+16. if index != length(proof_octets), return INVALID
+17. msg_commitments = ()
+18. If j > 3, set msg_commitments = (s_2, ..., s_(j-2))
+19. return (A_0, A_1, s_0, s_1, msg_commitments, s_(j-1))
+
+4.2.4.6.  Octets to Public Key
+
+   This operation describes how to decode an octet string representing a
+   public key, validates it and returns the corresponding point in G2.
+   Steps 2 to 5 check if the public key is valid.  As an optimization,
+   implementations MAY cache the result of those steps, to avoid
+   unnecessarily repeating validation for known public keys.
+
+ W = octets_to_pubkey(PK)
+
+ Inputs:
+
+ - PK, an octet string. A public key in the form outputted by the SkToPK
+       operation
+
+ Outputs:
+
+ - W, a valid point in G2 or INVALID
+
+ Procedure:
+
+ 1. W = octets_to_point_g2(PK)
+ 2. If W is INVALID, return INVALID
+ 3. if subgroup_check(W) is INVALID, return INVALID
+ 4. If W == Identity_G2, return INVALID
+ 5. return W
+
+5.  Security Considerations
+
+5.1.  Validating Public Keys
+
+   It is RECOMENDED for any operation in Core Operations (#core-
+   operations) involving public keys, that they deserialize the public
+   key first using the OctetsToPublicKey (#octetstopublickey) operation,
+   even if they only require the octet-string representation of the
+   public key.  If the octets_to_pubkey procedure (see the
+   OctetsToPublicKey (#octetstopublickey) section) returns INVALID, the
+   calling operation should also return INVALID and abort.  An example
+   of where this recommendation applies is the Sign (#sign) operation.
+   An example of where an explicit invocation to the octets_to_pubkey
+   operation is already defined and therefore required is the Verify
+   (#signature-verification-verify) operation.
+
+5.2.  Point Deserialization
+
+   This document makes use of octet_to_point_g* to parse octet strings
+   to elliptic curve points (either in G1 or G2).  It is assumed (even
+   if not explicitly described) that the result of this operation will
+   not be INVALID.  If octet_to_point_g* returns INVALID, then the
+   calling operation should immediately return INVALID as well and abort
+   the operation.  Note that the only place where the output is assumed
+   to be VALID implicitly is in the EncodingForHash (#encodingforhash)
+   section.
+
+5.3.  Skipping Membership Checks
+
+   Some existing implementations skip the subgroup_check invocation in
+   Verify (#signature-verification-verify), whose purpose is ensuring
+   that the signature is an element of a prime-order subgroup.  This
+   check is REQUIRED of conforming implementations, for two reasons.
+
+   1.  For most pairing-friendly elliptic curves used in practice, the
+       pairing operation e Section 1.2 is undefined when its input
+       points are not in the prime-order subgroups of E1 and E2.  The
+       resulting behavior is unpredictable, and may enable forgeries.
+
+   2.  Even if the pairing operation behaves properly on inputs that are
+       outside the correct subgroups, skipping the subgroup check breaks
+       the strong unforgeability property [ADR02].
+
+5.4.  Side Channel Attacks
+
+   Implementations of the signing algorithm SHOULD protect the secret
+   key from side-channel attacks.  One method for protecting against
+   certain side-channel attacks is ensuring that the implementation
+   executes exactly the same sequence of instructions and performs
+   exactly the same memory accesses, for any value of the secret key.
+   In other words, implementations on the underlying pairing-friendly
+   elliptic curve SHOULD run in constant time.
+
+5.5.  Randomness Considerations
+
+   The IKM input to KeyGen MUST be infeasible to guess and MUST be kept
+   secret.  One possibility is to generate IKM from a trusted source of
+   randomness.  Guidelines on constructing such a source are outside the
+   scope of this document.
+
+   Secret keys MAY be generated using other methods; in this case they
+   MUST be infeasible to guess and MUST be indistinguishable from
+   uniformly random modulo r.
+
+   BBS proofs are nondeterministic, meaning care must be taken against
+   attacks arising from using bad randomness, for example, the nonce
+   reuse attack on ECDSA [HDWH12].  It is RECOMMENDED that the
+   presentation header used in this specification contain a nonce chosen
+   at random from a trusted source of randomness, see the Section 5.6
+   for additional considerations.
+
+   When a trusted source of randomness is used, signatures and proofs
+   are much harder to forge or break due to the use of multiple nonces.
+
+5.6.  Presentation Header Selection
+
+   The signature proofs of knowledge generated in this specification are
+   created using a specified presentation header.  A verifier-specified
+   cryptographically random value (e.g., a nonce) featuring in the
+   presentation header provides strong protections against replay
+   attacks, and is RECOMMENDED in most use cases.  In some settings,
+   proofs can be generated in a non-interactive fashion, in which case
+   verifiers MUST be able to verify the uniqueness of the presentation
+   header values.
+
+5.7.  Implementing hash_to_curve_g1
+
+   The security analysis models hash_to_curve_g1 as random oracles.  It
+   is crucial that these functions are implemented using a
+   cryptographically secure hash function.  For this purpose,
+   implementations MUST meet the requirements of
+   [I-D.irtf-cfrg-hash-to-curve].
+
+   In addition, ciphersuites MUST specify unique domain separation tags
+   for hash_to_curve.  Some guidance around defining this can be found
+   in Section 6.
+
+5.8.  Choice of Underlying Curve
+
+   BBS signatures can be implemented on any pairing-friendly curve.
+   However care MUST be taken when selecting one that is appropriate,
+   this specification defines a ciphersuite for using the BLS12-381
+   curve in Section 6 which as a curve achieves around 117 bits of
+   security according to a recent NCC ZCash cryptography review
+   [ZCASH-REVIEW].
+
+5.9.  ProofGen Security
+
+   The proof, as returned by ProofGen, is a zero-knowledge proof-of-
+   knowledge [CDL16].  This guarantees that no information will be
+   revealed about the signature itself or the undisclosed messages, from
+   the output of ProofGen.  Note that the security proofs in [CDL16]
+   work on type 3 pairing setting.  This means that G1 should be
+   different from G2 and with no efficient isomorphism between them.
+
+5.10.  Randomness Requirements
+
+   ProofGen (#proof-generation-proofgen) is by its nature a randomized
+   algorithm, requiring the generation of multiple uniformly
+   distributed, pseudo random scalars.  This makes ProofGen vulnerable
+   to bad entropy in certain applications.  As an example of such
+   application, consider systems that need to monitor and potentially
+   restrict outbound traffic, in order to minimize data leakage during a
+   breach.  In such cases, the attacker could manipulate couple of bits
+   in the output of the get_random function to create an undetected
+   chanel out of the system.  Although the applicability of such attacks
+   is limited for most of the targeted use cases of the BBS scheme, some
+   applications may want to take measures towards mitigating them.  To
+   that end, it is RECOMMENDED to use a deterministic RNG (like a
+   ChaCha20 based deterministic RNG), seeded with a unique, uniformly
+   random, single seed [DRBG].  This will limit the amount of bits the
+   attacker can manipulate (note that some randomness is always needed).
+
+   In any case, the randomness used in ProofGen MUST be unique in each
+   call and MUST have a distribution that is indistinguishable from
+   uniform.  If the random scalars are re-used, are created from "bad
+   randomness" (for example with a known relationship to each other) or
+   are in any way predictable, an adversary will be able to unveil the
+   undisclosed from the proof messages or the hidden signature value.
+   Naturally, a cryptographically secure pseudorandom number generator
+   or pseudo random function is REQUIRED to implement the get_random
+   functionality.  See also [RFC8937], for recommendations on generating
+   good randomness in cases where the Prover has direct or in-direct
+   access to a secret key.
+
+5.11.  Using a Commitment
+
+   The CoreSign operation defined in Section 3.6.1, specifies an
+   optional commitment input value.  The commitment is a point of G1,
+   that can be used to extent the core BBS functionality, by allowing
+   "signing points", meaning that the supplied commitment point will be
+   integrity protected by the signature (see [TZ23]).  An example use
+   case, is allowing a third party (like the Prover for example), to
+   create messages that will be included in the BBS signature, without
+   those messages being revealed to the Signer, by setting the
+   commitment to be a Pedersen commitment ([P91]) over a list of
+   messages.
+
+   In cases where the commitment must have a specific form (like in the
+   above example that uses Pedersen commitments), the Signer MUST verify
+   the correctness of the supplied value, prior to using it for
+   signature generation.  In the example of the Pedersen commitment,
+   this may include validating a zero-knowledge proof (using a pre-
+   defined set of generators) constructed by the party that supplied the
+   commitment, showcasing that it knows the messages that where used to
+   create it, that those messages are in the correct range etc.
+
+   Documents extending the BBS core functionality, that use the
+   commitment value are REQUIRED to,
+
+   *  Clearly specify the expected format of the commitment value, how
+      it should be constructed and how it should be validated by the
+      Signer.
+
+   *  Include a detailed and peer reviewed analyses, showcasing that,
+      under reasonable cryptographic assumptions the documented scheme
+      that uses the commitment value, results to a secure signature
+      protocol, i.e., that the resulting signature is secure under
+      adaptive chosen plaintext attacks.
+
+   Applications using the Interface defined in Section 3.5, MUST ignore
+   the commitment value.
+
+5.12.  Mapping Messages to Scalars
+
+   As mentioned in this document, messages are considered to be
+   represented as octet strings that are mapped to scalar values.  More
+   advanced applications however, like the ones using range proofs
+   ([BBB17]), will need to be able to use alternative mapping
+   operations.  At the BBS Signatures level, this means that an
+   Interface may accept messages that are pre-mapped to a scalar, using
+   some protocol specific operation.  For example, an application could
+   use [ISO8601] to map dates into integers before passing them to the
+   BBS Interface.  In those cases, the application should ensure that
+   all participants have a clear and consistent understating about which
+   mapping method should be used, (examples include associating specific
+   signature "types" with different mapping methods etc.).
+
+   Additionally, the application must ensure that all the BBS Interface
+   operations have a consistent view of which of the received messages
+   are octet strings (in which case they should be mapped to scalars
+   using an operation conforming to the rules in Section 4.1.2.1) and
+   which messages are scalars (in which case, no extra operation is
+   needed on those messages).
+
+   An option is for the Issuer to publish this information as part of
+   their public parameters, similar to TBD (U-Prove).  Such
+   configuration should detail the type of each message, based on that
+   message's index on the signed messages list (i.e., the first message
+   will be an octet string, the second an integer etc.).  A BBS
+   Interface should check the messages they receive against those
+   configurations and map them to scalars accordingly.  Another option
+   is to sign such configurations as part of the header parameter of the
+   BBS signature (see Section 3.5.1).  In this case, the configuration
+   does not need to be published by the Issuer.  The Prover will be
+   responsible to get that information from the issuer and later, to
+   communicate it to the Verifier.
+
+6.  Ciphersuites
+
+   This section defines the format for a BBS ciphersuite.  It also gives
+   concrete ciphersuites based on the BLS12-381 pairing-friendly
+   elliptic curve [I-D.irtf-cfrg-pairing-friendly-curves].
+
+6.1.  Ciphersuite Format
+
+6.1.1.  Ciphersuite ID
+
+   The following section defines the format of the unique identifier for
+   the ciphersuite denoted ciphersuite_id, which will be represented as
+   an ASCII encoded octet string.  The REQUIRED format for this string
+   is
+
+     "BBS_" || H2C_SUITE_ID || ADD_INFO
+
+   *  H2C_SUITE_ID is the suite ID of the hash-to-curve suite used to
+      define the hash_to_curve function.
+
+   *  ADD_INFO is an optional octet string indicating any additional
+      information used to uniquely qualify the ciphersuite.  When
+      present this value MUST only contain ASCII encoded characters with
+      codes between 0x21 and 0x7e (inclusive) and MUST end with an
+      underscore (ASCII code: 0x5f), other than the last character the
+      string MUST not contain any other underscores (ASCII code: 0x5f).
+
+6.1.2.  Additional Parameters
+
+   The parameters that each ciphersuite needs to define are generally
+   divided into three main categories; the basic parameters (a hash
+   function etc.,), the serialization operations (point_to_octets_g1
+   etc.,) and the generator parameters.  See below for more details.
+
+   *Basic parameters*:
+
+   *  hash: a cryptographic hash function.
+
+   *  octet_scalar_length: Number of bytes to represent a scalar value,
+      in the multiplicative group of integers mod r, encoded as an octet
+      string.  It is RECOMMENDED this value be set to ceil(log2(r)/8).
+
+   *  octet_point_length: Number of bytes to represent a point encoded
+      as an octet string outputted by the point_to_octets_g* function.
+      It is RECOMMENDED that this value is set to ceil(log2(p)/8).
+
+   *  hash_to_curve_suite: The hash-to-curve ciphersuite id, in the form
+      defined in [I-D.irtf-cfrg-hash-to-curve].  This defines the
+      hash_to_curve_g1 (the hash_to_curve operation for the G1 subgroup,
+      see the Notation (#notation) section) and the expand_message
+      (either expand_message_xmd or expand_message_xof) operations used
+      in this document.
+
+   *  expand_len: Must be defined to be at least
+      ceil((ceil(log2(r))+k)/8), where log2(r) and k are defined by each
+      ciphersuite (see Section 5 in [I-D.irtf-cfrg-hash-to-curve] for a
+      more detailed explanation of this definition).
+
+   *  P1: A fixed point in the G1 subgroup, different from the point BP1
+      (i.e., the base point of G1, see Section 1.1).  This leaves the
+      base point "free", to be used with other protocols, like key
+      commitment and proof of possession schemes (for example, like the
+      one described in Section 3.3 of [I-D.irtf-cfrg-bls-signature]).
+
+   *Serialization functions*:
+
+   *  point_to_octets_g1: a function that returns the canonical
+      representation of the point P for the G1 subgroup as an octet
+      string.
+
+   *  point_to_octets_g2: a function that returns the canonical
+      representation of the point P for the G2 subgroup as an octet
+      string.
+
+   *  octets_to_point_g1: a function that returns the point P in the
+      subgroup G1 corresponding to the canonical representation ostr, or
+      INVALID if ostr is not a valid output of point_to_octets_g1.
+
+   *  octets_to_point_g2: a function that returns the point P in the
+      subgroup G2 corresponding to the canonical representation ostr, or
+      INVALID if ostr is not a valid output of point_to_octets_g2.
+
+6.2.  BLS12-381 Ciphersuites
+
+   The following two ciphersuites are based on the BLS12-381 elliptic
+   curves defined in Section 4.2.1 of
+   [I-D.irtf-cfrg-pairing-friendly-curves].  The targeted security level
+   of both suites in bits is k = 128.  The number of bits of the order
+   r, of the G1 and G2 subgroups, is log2(r) = 255.  The base points BP1
+   and BP2 of G1 and G2 are the points BP and BP' correspondingly, as
+   defined in Section 4.2.1 of [I-D.irtf-cfrg-pairing-friendly-curves].
+
+   The first ciphersuite makes use of an extendable output function, and
+   most specifically of SHAKE-256, as defined in Section 6.2 of [SHA3].
+   It also uses the hash-to-curve suite defined by this document in
+   Appendix A.1 (#bls12-381-hash_to_curve-def), which also makes use of
+   the SHAKE-256 function.
+
+   The second ciphersuite uses SHA-256, as defined in Section 6.2 of
+   [SHA2] and the BLS12-381 G1 hash-to-curve suite defined in
+   Section 8.8.1 of the [I-D.irtf-cfrg-hash-to-curve] document.
+
+   Note that these two ciphersuites differ only in the hash function
+   (SHAKE-256 vs SHA-256) and in the hash-to-curve suites used.  The
+   hash-to-curve suites differ in the expand_message variant and
+   underlying hash function.  More concretely, the BLS12-381-SHAKE-256
+   (#bls12-381-shake-256) ciphersuite makes use of expand_message_xof
+   with SHAKE-256, while BLS12-381-SHA-256 (#bls12-381-sha-256) makes
+   use of expand_message_xmd with SHA-256.  Curve parameters are common
+   between the two ciphersuites.
+
+6.2.1.  BLS12-381-SHAKE-256
+
+   *Basic parameters*:
+
+*  ciphersuite_id: "BBS_BLS12381G1_XOF:SHAKE-256_SSWU_RO_H2G_HM2S_"
+
+*  hash: SHAKE-256 as defined in [SHA3].
+
+*  octet_scalar_length: 32, based on the RECOMMENDED approach of
+   ceil(log2(r)/8).
+
+*  octet_point_length: 48, based on the RECOMMENDED approach of
+   ceil(log2(p)/8).
+
+*  hash_to_curve_suite: "BLS12381G1_XOF:SHAKE-256_SSWU_RO_" as
+   defined in Appendix A.1 (#bls12-381-hash-to-curve-definition-
+   using-shake-256) for the G1 subgroup.
+
+*  expand_len: 48 ( = ceil((ceil(log2(r))+k)/8))
+
+*  P1: The G1 point returned from the create_generators procedure
+   (Section 4.1.1), with count = 1 and replacing the defined
+   generator_seed with the value: ciphersuite_id ||
+   "H2G_HM2S_BP_MESSAGE_GENERATOR_SEED".  More specifically,
+
+P1 = "8929dfbc7e6642c4ed9cba0856e493f8b9d7d5fcb0c31ef8fdcd34d50648a56c79
+  5e106e9eada6e0bda386b414150755"
+
+   *Serialization functions*:
+
+   *  point_to_octets_g1: follows the format documented in Appendix C
+      section 1 of [I-D.irtf-cfrg-pairing-friendly-curves] for the G1
+      subgroup, using compression (i.e., setting C_bit = 1).
+
+   *  point_to_octets_g2: follows the format documented in Appendix C
+      section 1 of [I-D.irtf-cfrg-pairing-friendly-curves] for the G2
+      subgroup, using compression (i.e., setting C_bit = 1).
+
+   *  octets_to_point_g1: follows the format documented in Appendix C
+      section 2 of [I-D.irtf-cfrg-pairing-friendly-curves] for the G1
+      subgroup.
+
+   *  octets_to_point_g2: follows the format documented in Appendix C
+      section 2 of [I-D.irtf-cfrg-pairing-friendly-curves] for the G2
+      subgroup.
+
+6.2.2.  BLS12-381-SHA-256
+
+   *Basic parameters*:
+
+*  Ciphersuite_ID: "BBS_BLS12381G1_XMD:SHA-256_SSWU_RO_H2G_HM2S_"
+
+*  hash: SHA-256 as defined in [SHA2].
+
+*  octet_scalar_length: 32, based on the RECOMMENDED approach of
+   ceil(log2(r)/8).
+
+*  octet_point_length: 48, based on the RECOMMENDED approach of
+   ceil(log2(p)/8).
+
+*  hash_to_curve_suite: "BLS12381G1_XMD:SHA-256_SSWU_RO_" as defined
+   in Section 8.8.1 of the [I-D.irtf-cfrg-hash-to-curve] for the G1
+   subgroup.
+
+*  expand_len: 48 ( = ceil((ceil(log2(r))+k)/8))
+
+*  P1: The G1 point returned from the create_generators procedure
+   (Section 4.1.1), with count = 1 and replacing the defined
+   generator_seed with the value: ciphersuite_id ||
+   "H2G_HM2S_BP_MESSAGE_GENERATOR_SEED".  More specifically,
+
+P1 = "a8ce256102840821a3e94ea9025e4662b205762f9776b3a766c872b948f1fd225e
+  7c59698588e70d11406d161b4e28c9"
+
+   *Serialization functions*:
+
+   *  point_to_octets_g1: follows the format documented in Appendix C
+      section 1 of [I-D.irtf-cfrg-pairing-friendly-curves] for the G1
+      subgroup, using compression (i.e., setting C_bit = 1).
+
+   *  point_to_octets_g2: follows the format documented in Appendix C
+      section 1 of [I-D.irtf-cfrg-pairing-friendly-curves] for the G2
+      subgroup, using compression (i.e., setting C_bit = 1).
+
+   *  octets_to_point_g1: follows the format documented in Appendix C
+      section 2 of [I-D.irtf-cfrg-pairing-friendly-curves] for the G1
+      subgroup.
+
+   *  octets_to_point_g2: follows the format documented in Appendix C
+      section 2 of [I-D.irtf-cfrg-pairing-friendly-curves] for the G2
+      subgroup.
+
+7.  Test Vectors
+
+   The following section details a basic set of test vectors that can be
+   used to confirm an implementations correctness
+
+   *NOTE* All binary data below is represented as octet strings in big
+   endian order, encoded in hexadecimal format.
+
+   *NOTE* These fixtures are a work in progress and subject to change.
+
+7.1.  Mocked Random Scalars
+
+   For the purpose of presenting fixtures for the ProofGen (#proof-
+   generation-proofgen) operation we describe here a way to mock the
+   calculate_random_scalars operation (Random scalars computation
+   (#random-scalars)), used by ProofGen to create all the necessary
+   random scalars.
+
+   To that end, the seeded_random_scalars(SEED) operation is defined,
+   which will deterministically calculate count random-looking scalars
+   from a single SEED.  The proof test vector will then define a SEED
+   (as a nothing-up-my-sleeve value) and set
+
+   mocked_calculate_random_scalars(count) :=
+                                seeded_random_scalars(SEED, count)
+
+   The mocked_calculate_random_scalars operation will then be used in
+   place of calculate_random_scalars during the ProofGen (#proof-
+   generation-proofgen) operation's procedure.
+
+   *Note* For the BLS12-381-SHA-256 (#bls12-381-sha-256) ciphersuite if
+   more than 170 mocked random scalars are required, the operation will
+   return INVALID.  Similarly, for the BLS12-381-SHAKE-256 (#bls12-381-
+   shake-256) ciphersuite, if more than 1365 mocked random scalars are
+   required, the operation will return INVALID.  For the purpose of
+   describing ProofGen (#proof-generation-proofgen) test vectors, those
+   limits are inconsequential.
+
+seeded_scalars = seeded_random_scalars(SEED, count)
+
+Inputs:
+
+- count (REQUIRED), non negative integer. The number of scalars to
+                    return.
+- SEED (REQUIRED), an octet string. The random seed from which to generate
+                   the scalars.
+
+Parameters:
+
+- expand_message, the expand_message operation defined by the
+                  ciphersuite.
+- expand_len, defined by the ciphersuite.
+- dst = ciphersuite_id || "MOCK_RANDOM_SCALARS_DST_", where
+        ciphersuite_id is defined by the ciphersuite.
+
+Outputs:
+
+- mocked_random_scalars, a list of "count" pseudo random scalars
+
+ABORT if:
+
+1. count * expand_len > 65535
+
+Procedure:
+
+1. out_len = expand_len * count
+2. v = expand_message(SEED, dst, out_len)
+3. if v is INVALID, return INVALID
+
+4. for i in (1, ..., count):
+5.     start_idx = (i-1) * expand_len
+6.     end_idx = i * expand_len - 1
+7.     r_i = OS2IP(v[start_idx..end_idx]) mod r
+8. return (r_1, ...., r_count)
+
+7.2.  Messages
+
+   The following messages are used by the test vectors of both
+   ciphersuites (unless otherwise stated).  All the listed messages
+   represent hex-encoded octet strings.
+
+m_1 = "9872ad089e452c7b6e283dfac2a80d58e8d0ff71cc4d5e310a1debdda4a45f02"
+m_2 = "c344136d9ab02da4dd5908bbba913ae6f58c2cc844b802a6f811f5fb075f9b80"
+m_3 = "7372e9daa5ed31e6cd5c825eac1b855e84476a1d94932aa348e07b73"
+m_4 = "77fe97eb97a1ebe2e81e4e3597a3ee740a66e9ef2412472c"
+m_5 = "496694774c5604ab1b2544eababcf0f53278ff50"
+m_6 = "515ae153e22aae04ad16f759e07237b4"
+m_7 = "d183ddc6e2665aa4e2f088af"
+m_8 = "ac55fb33a75909ed"
+m_9 = "96012096"
+m_10 = ""
+
+7.3.  BLS12-381-SHAKE-256 Test Vectors
+
+   Test vectors of the BLS12-381-SHAKE-256 (#bls12-381-shake-
+   256-ciphersuite) ciphersuite.  Further fixtures are available in
+   additional BLS12-381-SHAKE-256 test vectors (#additional-bls12-381-
+   shake-256-ciphersuite-test-vectors).
+
+7.3.1.  Key Pair
+
+   Following the procedure defined in Section 3.4.1 with an input
+   key_material value as follows
+
+key_material = "746869732d49532d6a7573742d616e2d546573742d494b4d2d746f2d
+                67656e65726174652d246528724074232d6b6579"
+
+   and the following key_info value
+
+key_info = "746869732d49532d736f6d652d6b65792d6d657461646174612d746f2d62
+            652d757365642d696e2d746573742d6b65792d67656e"
+
+   Outputs the following SK value
+
+ SK = "2eee0f60a8a3a8bec0ee942bfd46cbdae9a0738ee68f5a64e7238311cf09a079"
+
+   Following the procedure defined in Section 3.4.2 with an input SK
+   value as above produces the following PK value
+
+PK = "92d37d1d6cd38fea3a873953333eab23a4c0377e3e049974eb62bd45949cdeb18f
+      b0490edcd4429adff56e65cbce42cf188b31bddbd619e419b99c2c41b38179eb00
+      1963bc3decaae0d9f702c7a8c004f207f46c734a5eae2e8e82833f3e7ea5"
+
+7.3.2.  Map Messages to Scalars
+
+   The messages in Section 3.3.3 are mapped to scalars during the Sign,
+   Verify, ProofGen and ProofVerify operations.  Presented below, are
+   the output scalar values of the messages_to_scalars operation
+   (Section 4.1.2), on input the messages defined in Section 3.3.3.
+   Each output scalar value is encoded to octets using I2OSP and
+   represented in big endian order,
+
+msg_scalar_1 = "1e0dea6c9ea8543731d331a0ab5f64954c188542b33c5bbc8ae5b3a8
+                30f2d99f"
+msg_scalar_2 = "3918a40fb277b4c796805d1371931e08a314a8bf8200a92463c06054
+                d2c56a9f"
+msg_scalar_3 = "6642b981edf862adf34214d933c5d042bfa8f7ef343165c325131e2f
+                fa32fa94"
+msg_scalar_4 = "33c021236956a2006f547e22ff8790c9d2d40c11770c18cce6037786
+                c6f23512"
+msg_scalar_5 = "52b249313abbe323e7d84230550f448d99edfb6529dec8c4e783dbd6
+                dd2a8471"
+msg_scalar_6 = "2a50bdcbe7299e47e1046100aadffe35b4247bf3f059d525f9215374
+                84dd54fc"
+msg_scalar_7 = "0e92550915e275f8cfd6da5e08e334d8ef46797ee28fa29de40a1ebc
+                cd9d95d3"
+msg_scalar_8 = "4c28f612e6c6f82f51f95e1e4faaf597547f93f6689827a6dcda3cb9
+                4971d356"
+msg_scalar_9 = "1db51bedc825b85efe1dab3e3ab0274fa82bbd39732be3459525faf7
+                0f197650"
+msg_scalar_10 = "27878da72f7775e709bb693d81b819dc4e9fa60711f4ea927740e40
+                 073489e78"
+
+7.3.3.  Message Generators
+
+   Following the procedure defined in Section 4.1.1 with an input count
+   value of 11, for the BLS12-381-SHAKE-256 (#bls12-381-shake-256)
+   suite, outputs the following values (note that the first one
+   corresponds to Q_1, while the next 10, to the message generators H_1,
+   ..., H_10).
+
+Q_1 = "a9d40131066399fd41af51d883f4473b0dcd7d028d3d34ef17f3241d204e28507
+       d7ecae032afa1d5490849b7678ec1f8"
+H_1 = "903c7ca0b7e78a2017d0baf74103bd00ca8ff9bf429f834f071c75ffe6bfdec6d
+       6dca15417e4ac08ca4ae1e78b7adc0e"
+H_2 = "84321f5855bfb6b001f0dfcb47ac9b5cc68f1a4edd20f0ec850e0563b27d2acce
+       e6edff1a26b357762fb24e8ddbb6fcb"
+H_3 = "b3060dff0d12a32819e08da00e61810676cc9185fdd750e5ef82b1a9798c7d76d
+       63de3b6225d6c9a479d6c21a7c8bf93"
+H_4 = "8f1093d1e553cdead3c70ce55b6d664e5d1912cc9edfdd37bf1dad11ca396a0a8
+       bb062092d391ebf8790ea5722413f68"
+H_5 = "990824e00b48a68c3d9a308e8c52a57b1bc84d1cf5d3c0f8c6fb6b1230e4e5b8e
+       b752fb374da0b1ef687040024868140"
+H_6 = "b86d1c6ab8ce22bc53f625d1ce9796657f18060fcb1893ce8931156ef992fe568
+       56199f8fa6c998e5d855a354a26b0dd"
+H_7 = "b4cdd98c5c1e64cb324e0c57954f719d5c5f9e8d991fd8e159b31c8d079c76a67
+       321a30311975c706578d3a0ddc313b7"
+H_8 = "8311492d43ec9182a5fc44a75419b09547e311251fe38b6864dc1e706e29446cb
+       3ea4d501634eb13327245fd8a574f77"
+H_9 = "ac00b493f92d17837a28d1f5b07991ca5ab9f370ae40d4f9b9f2711749ca20011
+       0ce6517dc28400d4ea25dddc146cacc"
+H_10 = "965a6c62451d4be6cb175dec39727dc665762673ee42bf0ac13a37a74784fbd6
+        1e84e0915277a6f59863b2bb4f5f6005"
+
+7.3.4.  Signature Fixtures
+
+7.3.4.1.  Valid Single Message Signature
+
+m_1 = "9872ad089e452c7b6e283dfac2a80d58e8d0ff71cc4d5e310a1debdda4a45f02"
+
+SK = "2eee0f60a8a3a8bec0ee942bfd46cbdae9a0738ee68f5a64e7238311cf09a079"
+PK = "92d37d1d6cd38fea3a873953333eab23a4c0377e3e049974eb62bd45949cdeb18f
+      b0490edcd4429adff56e65cbce42cf188b31bddbd619e419b99c2c41b38179eb00
+      1963bc3decaae0d9f702c7a8c004f207f46c734a5eae2e8e82833f3e7ea5"
+header = "11223344556677889900aabbccddeeff"
+
+B = "8bbc8c123d3f128f206dd0d2dae490e82af08b84e8d70af3dc291d32a6e98f635be
+     efcc4533b2599804a164aabe68d7c"
+domain = "2f18dd269c11c512256a9d1d57e61a7d2de6ebcf41cac3053f37afedc4e650
+          a9"
+
+signature = "98eb37fceb31115bf647f2983aef578ad895e55f7451b1add02fa738224
+             cb89a31b148eace4d20d001be31d162c58d12574f30e68665b6403956a8
+             3b23a16f1daceacce8c5fde25d3defd52d6d5ff2e1"
+
+7.3.4.2.  Valid Multi-Message Signature
+
+m_1 = "9872ad089e452c7b6e283dfac2a80d58e8d0ff71cc4d5e310a1debdda4a45f02"
+m_2 = "c344136d9ab02da4dd5908bbba913ae6f58c2cc844b802a6f811f5fb075f9b80"
+m_3 = "7372e9daa5ed31e6cd5c825eac1b855e84476a1d94932aa348e07b73"
+m_4 = "77fe97eb97a1ebe2e81e4e3597a3ee740a66e9ef2412472c"
+m_5 = "496694774c5604ab1b2544eababcf0f53278ff50"
+m_6 = "515ae153e22aae04ad16f759e07237b4"
+m_7 = "d183ddc6e2665aa4e2f088af"
+m_8 = "ac55fb33a75909ed"
+m_9 = "96012096"
+m_10 = ""
+
+SK = "2eee0f60a8a3a8bec0ee942bfd46cbdae9a0738ee68f5a64e7238311cf09a079"
+PK = "92d37d1d6cd38fea3a873953333eab23a4c0377e3e049974eb62bd45949cdeb18f
+      b0490edcd4429adff56e65cbce42cf188b31bddbd619e419b99c2c41b38179eb00
+      1963bc3decaae0d9f702c7a8c004f207f46c734a5eae2e8e82833f3e7ea5"
+header = "11223344556677889900aabbccddeeff"
+
+B = "ae8d4ebe248b9ad9c933d5661bfb46c56721fba2a1182ddda7e8fb443bda3c0a571
+     ad018ad31d0b6d1f4e8b985e6c58d"
+domain = "6f7ee8de30835599bb540d2cb4dd02fd0c6cf8246f14c9ee9a8463f7fd400f
+          7b"
+
+signature = "97a296c83ed3626fe254d26021c5e9a087b580f1e8bc91bb51efb04420b
+             fdaca215fe376a0bc12440bcc52224fb33c696cca9239b9f28dcddb7bd8
+             50aae9cd1a9c3e9f3639953fe789dbba53b8f0dd6f"
+
+7.3.5.  Proof Fixtures
+
+   For the generation of the following fixtures the
+   mocked_calculate_random_scalars defined in Mocked Random Scalars
+   (#mocked-random-scalars) is used, in place of the
+   calculate_random_scalars operation, with the following seed value
+   (hex encoding of the ASCII-encoded 30 first digits of pi)
+
+SEED = "332e313431353932363533353839373933323338343632363433333833323739"
+
+   Given the above seed the first 10 scalars returned by the
+   mocked_calculate_random_scalars operation will be,
+
+rand_1 = "1004262112c3eaa95941b2b0d1311c09c845db0099a50e67eda628ad26b430
+          83"
+rand_2 = "6da7f145a94c1fa7f116b2482d59e4d466fe49c955ae8726e79453065156a9
+          a4"
+rand_3 = "05017919b3607e78c51e8ec34329955d49c8c90e4488079c43e74824e98f13
+          06"
+rand_4 = "4d451dad519b6a226bba79e11b44c441f1a74800eecfec6a2e2d79ea65b9d3
+          2d"
+rand_5 = "5e7e4894e6dbe68023bc92ef15c410b01f3828109fc72b3b5ab159fc427b3f
+          51"
+rand_6 = "646e3014f49accb375253d268eb6c7f3289a1510f1e9452b612dd73a06ec5d
+          d4"
+rand_7 = "363ecc4c1f9d6d9144374de8f1f7991405e3345a3ec49dd485a39982753c11
+          a4"
+rand_8 = "12e592fe28d91d7b92a198c29afaa9d5329a4dcfdaf8b08557807412faeb4a
+          c6"
+rand_9 = "513325acdcdec7ea572360587b350a8b095ca19bdd8258c5c69d375e870614
+          1a"
+rand_10 = "6474fceba35e7e17365dde1a0284170180e446ae96c82943290d7baa3a6ed
+           429"
+
+7.3.5.1.  Valid Single Message Proof
+
+m_0 = "9872ad089e452c7b6e283dfac2a80d58e8d0ff71cc4d5e310a1debdda4a45f02"
+
+public_key = "92d37d1d6cd38fea3a873953333eab23a4c0377e3e049974eb62bd4594
+              9cdeb18fb0490edcd4429adff56e65cbce42cf188b31bddbd619e419b9
+              9c2c41b38179eb001963bc3decaae0d9f702c7a8c004f207f46c734a5e
+              ae2e8e82833f3e7ea5"
+signature = "98eb37fceb31115bf647f2983aef578ad895e55f7451b1add02fa738224
+             cb89a31b148eace4d20d001be31d162c58d12574f30e68665b6403956a8
+             3b23a16f1daceacce8c5fde25d3defd52d6d5ff2e1"
+header = "11223344556677889900aabbccddeeff"
+presentation_header = "bed231d880675ed101ead304512e043ade9958dd0241ea70b
+                       4b3957fba941501"
+revealed_indexes = [1]
+
+T = "99651520e1a13b651d4bdedc492b3015cfb23a4781203e7b843605af724bb2cce02
+     07e2ba281379b4b8bcc806256b2ba"
+domain = "2f18dd269c11c512256a9d1d57e61a7d2de6ebcf41cac3053f37afedc4e650
+          a9"
+challenge = "7386c0c33ddaaebf7d046849428fc6cf4d08815fa39c94144c79ac50e86
+             a0f5d"
+
+proof = "85c250f9a52faeb883ad9598aed05d31fe5861478d9f33b8de2deed1d92de5c
+         0b0ef34458e6cf8bad8caa0724fd3d3ca854abee98db3384e81a406d976643e
+         239df0a924576eaf8f4eec2885e9c688af7a52e4a752bef2c6f07d0a45611db
+         3795d83d9cd71dfe8a62e3ad992e6327413baaea14c1de798c8929f9c6b1524
+         bab54d0494dd5354d5a0770b79d2911bb6591ce293e03a0d083bb81fc5bed8a
+         44ff67386c0c33ddaaebf7d046849428fc6cf4d08815fa39c94144c79ac50e8
+         6a0f5d"
+
+7.3.5.2.  Valid Multi-Message, All Messages Disclosed Proof
+
+m_1 = "9872ad089e452c7b6e283dfac2a80d58e8d0ff71cc4d5e310a1debdda4a45f02"
+m_2 = "c344136d9ab02da4dd5908bbba913ae6f58c2cc844b802a6f811f5fb075f9b80"
+m_3 = "7372e9daa5ed31e6cd5c825eac1b855e84476a1d94932aa348e07b73"
+m_4 = "77fe97eb97a1ebe2e81e4e3597a3ee740a66e9ef2412472c"
+m_5 = "496694774c5604ab1b2544eababcf0f53278ff50"
+m_6 = "515ae153e22aae04ad16f759e07237b4"
+m_7 = "d183ddc6e2665aa4e2f088af"
+m_8 = "ac55fb33a75909ed"
+m_9 = "96012096"
+m_10 = ""
+
+public_key = "92d37d1d6cd38fea3a873953333eab23a4c0377e3e049974eb62bd4594
+              9cdeb18fb0490edcd4429adff56e65cbce42cf188b31bddbd619e419b9
+              9c2c41b38179eb001963bc3decaae0d9f702c7a8c004f207f46c734a5e
+              ae2e8e82833f3e7ea5"
+signature = "97a296c83ed3626fe254d26021c5e9a087b580f1e8bc91bb51efb04420b
+             fdaca215fe376a0bc12440bcc52224fb33c696cca9239b9f28dcddb7bd8
+             50aae9cd1a9c3e9f3639953fe789dbba53b8f0dd6f"
+header = "11223344556677889900aabbccddeeff"
+presentation_header = "bed231d880675ed101ead304512e043ade9958dd0241ea70b
+                       4b3957fba941501"
+revealed_indexes = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+
+T = "a473c0e5c6535f52d35960b60cc1c119ac691d722de43b21db307a8a24c959eb51a
+     34e1348f306f6238beb2cf27dbddf"
+domain = "6f7ee8de30835599bb540d2cb4dd02fd0c6cf8246f14c9ee9a8463f7fd400f
+          7b"
+challenge = "1537982406ba09ff6a1c6dee258fd22b3f9aa1f28e19a83bbd1141f2417
+             1f380"
+
+proof = "94dfa4e26276f0ccf319b0ade65317e0bac41867aaebc73c7edc38673776cc6
+         321dadd721920f5bd33f14be6dd101ec0b48f82f7ce8a8eb1d7cba2b93b6620
+         6bb7c3b5340e358be39380c7a9f17083fa1bcdf9c4e5ba5927edfd01519189b
+         7b33fa2b5bbb5baf963598694e9f9c0c12e7aee29395e61a16129b43edaef24
+         5d5732bbc6e2e626ce241b8fdc60aea5532f829ace9ed443a679b3e6ffd712c
+         e67681537982406ba09ff6a1c6dee258fd22b3f9aa1f28e19a83bbd1141f241
+         71f380"
+
+7.3.5.3.  Valid Multi-Message, Some Messages Disclosed Proof
+
+m_1 = "9872ad089e452c7b6e283dfac2a80d58e8d0ff71cc4d5e310a1debdda4a45f02"
+m_2 = "c344136d9ab02da4dd5908bbba913ae6f58c2cc844b802a6f811f5fb075f9b80"
+m_3 = "7372e9daa5ed31e6cd5c825eac1b855e84476a1d94932aa348e07b73"
+m_4 = "77fe97eb97a1ebe2e81e4e3597a3ee740a66e9ef2412472c"
+m_5 = "496694774c5604ab1b2544eababcf0f53278ff50"
+m_6 = "515ae153e22aae04ad16f759e07237b4"
+m_7 = "d183ddc6e2665aa4e2f088af"
+m_8 = "ac55fb33a75909ed"
+m_9 = "96012096"
+m_10 = ""
+
+public_key = "92d37d1d6cd38fea3a873953333eab23a4c0377e3e049974eb62bd4594
+              9cdeb18fb0490edcd4429adff56e65cbce42cf188b31bddbd619e419b9
+              9c2c41b38179eb001963bc3decaae0d9f702c7a8c004f207f46c734a5e
+              ae2e8e82833f3e7ea5"
+signature = "97a296c83ed3626fe254d26021c5e9a087b580f1e8bc91bb51efb04420b
+             fdaca215fe376a0bc12440bcc52224fb33c696cca9239b9f28dcddb7bd8
+             50aae9cd1a9c3e9f3639953fe789dbba53b8f0dd6f"
+header = "11223344556677889900aabbccddeeff"
+presentation_header = "bed231d880675ed101ead304512e043ade9958dd0241ea70b
+                       4b3957fba941501"
+revealed_indexes = [1, 3, 5, 7]
+
+T = "89f37630b485590b80f54c96210a00139366785701a99de2a5b560b7304b16ff20f
+     81edb2027de2ed6bd58206a6aa2d3"
+domain = "6f7ee8de30835599bb540d2cb4dd02fd0c6cf8246f14c9ee9a8463f7fd400f
+          7b"
+challenge = "3f079b3ede1b244a809807ae2088deff841b93d0bca442e346b33d6b8af
+             f8961"
+
+proof = "ac0424b2a984c55d0061aa61df105f2c882d393494f3f4205d1e73f93c9c76b
+         30664baeb3dc87f23fbf4035fb0a8e76b851dd39cecce8843e747ccf540f085
+         0a30e1317f8897a56c2d85bfc1e0b4dba1b0e0322d89aad4feb8b21c414a384
+         a0128d65da028243bdab954c1d6b4f3874ccafe69bb0900c0b8528d56dd9bd1
+         d78b0c328022210ff9fe95276f79d23278956a0898d974932bd90e6c79f7e97
+         0de6b637c7e6326540699080d39bd076a50095e031e980e68068e3e34a982ff
+         4678c656db3c3b49df591ade6db848d7c2ddadf7e7d1db858848a948f858f7f
+         d59068c6b816607e5abd4f039bf2d1904fd7f89a1917023a1fc4862dbe88480
+         41da2e36271d76ad8b5e357ea3fd71ebc3617427a064256febf122773528023
+         e4df1d25900dc1ab19a563587c74a82495c59115263c51dcea106baa5f7f82c
+         0b50e7756370f0470cb4630d2a188309f28e1e0582c47a9ec76f86436383581
+         2984432a5253f079b3ede1b244a809807ae2088deff841b93d0bca442e346b3
+         3d6b8aff8961"
+
+7.4.  BLS12381-SHA-256 Test Vectors
+
+   Test vectors of the BLS12-381-SHA-256 (#bls12-381-sha-
+   256-ciphersuite) ciphersuite.  Further fixtures are available in
+   additional BLS12-381-SHA-256 test vectors (#additional-bls12-381-sha-
+   256-ciphersuite-test-vectors).
+
+7.4.1.  Key Pair
+
+   Following the procedure defined in Section 3.4.1 with an input
+   key_material value as follows
+
+key_material = "746869732d49532d6a7573742d616e2d546573742d494b4d2d746f2d
+                67656e65726174652d246528724074232d6b6579"
+
+   and the following key_info value
+
+key_info = "746869732d49532d736f6d652d6b65792d6d657461646174612d746f2d62
+            652d757365642d696e2d746573742d6b65792d67656e"
+
+   Outputs the following SK value
+
+ SK = "60e55110f76883a13d030b2f6bd11883422d5abde717569fc0731f51237169fc"
+
+   Following the procedure defined in Section 3.4.2 with an input SK
+   value as above produces the following PK value
+
+PK = "a820f230f6ae38503b86c70dc50b61c58a77e45c39ab25c0652bbaa8fa136f2851
+      bd4781c9dcde39fc9d1d52c9e60268061e7d7632171d91aa8d460acee0e96f1e7c
+      4cfb12d3ff9ab5d5dc91c277db75c845d649ef3c4f63aebc364cd55ded0c"
+
+7.4.2.  Map Messages to Scalars
+
+   The messages in Section 3.3.3 are mapped to scalars during the Sign,
+   Verify, ProofGen and ProofVerify operations.  Presented below, are
+   the output scalar values of the messages_to_scalars operation
+   (Section 4.1.2).  Each output scalar value is encoded to octets using
+   I2OSP and represented in big endian order,
+
+dst = "4242535f424c53313233383147315f584d443a5348412d3235365f535357555f5
+       24f5f4832475f484d32535f4d41505f4d53475f544f5f5343414c41525f41535f
+       484153485f"
+
+   The output scalars, encoded to octets using I2OSP and represented in
+   big endian order, are the following,
+
+msg_scalar_1 = "1cb5bb86114b34dc438a911617655a1db595abafac92f47c5001799c
+                f624b430"
+msg_scalar_2 = "154249d503c093ac2df516d4bb88b510d54fd97e8d7121aede420a25
+                d9521952"
+msg_scalar_3 = "0c7c4c85cdab32e6fdb0de267b16fa3212733d4e3a3f0d0f75165757
+                8b26fe22"
+msg_scalar_4 = "4a196deafee5c23f630156ae13be3e46e53b7e39094d22877b8cba7f
+                14640888"
+msg_scalar_5 = "34c5ea4f2ba49117015a02c711bb173c11b06b3f1571b88a2952b93d
+                0ed4cf7e"
+msg_scalar_6 = "4045b39b83055cd57a4d0203e1660800fabe434004dbdc8730c21ce3
+                f0048b08"
+msg_scalar_7 = "064621da4377b6b1d05ecc37cf3b9dfc94b9498d7013dc5c4a82bf3b
+                b1750743"
+msg_scalar_8 = "34ac9196ace0a37e147e32319ea9b3d8cc7d21870d3c3ba071246859
+                cca49b02"
+msg_scalar_9 = "57eb93f417c43200e9784fa5ea5a59168d3dbc38df707a13bb597c87
+                1b2a5f74"
+msg_scalar_10 = "08e3afeb2b4f2b5f907924ef42856616e6f2d5f1fb373736db1cca3
+                 2707a7d16"
+
+7.4.3.  Message Generators
+
+   Following the procedure defined in Section 4.1.1 with an input count
+   value of 11, for the BLS12-381-SHA-256 (#bls12-381-sha-256) suite,
+   outputs the following values (note that the first one corresponds to
+   Q_1, while the next 10, to the message generators H_1, ..., H_10).
+
+Q_1 = "a9ec65b70a7fbe40c874c9eb041c2cb0a7af36ccec1bea48fa2ba4c2eb67ef7f9
+       ecb17ed27d38d27cdeddff44c8137be"
+H_1 = "98cd5313283aaf5db1b3ba8611fe6070d19e605de4078c38df36019fbaad0bd28
+       dd090fd24ed27f7f4d22d5ff5dea7d4"
+H_2 = "a31fbe20c5c135bcaa8d9fc4e4ac665cc6db0226f35e737507e803044093f3769
+       7a9d452490a970eea6f9ad6c3dcaa3a"
+H_3 = "b479263445f4d2108965a9086f9d1fdc8cde77d14a91c856769521ad3344754cc
+       5ce90d9bc4c696dffbc9ef1d6ad1b62"
+H_4 = "ac0401766d2128d4791d922557c7b4d1ae9a9b508ce266575244a8d6f32110d7b
+       0b7557b77604869633bb49afbe20035"
+H_5 = "b95d2898370ebc542857746a316ce32fa5151c31f9b57915e308ee9d1de7db691
+       27d919e984ea0747f5223821b596335"
+H_6 = "8f19359ae6ee508157492c06765b7df09e2e5ad591115742f2de9c08572bb2845
+       cbf03fd7e23b7f031ed9c7564e52f39"
+H_7 = "abc914abe2926324b2c848e8a411a2b6df18cbe7758db8644145fefb0bf0a2d55
+       8a8c9946bd35e00c69d167aadf304c1"
+H_8 = "80755b3eb0dd4249cbefd20f177cee88e0761c066b71794825c9997b551f24051
+       c352567ba6c01e57ac75dff763eaa17"
+H_9 = "82701eb98070728e1769525e73abff1783cedc364adb20c05c897a62f2ab2927f
+       86f118dcb7819a7b218d8f3fee4bd7f"
+H_10 = "a1f229540474f4d6f1134761b92b788128c7ac8dc9b0c52d5949313267967303
+        2ac7db3fb3d79b46b13c1c41ee495bca"
+
+7.4.4.  Signature Fixtures
+
+7.4.4.1.  Valid Single Message Signature
+
+m_1 = "9872ad089e452c7b6e283dfac2a80d58e8d0ff71cc4d5e310a1debdda4a45f02"
+
+SK = "60e55110f76883a13d030b2f6bd11883422d5abde717569fc0731f51237169fc"
+PK = "a820f230f6ae38503b86c70dc50b61c58a77e45c39ab25c0652bbaa8fa136f2851
+      bd4781c9dcde39fc9d1d52c9e60268061e7d7632171d91aa8d460acee0e96f1e7c
+      4cfb12d3ff9ab5d5dc91c277db75c845d649ef3c4f63aebc364cd55ded0c"
+header = "11223344556677889900aabbccddeeff"
+
+B = "92d264aed02bf23de022ebe778c4f929fddf829f504e451d011ed89a313b8167ac9
+     47332e1648157ceffc6e6e41ab255"
+domain = "25d57fab92a8274c68fde5c3f16d4b275e4a156f211ae34b3ab32fbaf506ed
+          5c"
+
+signature = "88c0eb3bc1d97610c3a66d8a3a73f260f95a3028bccf7fff7d9851e2acd
+             9f3f32fdf58a5b34d12df8177adf37aa318a20f72be7d37a8e8d8441d1b
+             c0bc75543c681bf061ce7e7f6091fe78c1cb8af103"
+
+7.4.4.2.  Valid Multi-Message Signature
+
+m_1 = "9872ad089e452c7b6e283dfac2a80d58e8d0ff71cc4d5e310a1debdda4a45f02"
+m_2 = "c344136d9ab02da4dd5908bbba913ae6f58c2cc844b802a6f811f5fb075f9b80"
+m_3 = "7372e9daa5ed31e6cd5c825eac1b855e84476a1d94932aa348e07b73"
+m_4 = "77fe97eb97a1ebe2e81e4e3597a3ee740a66e9ef2412472c"
+m_5 = "496694774c5604ab1b2544eababcf0f53278ff50"
+m_6 = "515ae153e22aae04ad16f759e07237b4"
+m_7 = "d183ddc6e2665aa4e2f088af"
+m_8 = "ac55fb33a75909ed"
+m_9 = "96012096"
+m_10 = ""
+
+SK = "60e55110f76883a13d030b2f6bd11883422d5abde717569fc0731f51237169fc"
+PK = "a820f230f6ae38503b86c70dc50b61c58a77e45c39ab25c0652bbaa8fa136f2851
+      bd4781c9dcde39fc9d1d52c9e60268061e7d7632171d91aa8d460acee0e96f1e7c
+      4cfb12d3ff9ab5d5dc91c277db75c845d649ef3c4f63aebc364cd55ded0c"
+header = "11223344556677889900aabbccddeeff"
+
+B = "84f48376f7df6af40bc329cf484cdbfd0b19d0b326fccab4e9d8f00d1dbcf48139d
+     498b19667f203cf8a1d1f8340c522"
+domain = "6272832582a0ac96e6fe53e879422f24c51680b25fbf17bad22a35ea93ce5b
+          47"
+
+signature = "895cd9c0ccb9aca4de913218655346d718711472f2bf1f3e68916de106a
+             0d93cf2f47200819b45920bbda541db2d91480665df253fedab2843055b
+             dc02535d83baddbbb2803ec3808e074f71f199751e"
+
+7.4.5.  Proof Fixtures
+
+   Similarly to the proof fixtures for the BLS12381-SHA-256 ciphersuite,
+   the generation of the following fixtures uses the
+   mocked_calculate_random_scalars defined in Mocked Random Scalars
+   (#mocked-random-scalars), in place of the calculate_random_scalars
+   operation, with the following seed value (hex encoding of the ASCII-
+   encoded 30 first digits of pi).
+
+SEED = "332e313431353932363533353839373933323338343632363433333833323739"
+
+   Given the above seed the first 10 scalars returned by the
+   mocked_calculate_random_scalars operation will be,
+
+rand_1 = "04f8e2518993c4383957ad14eb13a023c4ad0c67d01ec86eeb902e732ed6df
+          3f"
+rand_2 = "5d87c1ba64c320ad601d227a1b74188a41a100325cecf00223729863966392
+          b1"
+rand_3 = "0444607600ac70482e9c983b4b063214080b9e808300aa4cc02a91b3a92858
+          fe"
+rand_4 = "548cd11eae4318e88cda10b4cd31ae29d41c3a0b057196ee9cf3a69d471e4e
+          94"
+rand_5 = "2264b06a08638b69b4627756a62f08e0dc4d8240c1b974c9c7db779a769892
+          f4"
+rand_6 = "4d99352986a9f8978b93485d21525244b21b396cf61f1d71f7c48e3fbc970a
+          42"
+rand_7 = "5ed8be91662386243a6771fbdd2c627de31a44220e8d6f745bad5d99821a48
+          80"
+rand_8 = "62ff1734b939ddd87beeb37a7bbcafa0a274cbc1b07384198f0e8839827220
+          8d"
+rand_9 = "05c2a0af016df58e844db8944082dcaf434de1b1e2e7136ec8a99b939b7162
+          23"
+rand_10 = "485e2adab17b76f5334c95bf36c03ccf91cef77dcfcdc6b8a69e2090b3156
+           663"
+
+7.4.5.1.  Valid Single Message Proof
+
+m_0 = "9872ad089e452c7b6e283dfac2a80d58e8d0ff71cc4d5e310a1debdda4a45f02"
+
+public_key = "a820f230f6ae38503b86c70dc50b61c58a77e45c39ab25c0652bbaa8fa
+              136f2851bd4781c9dcde39fc9d1d52c9e60268061e7d7632171d91aa8d
+              460acee0e96f1e7c4cfb12d3ff9ab5d5dc91c277db75c845d649ef3c4f
+              63aebc364cd55ded0c"
+signature = "88c0eb3bc1d97610c3a66d8a3a73f260f95a3028bccf7fff7d9851e2acd
+             9f3f32fdf58a5b34d12df8177adf37aa318a20f72be7d37a8e8d8441d1b
+             c0bc75543c681bf061ce7e7f6091fe78c1cb8af103"
+header = "11223344556677889900aabbccddeeff"
+presentation_header = "bed231d880675ed101ead304512e043ade9958dd0241ea70b
+                       4b3957fba941501"
+revealed_indexes = [1]
+
+T = "a7859db7e985ab65b9aa182b4e8598e4fcb3685ad161a5d3b6ab7da40968bd5c288
+     9acedae5e4d768d1e88bcd6f25f59"
+domain = "25d57fab92a8274c68fde5c3f16d4b275e4a156f211ae34b3ab32fbaf506ed
+          5c"
+challenge = "27d5601b2193b697a576fd9bd896c25a75004f6604a98707741916769c4
+             9175f"
+
+proof = "8e9bc91d68151e4b105ec0d46ca95fe1526672bed27b26541a648ec990b3b11
+         b8905e671fb981f1b9cd1ed64167a7ba18b7697d9bd6f3cac02f75551f2db95
+         bf2707e3790c10d815346a96198327cc7048f220bdc7d6fc5ec41c6d9f89d60
+         7ff6ef2eef19447b3e34a14660eedb8b4f6189f202a4fef22e60dd23041e276
+         1a9f18701019b520ed3ccf07a298e349222ab059e7ebd84c65e3a2127ec42f5
+         f357c27d5601b2193b697a576fd9bd896c25a75004f6604a98707741916769c
+         49175f"
+
+7.4.5.2.  Valid Multi-Message, All Messages Disclosed Proof
+
+m_1 = "9872ad089e452c7b6e283dfac2a80d58e8d0ff71cc4d5e310a1debdda4a45f02"
+m_2 = "c344136d9ab02da4dd5908bbba913ae6f58c2cc844b802a6f811f5fb075f9b80"
+m_3 = "7372e9daa5ed31e6cd5c825eac1b855e84476a1d94932aa348e07b73"
+m_4 = "77fe97eb97a1ebe2e81e4e3597a3ee740a66e9ef2412472c"
+m_5 = "496694774c5604ab1b2544eababcf0f53278ff50"
+m_6 = "515ae153e22aae04ad16f759e07237b4"
+m_7 = "d183ddc6e2665aa4e2f088af"
+m_8 = "ac55fb33a75909ed"
+m_9 = "96012096"
+m_10 = ""
+
+public_key = "a820f230f6ae38503b86c70dc50b61c58a77e45c39ab25c0652bbaa8fa
+              136f2851bd4781c9dcde39fc9d1d52c9e60268061e7d7632171d91aa8d
+              460acee0e96f1e7c4cfb12d3ff9ab5d5dc91c277db75c845d649ef3c4f
+              63aebc364cd55ded0c"
+signature = "895cd9c0ccb9aca4de913218655346d718711472f2bf1f3e68916de106a
+             0d93cf2f47200819b45920bbda541db2d91480665df253fedab2843055b
+             dc02535d83baddbbb2803ec3808e074f71f199751e"
+header = "11223344556677889900aabbccddeeff"
+presentation_header = "bed231d880675ed101ead304512e043ade9958dd0241ea70b
+                       4b3957fba941501"
+revealed_indexes = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+
+T = "b100d50c4cbd8ca0f2130e20e18df218a75122bd9233cccef460da0e4173d563b06
+     4dae7df5f435b6130cfdebc40c42e"
+domain = "6272832582a0ac96e6fe53e879422f24c51680b25fbf17bad22a35ea93ce5b
+          47"
+challenge = "58a6e7ae4982ae797890d5d0b574fa73a7ae7023d4dd9f8a9b3a11f2082
+             56d7c"
+
+proof = "89910f223320044fe6342b8dabfeac786f35cc98bb64c95ecb39348281d5a8c
+         84e975581b5f37ec45c8bc4cda486d5e2a20e007d0dd0fba77f846dfe3458fc
+         01ff94a49c058550684638e1b88b61e8d69a1453652477af005d42cdb2d57e8
+         6b03a2cf88bc0bac5a3d12a1c0717b9ea8d42ecdb746f522edfc15910574b28
+         9faa0438d6516504a7a66ce180b2271101d87519cad823f03f266f66649b388
+         e680a58a6e7ae4982ae797890d5d0b574fa73a7ae7023d4dd9f8a9b3a11f208
+         256d7c"
+
+7.4.5.3.  Valid Multi-Message, Some Messages Disclosed Proof
+
+m_1 = "9872ad089e452c7b6e283dfac2a80d58e8d0ff71cc4d5e310a1debdda4a45f02"
+m_2 = "c344136d9ab02da4dd5908bbba913ae6f58c2cc844b802a6f811f5fb075f9b80"
+m_3 = "7372e9daa5ed31e6cd5c825eac1b855e84476a1d94932aa348e07b73"
+m_4 = "77fe97eb97a1ebe2e81e4e3597a3ee740a66e9ef2412472c"
+m_5 = "496694774c5604ab1b2544eababcf0f53278ff50"
+m_6 = "515ae153e22aae04ad16f759e07237b4"
+m_7 = "d183ddc6e2665aa4e2f088af"
+m_8 = "ac55fb33a75909ed"
+m_9 = "96012096"
+m_10 = ""
+
+public_key = "a820f230f6ae38503b86c70dc50b61c58a77e45c39ab25c0652bbaa8fa
+              136f2851bd4781c9dcde39fc9d1d52c9e60268061e7d7632171d91aa8d
+              460acee0e96f1e7c4cfb12d3ff9ab5d5dc91c277db75c845d649ef3c4f
+              63aebc364cd55ded0c"
+signature = "895cd9c0ccb9aca4de913218655346d718711472f2bf1f3e68916de106a
+             0d93cf2f47200819b45920bbda541db2d91480665df253fedab2843055b
+             dc02535d83baddbbb2803ec3808e074f71f199751e"
+header = "11223344556677889900aabbccddeeff"
+presentation_header = "bed231d880675ed101ead304512e043ade9958dd0241ea70b
+                       4b3957fba941501"
+revealed_indexes = [1, 3, 5, 7]
+
+T = "822cd8bc6b68ac133fd5eccbef1ce1bbbc01a7ca825287c11a2d239d26f814f1477
+     3047607ba655bf4d6882a4ae1dab0"
+domain = "6272832582a0ac96e6fe53e879422f24c51680b25fbf17bad22a35ea93ce5b
+          47"
+challenge = "1767c467fdd882eb038492a390ee5d0c0f72f50f2ac5cedb705fc465f7b
+             c093b"
+
+proof = "812a204f66c9084feed7383894d910f2c17399b3c4b4bed05660921de8539f5
+         042318c356609496a6ca0a26626661be78ca723b7182ccd314924b93a399765
+         4fcd77e29e3847dc881f422a751017705173ec094d2997221e134710d4fff1b
+         d33111a4b4fc79a2201d18b5cc63fab1252def0d4f020129c7e022f56f505aa
+         977a7240da430bc60a2d4d17897b42228054a2fb4f780fb710268ebea24c9fb
+         0e15e2ac415b99a232b13bfd215af3fb35f5518953eaccc200555eaa69ae434
+         eb623f0a83bb57a8a8e70ba37761ffaeb756d9115c1177ce929f04be23b5636
+         120c7ac0a73546f177a3c3be2d233b3253f31c3468260723c1afa2d0febd381
+         61e16ed0147369bda8b05ec3f6183239c6ecb9fb54b0989160e8cdf8b9f0cf4
+         a46a2150232d96c466fad2d60ff067492c52cc6af1d16e62364ed6d3dc19fea
+         f1fcf9c12750301c2de6541c0edce5ede7425f75e01fd94a7e6137ebf23460b
+         f3f1afec9f21767c467fdd882eb038492a390ee5d0c0f72f50f2ac5cedb705f
+         c465f7bc093b"
+
+8.  IANA Considerations
+
+   This document does not make any requests of IANA.
+
+9.  Acknowledgements
+
+   The authors would like to acknowledge the significant amount of
+   academic work that preceeded the development of this document.  In
+   particular the original work of [BBS04] which was subsequently
+   developed in [ASM06] and in [CDL16].  This last academic work is the
+   one mostly used by this document.
+
+   The current state of this document is the product of the work of the
+   Decentralized Identity Foundation Applied Cryptography Working group,
+   which includes numerous active participants.  In particular, the
+   following individuals contributed ideas, feedback and wording that
+   influenced this specification:
+
+   Orie Steele, Christian Paquin, Alessandro Guggino, Tomislav Markovski
+   and Greg Bernstein.
+
+10.  Normative References
+
+   [DRBG]     NIST, "Recommendation for Random Number Generation Using
+              Deterministic Random Bit Generators",
+              <https://nvlpubs.nist.gov/nistpubs/SpecialPublications/
+              NIST.SP.800-90Ar1.pdf>.
+
+   [I-D.irtf-cfrg-hash-to-curve]
+              Faz-Hernandez, A., Scott, S., Sullivan, N., Wahby, R. S.,
+              and C. A. Wood, "Hashing to Elliptic Curves", Work in
+              Progress, Internet-Draft, draft-irtf-cfrg-hash-to-curve-
+              16, 15 June 2022, <https://datatracker.ietf.org/doc/html/
+              draft-irtf-cfrg-hash-to-curve-16>.
+
+   [I-D.irtf-cfrg-pairing-friendly-curves]
+              Sakemi, Y., Kobayashi, T., Saito, T., and R. S. Wahby,
+              "Pairing-Friendly Curves", Work in Progress, Internet-
+              Draft, draft-irtf-cfrg-pairing-friendly-curves-11, 6
+              November 2022, <https://datatracker.ietf.org/doc/html/
+              draft-irtf-cfrg-pairing-friendly-curves-11>.
+
+   [RFC2119]  Bradner, S., "Key words for use in RFCs to Indicate
+              Requirement Levels", BCP 14, RFC 2119,
+              DOI 10.17487/RFC2119, March 1997,
+              <https://www.rfc-editor.org/info/rfc2119>.
+
+   [RFC4086]  Eastlake 3rd, D., Schiller, J., and S. Crocker,
+              "Randomness Requirements for Security", BCP 106, RFC 4086,
+              DOI 10.17487/RFC4086, June 2005,
+              <https://www.rfc-editor.org/info/rfc4086>.
+
+   [RFC8017]  Moriarty, K., Ed., Kaliski, B., Jonsson, J., and A. Rusch,
+              "PKCS #1: RSA Cryptography Specifications Version 2.2",
+              RFC 8017, DOI 10.17487/RFC8017, November 2016,
+              <https://www.rfc-editor.org/info/rfc8017>.
+
+   [RFC8937]  Cremers, C., Garratt, L., Smyshlyaev, S., Sullivan, N.,
+              and C. Wood, "Randomness Improvements for Security
+              Protocols", RFC 8937, DOI 10.17487/RFC8937, October 2020,
+              <https://www.rfc-editor.org/info/rfc8937>.
+
+   [SHA2]     NIST, "Secure Hash Standard (SHS)",
+              <https://nvlpubs.nist.gov/nistpubs/FIPS/
+              NIST.FIPS.180-4.pdf>.
+
+   [SHA3]     NIST, "SHA-3 Standard: Permutation-Based Hash and
+              Extendable-Output Functions",
+              <https://nvlpubs.nist.gov/nistpubs/FIPS/
+              NIST.FIPS.202.pdf>.
+
+11.  Informative References
+
+   [ADR02]    An, J. H., Dodis, Y., and T. Rabin, "On the Security of
+              Joint Signature and Encryption", pages 83-107, April 2002,
+              <https://doi.org/10.1007/3-540-46035-7_6>.
+
+   [ASM06]    Au, M. H., Susilo, W., and Y. Mu, "Constant-Size Dynamic
+              k-TAA", Springer, Berlin, Heidelberg, 2006,
+              <https://link.springer.com/chapter/10.1007/11832072_8>.
+
+   [BBB17]    Bünz, B. B., Bootle, J. B., Boneh, D. B., Poelstra, A. P.,
+              Wuille, P. W., and G. W. Maxwell, "Bulletproofs: Short
+              Proofs for Confidential Transactions and More", In 2018
+              IEEE Symposium on Security and Privacy, 2017,
+              <https://ia.cr/2017/1066>.
+
+   [BBS04]    Boneh, D., Boyen, X., and H. Shacham, "Short Group
+              Signatures", pages 41-55, 2004,
+              <https://link.springer.com/
+              chapter/10.1007/978-3-540-28628-8_3>.
+
+   [Bowe19]   Bowe, S., "Faster subgroup checks for BLS12-381", July
+              2019, <https://eprint.iacr.org/2019/814>.
+
+   [CDL16]    Camenisch, J., Drijvers, M., and A. Lehmann, "Anonymous
+              Attestation Using the Strong Diffie Hellman Assumption
+              Revisited", Springer, Cham, 2016,
+              <https://eprint.iacr.org/2016/663.pdf>.
+
+   [HDWH12]   Heninger, N., Durumeric, Z., Wustrow, E., and J.A.
+              Halderman, "Mining your Ps and Qs: Detection of widespread
+              weak keys in network devices", pages 205-220, August 2012,
+              <https://www.usenix.org/system/files/conference/
+              usenixsecurity12/sec12-final228.pdf>.
+
+   [I-D.irtf-cfrg-bls-signature]
+              Boneh, D., Gorbunov, S., Wahby, R. S., Wee, H., Wood, C.
+              A., and Z. Zhang, "BLS Signatures", Work in Progress,
+              Internet-Draft, draft-irtf-cfrg-bls-signature-05, 16 June
+              2022, <https://datatracker.ietf.org/doc/html/draft-irtf-
+              cfrg-bls-signature-05>.
+
+   [ISO8601]  ISO, "Date and time — Representations for information
+              interchange — Part 1: Basic rules",
+              <https://nvlpubs.nist.gov/nistpubs/SpecialPublications/
+              NIST.SP.800-90Ar1.pdf>.
+
+   [P91]      Pedersen, T. P. P., "Non-Interactive and Information-
+              Theoretic Secure Verifiable Secret Sharing", In CRYPTO,
+              1991, <https://ia.cr/2023/275>.
+
+   [TZ23]     Tessaro, S. T. and C. Z. Zhu, "Revisiting BBS Signatures",
+              In EUROCRYPT, 2023, <https://ia.cr/2023/275>.
+
+   [ZCASH-REVIEW]
+              NCC Group, "Zcash Overwinter Consensus and Sapling
+              Cryptography Review", <https://research.nccgroup.com/wp-
+              content/uploads/2020/07/
+              NCC_Group_Zcash2018_Public_Report_2019-01-30_v1.3.pdf>.
+
+Appendix A.  BLS12-381 hash_to_curve Definition Using SHAKE-256
+
+   The following defines a hash_to_curve suite
+   [I-D.irtf-cfrg-hash-to-curve] for the BLS12-381 curve for both the G1
+   and G2 subgroups using the extendable output function (xof) of
+   SHAKE-256 as per the guidance defined in section 8.9 of
+   [I-D.irtf-cfrg-hash-to-curve].
+
+   Note the notation used in the below definitions is sourced from
+   [I-D.irtf-cfrg-hash-to-curve].
+
+A.1.  BLS12-381 G1
+
+   The suite of BLS12381G1_XOF:SHAKE-256_SSWU_RO_ is defined as follows:
+
+* encoding type: hash_to_curve (Section 3 of
+                 [@!I-D.irtf-cfrg-hash-to-curve])
+
+* E: y^2 = x^3 + 4
+
+* p: 0x1a0111ea397fe69a4b1ba7b6434bacd764774b84f38512bf6730d2a0f6b0f624
+     1eabfffeb153ffffb9feffffffffaaab
+
+* r: 0x73eda753299d7d483339d80809a1d80553bda402fffe5bfeffffffff00000001
+
+* m: 1
+
+* k: 128
+
+* expand_message: expand_message_xof (Section 5.3.2 of
+                  [@!I-D.irtf-cfrg-hash-to-curve])
+
+* hash: SHAKE-256
+
+* L: 64
+
+* f: Simplified SWU for AB == 0 (Section 6.6.3 of
+     [@!I-D.irtf-cfrg-hash-to-curve])
+
+* Z: 11
+
+*  E': y'^2 = x'^3 + A' * x' + B', where
+
+      -  A' = 0x144698a3b8e9433d693a02c96d4982b0ea985383ee66a8d8e8981aef
+                d881ac98936f8da0e0f97f5cf428082d584c1d
+
+      -  B' = 0x12e2908d11688030018b12e8753eee3b2016c1f0f24f4070a0b9c14f
+                cef35ef55a23215a316ceaa5d1cc48e98e172be0
+
+*  iso_map: the 11-isogeny map from E' to E given in Appendix E.2 of
+            [@!I-D.irtf-cfrg-hash-to-curve]
+
+*  h_eff: 0xd201000000010001
+
+   Note that the h_eff values for this suite are copied from that
+   defined for the BLS12381G1_XMD:SHA-256_SSWU_RO_ suite defined in
+   section 8.8.1 of [I-D.irtf-cfrg-hash-to-curve].
+
+   An optimized example implementation of the Simplified SWU mapping to
+   the curve E' isogenous to BLS12-381 G1 is given in Appendix F.2
+   [I-D.irtf-cfrg-hash-to-curve].
+
+Appendix B.  Use Cases
+
+B.1.  Non-correlating Security Token
+
+   In the most general sense BBS signatures can be used in any
+   application where a cryptographically secured token is required but
+   correlation caused by usage of the token is un-desirable.
+
+   For example in protocols like OAuth2.0 the most commonly used form of
+   the access token leverages the JWT format alongside conventional
+   cryptographic primitives such as traditional digital signatures or
+   HMACs.  These access tokens are then used by a relying party to prove
+   authority to a resource server during a request.  However, because
+   the access token is most commonly sent by value as it was issued by
+   the authorization server (e.g in a bearer style scheme), the access
+   token can act as a source of strong correlation for the relying
+   party.  Relevant prior art can be found here
+   (https://www.ietf.org/archive/id/draft-private-access-tokens-
+   01.html).
+
+   BBS Signatures due to their unique properties removes this source of
+   correlation but maintains the same set of guarantees required by a
+   resource server to validate an access token back to its relevant
+   authority (note that an approach to signing JSON tokens with BBS that
+   may be of relevance is the JWP (https://json-web-proofs.github.io/
+   json-web-proofs/draft-ietf-jose-json-web-proof.html) format and
+   serialization).  In the context of a protocol like OAuth2.0 the
+   access token issued by the authorization server would feature a BBS
+   Signature, however instead of the relying party providing this access
+   token as issued, in their request to a resource server, they generate
+   a unique proof from the original access token and include that in the
+   request instead, thus removing this vector of correlation.
+
+B.2.  Improved Bearer Security Token
+
+   Bearer based security tokens such as JWT based access tokens used in
+   the OAuth2.0 protocol are a highly popular format for expressing
+   authorization grants.  However their usage has several security
+   limitations.  Notably a bearer based authorization scheme often has
+   to rely on a secure transport between the authorized party (client)
+   and the resource server to mitigate the potential for a MITM attack
+   or a malicious interception of the access token.  The scheme also has
+   to assume a degree of trust in the resource server it is presenting
+   an access token to, particularly when the access token grants more
+   than just access to the target resource server, because in a bearer
+   based authorization scheme, anyone who possesses the access token has
+   authority to what it grants.  Bearer based access tokens also suffer
+   from the threat of replay attacks.
+
+   Improved schemes around authorization protocols often involve adding
+   a layer of proof of cryptographic key possession to the presentation
+   of an access token, which mitigates the deficiencies highlighted
+   above as well as providing a way to detect a replay attack.  However,
+   approaches that involve proof of cryptographic key possession such as
+   DPoP (https://datatracker.ietf.org/doc/html/draft-ietf-oauth-dpop-04
+   (https://datatracker.ietf.org/doc/html/draft-ietf-oauth-dpop-04))
+   suffer from an increase in protocol complexity.  A party requesting
+   authorization must pre-generate appropriate key material, share the
+   public portion of this with the authorization server alongside
+   proving possession of the private portion of the key material.  The
+   authorization server must also be-able to accommodate receiving this
+   information and validating it.
+
+   BBS Signatures ofter an alternative model that solves the same
+   problems that proof of cryptographic key possession schemes do for
+   bearer based schemes, but in a way that doesn't introduce new up-
+   front protocol complexity.  In the context of a protocol like
+   OAuth2.0 the access token issued by the authorization server would
+   feature a BBS Signature, however instead of the client providing this
+   access token as issued, in their request to a resource server, they
+   generate a unique proof from the original access token and include
+   that in the request instead.  Because the access token is not shared
+   in a request to a resource server, attacks such as MITM are
+   mitigated.  A resource server also obtains the ability to detect a
+   replay attack by ensuring the proof presented is unique.
+
+B.3.  Selectively Disclosure Enabled Identity Credentials
+
+   BBS signatures when applied to the problem space of identity
+   credentials can help to enhance user privacy.  For example a digital
+   drivers license that is cryptographically signed with a BBS
+   signature, allows the holder or subject of the license to disclose
+   different claims from their drivers license to different parties.
+   Furthermore, the unlinkable presentations property of proofs
+   generated by the scheme remove an important possible source of
+   correlation for the holder across multiple presentations.
+
+Appendix C.  Additional Test Vectors
+
+   *NOTE* These fixtures are a work in progress and subject to change
+
+C.1.  BLS12-381-SHAKE-256 Ciphersuite
+
+C.1.1.  Signature Test Vectors
+
+C.1.1.1.  No Header Valid Signature
+
+m_1 = "9872ad089e452c7b6e283dfac2a80d58e8d0ff71cc4d5e310a1debdda4a45f02"
+m_2 = "c344136d9ab02da4dd5908bbba913ae6f58c2cc844b802a6f811f5fb075f9b80"
+m_3 = "7372e9daa5ed31e6cd5c825eac1b855e84476a1d94932aa348e07b73"
+m_4 = "77fe97eb97a1ebe2e81e4e3597a3ee740a66e9ef2412472c"
+m_5 = "496694774c5604ab1b2544eababcf0f53278ff50"
+m_6 = "515ae153e22aae04ad16f759e07237b4"
+m_7 = "d183ddc6e2665aa4e2f088af"
+m_8 = "ac55fb33a75909ed"
+m_9 = "96012096"
+m_10 = ""
+
+SK = "2eee0f60a8a3a8bec0ee942bfd46cbdae9a0738ee68f5a64e7238311cf09a079"
+PK = "92d37d1d6cd38fea3a873953333eab23a4c0377e3e049974eb62bd45949cdeb18f
+      b0490edcd4429adff56e65cbce42cf188b31bddbd619e419b99c2c41b38179eb00
+      1963bc3decaae0d9f702c7a8c004f207f46c734a5eae2e8e82833f3e7ea5"
+header = ""
+
+B = "8607ebc413b397c1e27ce591d1daa39f73da329018bda0f90bf996355cc28c3cdba
+     19feeb81e35be9e1503a018e4086e"
+domain = "333d8686761cff65a3a2ef20bfa217d37bdf19105e87c210e9ce64ea1210a1
+          57"
+
+signature = "abfa513cdb323e47214b7c182fb623197a0681b753f897545a73d82ee13
+             3a8ecf69db9aa09fe425df4e7687d99d779db5c66199c0dc9d2a442d331
+             c43f56e060edc69a69ed2f13de3813b98ce6b05737"
+
+C.1.1.2.  Modified Message Signature
+
+   The following fixture should fail signature validation due to the
+   message value being different from what was signed.
+
+m_1 = ""
+
+SK = "2eee0f60a8a3a8bec0ee942bfd46cbdae9a0738ee68f5a64e7238311cf09a079"
+PK = "92d37d1d6cd38fea3a873953333eab23a4c0377e3e049974eb62bd45949cdeb18f
+      b0490edcd4429adff56e65cbce42cf188b31bddbd619e419b99c2c41b38179eb00
+      1963bc3decaae0d9f702c7a8c004f207f46c734a5eae2e8e82833f3e7ea5"
+header = "11223344556677889900aabbccddeeff"
+
+signature = "98eb37fceb31115bf647f2983aef578ad895e55f7451b1add02fa738224
+             cb89a31b148eace4d20d001be31d162c58d12574f30e68665b6403956a8
+             3b23a16f1daceacce8c5fde25d3defd52d6d5ff2e1"
+
+valid: "false"
+reason: "modified message"
+
+C.1.1.3.  Extra Unsigned Message Signature
+
+   The following fixture should fail signature validation due to an
+   additional message being supplied that was not signed.
+
+m_1 = "9872ad089e452c7b6e283dfac2a80d58e8d0ff71cc4d5e310a1debdda4a45f02"
+m_2 = "c344136d9ab02da4dd5908bbba913ae6f58c2cc844b802a6f811f5fb075f9b80"
+
+SK = "2eee0f60a8a3a8bec0ee942bfd46cbdae9a0738ee68f5a64e7238311cf09a079"
+PK = "92d37d1d6cd38fea3a873953333eab23a4c0377e3e049974eb62bd45949cdeb18f
+      b0490edcd4429adff56e65cbce42cf188b31bddbd619e419b99c2c41b38179eb00
+      1963bc3decaae0d9f702c7a8c004f207f46c734a5eae2e8e82833f3e7ea5"
+header = "11223344556677889900aabbccddeeff"
+
+signature = "98eb37fceb31115bf647f2983aef578ad895e55f7451b1add02fa738224
+             cb89a31b148eace4d20d001be31d162c58d12574f30e68665b6403956a8
+             3b23a16f1daceacce8c5fde25d3defd52d6d5ff2e1"
+
+valid: "false"
+reason: "extra unsigned message"
+
+C.1.1.4.  Missing Message Signature
+
+   The following fixture should fail signature validation due to missing
+   messages that were originally present during the signing (the
+   presented signature was generated with all the messages in
+   Section 3.3.3 as input).
+
+m_1 = "9872ad089e452c7b6e283dfac2a80d58e8d0ff71cc4d5e310a1debdda4a45f02"
+m_2 = "c344136d9ab02da4dd5908bbba913ae6f58c2cc844b802a6f811f5fb075f9b80"
+
+SK = "2eee0f60a8a3a8bec0ee942bfd46cbdae9a0738ee68f5a64e7238311cf09a079"
+PK = "92d37d1d6cd38fea3a873953333eab23a4c0377e3e049974eb62bd45949cdeb18f
+      b0490edcd4429adff56e65cbce42cf188b31bddbd619e419b99c2c41b38179eb00
+      1963bc3decaae0d9f702c7a8c004f207f46c734a5eae2e8e82833f3e7ea5"
+header = "11223344556677889900aabbccddeeff"
+
+signature = "97a296c83ed3626fe254d26021c5e9a087b580f1e8bc91bb51efb04420b
+             fdaca215fe376a0bc12440bcc52224fb33c696cca9239b9f28dcddb7bd8
+             50aae9cd1a9c3e9f3639953fe789dbba53b8f0dd6f"
+
+valid: "false"
+reason: "missing messages"
+
+C.1.1.5.  Reordered Message Signature
+
+   The following fixture should fail signature validation due to
+   messages being re-ordered from the order in which they were signed.
+
+m_1 = ""
+m_2 = "96012096"
+m_3 = "ac55fb33a75909ed"
+m_4 = "d183ddc6e2665aa4e2f088af"
+m_5 = "515ae153e22aae04ad16f759e07237b4"
+m_6 = "496694774c5604ab1b2544eababcf0f53278ff50"
+m_7 = "77fe97eb97a1ebe2e81e4e3597a3ee740a66e9ef2412472c"
+m_8 = "7372e9daa5ed31e6cd5c825eac1b855e84476a1d94932aa348e07b73"
+m_9 = "c344136d9ab02da4dd5908bbba913ae6f58c2cc844b802a6f811f5fb075f9b80"
+m_10 = "9872ad089e452c7b6e283dfac2a80d58e8d0ff71cc4d5e310a1debdda4a45f02
+        "
+
+SK = "2eee0f60a8a3a8bec0ee942bfd46cbdae9a0738ee68f5a64e7238311cf09a079"
+PK = "92d37d1d6cd38fea3a873953333eab23a4c0377e3e049974eb62bd45949cdeb18f
+      b0490edcd4429adff56e65cbce42cf188b31bddbd619e419b99c2c41b38179eb00
+      1963bc3decaae0d9f702c7a8c004f207f46c734a5eae2e8e82833f3e7ea5"
+header = "11223344556677889900aabbccddeeff"
+
+signature = "97a296c83ed3626fe254d26021c5e9a087b580f1e8bc91bb51efb04420b
+             fdaca215fe376a0bc12440bcc52224fb33c696cca9239b9f28dcddb7bd8
+             50aae9cd1a9c3e9f3639953fe789dbba53b8f0dd6f"
+
+valid: "false"
+reason: "re-ordered messages"
+
+C.1.1.6.  Wrong Public Key Signature
+
+   The following fixture should fail signature validation due to public
+   key used to verify is in-correct.
+
+m_1 = "9872ad089e452c7b6e283dfac2a80d58e8d0ff71cc4d5e310a1debdda4a45f02"
+m_2 = "c344136d9ab02da4dd5908bbba913ae6f58c2cc844b802a6f811f5fb075f9b80"
+m_3 = "7372e9daa5ed31e6cd5c825eac1b855e84476a1d94932aa348e07b73"
+m_4 = "77fe97eb97a1ebe2e81e4e3597a3ee740a66e9ef2412472c"
+m_5 = "496694774c5604ab1b2544eababcf0f53278ff50"
+m_6 = "515ae153e22aae04ad16f759e07237b4"
+m_7 = "d183ddc6e2665aa4e2f088af"
+m_8 = "ac55fb33a75909ed"
+m_9 = "96012096"
+m_10 = ""
+
+SK = "2eee0f60a8a3a8bec0ee942bfd46cbdae9a0738ee68f5a64e7238311cf09a079"
+PK = "b24c723803f84e210f7a95f6265c5cbfa4ecc51488bf7acf24b921807801c0798b
+      725b9a2dcfa29953efcdfef03328720196c78b2e613727fd6e085302a0cc2d8d7e
+      1d820cf1d36b20e79eee78c13a1a5da51a298f1aef86f07bc33388f089d8"
+header = "11223344556677889900aabbccddeeff"
+
+signature = "97a296c83ed3626fe254d26021c5e9a087b580f1e8bc91bb51efb04420b
+             fdaca215fe376a0bc12440bcc52224fb33c696cca9239b9f28dcddb7bd8
+             50aae9cd1a9c3e9f3639953fe789dbba53b8f0dd6f"
+
+valid: "false"
+reason: "wrong public key"
+
+C.1.1.7.  Wrong Header Signature
+
+   The following fixture should fail signature validation due to header
+   value being modified from what was originally signed.
+
+m_1 = "9872ad089e452c7b6e283dfac2a80d58e8d0ff71cc4d5e310a1debdda4a45f02"
+m_2 = "c344136d9ab02da4dd5908bbba913ae6f58c2cc844b802a6f811f5fb075f9b80"
+m_3 = "7372e9daa5ed31e6cd5c825eac1b855e84476a1d94932aa348e07b73"
+m_4 = "77fe97eb97a1ebe2e81e4e3597a3ee740a66e9ef2412472c"
+m_5 = "496694774c5604ab1b2544eababcf0f53278ff50"
+m_6 = "515ae153e22aae04ad16f759e07237b4"
+m_7 = "d183ddc6e2665aa4e2f088af"
+m_8 = "ac55fb33a75909ed"
+m_9 = "96012096"
+m_10 = ""
+
+SK = "2eee0f60a8a3a8bec0ee942bfd46cbdae9a0738ee68f5a64e7238311cf09a079"
+PK = "92d37d1d6cd38fea3a873953333eab23a4c0377e3e049974eb62bd45949cdeb18f
+      b0490edcd4429adff56e65cbce42cf188b31bddbd619e419b99c2c41b38179eb00
+      1963bc3decaae0d9f702c7a8c004f207f46c734a5eae2e8e82833f3e7ea5"
+header = "ffeeddccbbaa00998877665544332211"
+
+signature = "97a296c83ed3626fe254d26021c5e9a087b580f1e8bc91bb51efb04420b
+             fdaca215fe376a0bc12440bcc52224fb33c696cca9239b9f28dcddb7bd8
+             50aae9cd1a9c3e9f3639953fe789dbba53b8f0dd6f"
+
+valid: "false"
+reason: "different header"
+
+C.1.2.  Proof Test Vectors
+
+C.1.2.1.  No Header Valid Proof
+
+m_1 = "9872ad089e452c7b6e283dfac2a80d58e8d0ff71cc4d5e310a1debdda4a45f02"
+m_2 = "c344136d9ab02da4dd5908bbba913ae6f58c2cc844b802a6f811f5fb075f9b80"
+m_3 = "7372e9daa5ed31e6cd5c825eac1b855e84476a1d94932aa348e07b73"
+m_4 = "77fe97eb97a1ebe2e81e4e3597a3ee740a66e9ef2412472c"
+m_5 = "496694774c5604ab1b2544eababcf0f53278ff50"
+m_6 = "515ae153e22aae04ad16f759e07237b4"
+m_7 = "d183ddc6e2665aa4e2f088af"
+m_8 = "ac55fb33a75909ed"
+m_9 = "96012096"
+m_10 = ""
+
+public_key = "92d37d1d6cd38fea3a873953333eab23a4c0377e3e049974eb62bd4594
+              9cdeb18fb0490edcd4429adff56e65cbce42cf188b31bddbd619e419b9
+              9c2c41b38179eb001963bc3decaae0d9f702c7a8c004f207f46c734a5e
+              ae2e8e82833f3e7ea5"
+signature = "abfa513cdb323e47214b7c182fb623197a0681b753f897545a73d82ee13
+             3a8ecf69db9aa09fe425df4e7687d99d779db5c66199c0dc9d2a442d331
+             c43f56e060edc69a69ed2f13de3813b98ce6b05737"
+header = ""
+presentation_header = "bed231d880675ed101ead304512e043ade9958dd0241ea70b
+                       4b3957fba941501"
+revealed_indexes = [1, 3, 5, 7]
+
+T = "8eff938145940dc45a79c196d773d4f618388f50b52fdcdc07a79fa0eef7d4e6eec
+     5f9d3a2130c951feb8aae85020cec"
+domain = "333d8686761cff65a3a2ef20bfa217d37bdf19105e87c210e9ce64ea1210a1
+          57"
+challenge = "628e03e4eb0303af7162f36a119313c3396fe6bca6082238fe396e8c08e
+             607c4"
+
+proof = "ae46046037ed58bfa5771c603895b26b42748a3071a1dc9f8a272a4bc030bc3
+         cda7cfa8686a6dc8382d728ad96e8d8ceb6ad6b76b99242514e520c43dd7d1a
+         0728ce709d977c4dd200874e4acffa5b4cc0cbbd37c00d979d8688c636770cc
+         8b428ea9f05ed60cd85fdbd4c2fd73092e8bfc167c244d6e285ace1deade4fe
+         8ce74fe2993a041e84004fe7d3dd170db765f7811a91043c4e75e9231804d57
+         7bfa533ec7a44bb6e49eb85089d8df1dc1acfb00ea0c7bdce5609595099e3cf
+         7559c1715df6ec6982c5d9fffd317955ec3387a9055de28691e399b5af14722
+         ae044a506d622e0e6ff0de8d1e4d4f3e9e5fdb01c4dbab02826ac38cb40eb80
+         afe7b9d661dc27c94b146fedea19353b70310714932674c1f4bc1edc2c17605
+         749e0bbb60a77ac62a606d31081ff5a52e1485be257b2c0afa4b676438b0eaa
+         0bd483c66828bc66032b91fbe8a309408e595e085a1b55e2dd12789e6f522ef
+         5682ac46deb628e03e4eb0303af7162f36a119313c3396fe6bca6082238fe39
+         6e8c08e607c4"
+
+C.1.2.2.  No Presentation Header Valid Proof
+
+m_1 = "9872ad089e452c7b6e283dfac2a80d58e8d0ff71cc4d5e310a1debdda4a45f02"
+m_2 = "c344136d9ab02da4dd5908bbba913ae6f58c2cc844b802a6f811f5fb075f9b80"
+m_3 = "7372e9daa5ed31e6cd5c825eac1b855e84476a1d94932aa348e07b73"
+m_4 = "77fe97eb97a1ebe2e81e4e3597a3ee740a66e9ef2412472c"
+m_5 = "496694774c5604ab1b2544eababcf0f53278ff50"
+m_6 = "515ae153e22aae04ad16f759e07237b4"
+m_7 = "d183ddc6e2665aa4e2f088af"
+m_8 = "ac55fb33a75909ed"
+m_9 = "96012096"
+m_10 = ""
+
+public_key = "92d37d1d6cd38fea3a873953333eab23a4c0377e3e049974eb62bd4594
+              9cdeb18fb0490edcd4429adff56e65cbce42cf188b31bddbd619e419b9
+              9c2c41b38179eb001963bc3decaae0d9f702c7a8c004f207f46c734a5e
+              ae2e8e82833f3e7ea5"
+signature = "97a296c83ed3626fe254d26021c5e9a087b580f1e8bc91bb51efb04420b
+             fdaca215fe376a0bc12440bcc52224fb33c696cca9239b9f28dcddb7bd8
+             50aae9cd1a9c3e9f3639953fe789dbba53b8f0dd6f"
+header = "11223344556677889900aabbccddeeff"
+presentation_header = ""
+revealed_indexes = [1, 3, 5, 7]
+
+T = "89f37630b485590b80f54c96210a00139366785701a99de2a5b560b7304b16ff20f
+     81edb2027de2ed6bd58206a6aa2d3"
+domain = "6f7ee8de30835599bb540d2cb4dd02fd0c6cf8246f14c9ee9a8463f7fd400f
+          7b"
+challenge = "08fae9f905b10e0526451968e25569e3779f642a4d2b6bcc1e00be28e27
+             11d1a"
+
+proof = "ac0424b2a984c55d0061aa61df105f2c882d393494f3f4205d1e73f93c9c76b
+         30664baeb3dc87f23fbf4035fb0a8e76b851dd39cecce8843e747ccf540f085
+         0a30e1317f8897a56c2d85bfc1e0b4dba1b0e0322d89aad4feb8b21c414a384
+         a015238f4643b9d075bc6638ec42d0e285f73c6ca9830be2a5bb48955ddb094
+         751026493147def3cfe2a37bbd89a4536bdff6548d891d5206ac6b69c22c6fa
+         8624512caeb80c56dbd79b7a4c8050bc9e782232f9594087561b10d7f4b0bef
+         708458096637a34962399e918d5adb496faf7c38ded94fe79c3bfdc53c81f0d
+         cb0da3f1bed0dbfdb6f0310d71d50a63b265e1992dd7d12315bf11da69a8897
+         d8e33be36f116d58eff998f80e23ad0aad544e93615a5f10f169a3aed7c4d62
+         66191a21412f4f4d8eb5096a05243b809c4c53a8d237817dfa15a403d8943b9
+         68d1216c753fb988fbcfe9280232c25cac1570873a66d3f4a7e713fb19723f5
+         b99338f053f08fae9f905b10e0526451968e25569e3779f642a4d2b6bcc1e00
+         be28e2711d1a"
+
+C.1.3.  Hash to Scalar Test Vectors
+
+   Using the following input message,
+
+msg = "9872ad089e452c7b6e283dfac2a80d58e8d0ff71cc4d5e310a1debdda4a45f02"
+
+   And the default dst defined in hash_to_scalar (#hash-to-scalar),
+   i.e.,
+
+dst = "4242535f424c53313233383147315f584f463a5348414b452d3235365f5353575
+       55f524f5f4832475f484d32535f4832535f"
+
+   We get the following scalar, encoded with I2OSP and represented in
+   big endian order,
+
+scalar = "0500031f786fde5326aa9370dd7ffe9535ec7a52cf2b8f432cad5d9acfb73c
+          d3"
+
+C.2.  BLS12-381-SHA-256 Ciphersuite
+
+C.2.1.  Signature Test Vectors
+
+C.2.1.1.  No Header Valid Signature
+
+m_1 = "9872ad089e452c7b6e283dfac2a80d58e8d0ff71cc4d5e310a1debdda4a45f02"
+m_2 = "c344136d9ab02da4dd5908bbba913ae6f58c2cc844b802a6f811f5fb075f9b80"
+m_3 = "7372e9daa5ed31e6cd5c825eac1b855e84476a1d94932aa348e07b73"
+m_4 = "77fe97eb97a1ebe2e81e4e3597a3ee740a66e9ef2412472c"
+m_5 = "496694774c5604ab1b2544eababcf0f53278ff50"
+m_6 = "515ae153e22aae04ad16f759e07237b4"
+m_7 = "d183ddc6e2665aa4e2f088af"
+m_8 = "ac55fb33a75909ed"
+m_9 = "96012096"
+m_10 = ""
+
+SK = "60e55110f76883a13d030b2f6bd11883422d5abde717569fc0731f51237169fc"
+PK = "a820f230f6ae38503b86c70dc50b61c58a77e45c39ab25c0652bbaa8fa136f2851
+      bd4781c9dcde39fc9d1d52c9e60268061e7d7632171d91aa8d460acee0e96f1e7c
+      4cfb12d3ff9ab5d5dc91c277db75c845d649ef3c4f63aebc364cd55ded0c"
+header = ""
+
+B = "98e38eadb6a2232cf91f41861089cda14d7e3ddef0c6eaba4d11a2732f66408f394
+     d58301ffcc8fcfb3c89bb75136f61"
+domain = "41c5fe0290d0da734ce9bba57bfe0dfc14f3f9cfef18a0d7438cf2075fd71c
+          c7"
+
+signature = "ae0b1807865598b3884e3e9b110e8faec662050dc9b4d95309d957fd30f
+             6fc24161f6f8b5680f1f5d1b547be221547915ca665c7b3087a336d5e0c
+             5fcfea62576afd13e563b730ef6d6d81f9944ab95b"
+
+C.2.1.2.  Modified Message Signature
+
+   The following fixture should fail signature validation due to the
+   message value being different from what was signed.
+
+m_1 = ""
+
+SK = "60e55110f76883a13d030b2f6bd11883422d5abde717569fc0731f51237169fc"
+PK = "a820f230f6ae38503b86c70dc50b61c58a77e45c39ab25c0652bbaa8fa136f2851
+      bd4781c9dcde39fc9d1d52c9e60268061e7d7632171d91aa8d460acee0e96f1e7c
+      4cfb12d3ff9ab5d5dc91c277db75c845d649ef3c4f63aebc364cd55ded0c"
+header = "11223344556677889900aabbccddeeff"
+
+signature = "88c0eb3bc1d97610c3a66d8a3a73f260f95a3028bccf7fff7d9851e2acd
+             9f3f32fdf58a5b34d12df8177adf37aa318a20f72be7d37a8e8d8441d1b
+             c0bc75543c681bf061ce7e7f6091fe78c1cb8af103"
+
+valid: "false"
+reason: "modified message"
+
+C.2.1.3.  Extra Unsigned Message Signature
+
+   The following fixture should fail signature validation due to an
+   additional message being supplied that was not signed.
+
+m_1 = "9872ad089e452c7b6e283dfac2a80d58e8d0ff71cc4d5e310a1debdda4a45f02"
+m_2 = "c344136d9ab02da4dd5908bbba913ae6f58c2cc844b802a6f811f5fb075f9b80"
+
+SK = "60e55110f76883a13d030b2f6bd11883422d5abde717569fc0731f51237169fc"
+PK = "a820f230f6ae38503b86c70dc50b61c58a77e45c39ab25c0652bbaa8fa136f2851
+      bd4781c9dcde39fc9d1d52c9e60268061e7d7632171d91aa8d460acee0e96f1e7c
+      4cfb12d3ff9ab5d5dc91c277db75c845d649ef3c4f63aebc364cd55ded0c"
+header = "11223344556677889900aabbccddeeff"
+
+signature = "88c0eb3bc1d97610c3a66d8a3a73f260f95a3028bccf7fff7d9851e2acd
+             9f3f32fdf58a5b34d12df8177adf37aa318a20f72be7d37a8e8d8441d1b
+             c0bc75543c681bf061ce7e7f6091fe78c1cb8af103"
+
+valid: "false"
+reason: "extra unsigned message"
+
+C.2.1.4.  Missing Message Signature
+
+   The following fixture should fail signature validation due to missing
+   messages that were originally present during the signing (the
+   presented signature was generated with all the messages in
+   Section 3.3.3 as input).
+
+m_1 = "9872ad089e452c7b6e283dfac2a80d58e8d0ff71cc4d5e310a1debdda4a45f02"
+m_2 = "c344136d9ab02da4dd5908bbba913ae6f58c2cc844b802a6f811f5fb075f9b80"
+
+SK = "60e55110f76883a13d030b2f6bd11883422d5abde717569fc0731f51237169fc"
+PK = "a820f230f6ae38503b86c70dc50b61c58a77e45c39ab25c0652bbaa8fa136f2851
+      bd4781c9dcde39fc9d1d52c9e60268061e7d7632171d91aa8d460acee0e96f1e7c
+      4cfb12d3ff9ab5d5dc91c277db75c845d649ef3c4f63aebc364cd55ded0c"
+header = "11223344556677889900aabbccddeeff"
+
+signature = "895cd9c0ccb9aca4de913218655346d718711472f2bf1f3e68916de106a
+             0d93cf2f47200819b45920bbda541db2d91480665df253fedab2843055b
+             dc02535d83baddbbb2803ec3808e074f71f199751e"
+
+valid: "false"
+reason: "missing messages"
+
+C.2.1.5.  Reordered Message Signature
+
+   The following fixture should fail signature validation due to
+   messages being re-ordered from the order in which they were signed.
+
+m_1 = ""
+m_2 = "96012096"
+m_3 = "ac55fb33a75909ed"
+m_4 = "d183ddc6e2665aa4e2f088af"
+m_5 = "515ae153e22aae04ad16f759e07237b4"
+m_6 = "496694774c5604ab1b2544eababcf0f53278ff50"
+m_7 = "77fe97eb97a1ebe2e81e4e3597a3ee740a66e9ef2412472c"
+m_8 = "7372e9daa5ed31e6cd5c825eac1b855e84476a1d94932aa348e07b73"
+m_9 = "c344136d9ab02da4dd5908bbba913ae6f58c2cc844b802a6f811f5fb075f9b80"
+m_10 = "9872ad089e452c7b6e283dfac2a80d58e8d0ff71cc4d5e310a1debdda4a45f02
+        "
+
+SK = "60e55110f76883a13d030b2f6bd11883422d5abde717569fc0731f51237169fc"
+PK = "a820f230f6ae38503b86c70dc50b61c58a77e45c39ab25c0652bbaa8fa136f2851
+      bd4781c9dcde39fc9d1d52c9e60268061e7d7632171d91aa8d460acee0e96f1e7c
+      4cfb12d3ff9ab5d5dc91c277db75c845d649ef3c4f63aebc364cd55ded0c"
+header = "11223344556677889900aabbccddeeff"
+
+signature = "895cd9c0ccb9aca4de913218655346d718711472f2bf1f3e68916de106a
+             0d93cf2f47200819b45920bbda541db2d91480665df253fedab2843055b
+             dc02535d83baddbbb2803ec3808e074f71f199751e"
+
+valid: "false"
+reason: "re-ordered messages"
+
+C.2.1.6.  Wrong Public Key Signature
+
+   The following fixture should fail signature validation due to public
+   key used to verify is in-correct.
+
+m_1 = "9872ad089e452c7b6e283dfac2a80d58e8d0ff71cc4d5e310a1debdda4a45f02"
+m_2 = "c344136d9ab02da4dd5908bbba913ae6f58c2cc844b802a6f811f5fb075f9b80"
+m_3 = "7372e9daa5ed31e6cd5c825eac1b855e84476a1d94932aa348e07b73"
+m_4 = "77fe97eb97a1ebe2e81e4e3597a3ee740a66e9ef2412472c"
+m_5 = "496694774c5604ab1b2544eababcf0f53278ff50"
+m_6 = "515ae153e22aae04ad16f759e07237b4"
+m_7 = "d183ddc6e2665aa4e2f088af"
+m_8 = "ac55fb33a75909ed"
+m_9 = "96012096"
+m_10 = ""
+
+SK = "60e55110f76883a13d030b2f6bd11883422d5abde717569fc0731f51237169fc"
+PK = "b064bd8d1ba99503cbb7f9d7ea00bce877206a85b1750e5583dd9399828a4d2061
+      0cb937ea928d90404c239b2835ffb104220a9c66a4c9ed3b54c0cac9ea465d0429
+      556b438ceefb59650ddf67e7a8f103677561b7ef7fe3c3357ec6b94d41c6"
+header = "11223344556677889900aabbccddeeff"
+
+signature = "895cd9c0ccb9aca4de913218655346d718711472f2bf1f3e68916de106a
+             0d93cf2f47200819b45920bbda541db2d91480665df253fedab2843055b
+             dc02535d83baddbbb2803ec3808e074f71f199751e"
+
+valid: "false"
+reason: "wrong public key"
+
+C.2.1.7.  Wrong Header Signature
+
+   The following fixture should fail signature validation due to header
+   value being modified from what was originally signed.
+
+m_1 = "9872ad089e452c7b6e283dfac2a80d58e8d0ff71cc4d5e310a1debdda4a45f02"
+m_2 = "c344136d9ab02da4dd5908bbba913ae6f58c2cc844b802a6f811f5fb075f9b80"
+m_3 = "7372e9daa5ed31e6cd5c825eac1b855e84476a1d94932aa348e07b73"
+m_4 = "77fe97eb97a1ebe2e81e4e3597a3ee740a66e9ef2412472c"
+m_5 = "496694774c5604ab1b2544eababcf0f53278ff50"
+m_6 = "515ae153e22aae04ad16f759e07237b4"
+m_7 = "d183ddc6e2665aa4e2f088af"
+m_8 = "ac55fb33a75909ed"
+m_9 = "96012096"
+m_10 = ""
+
+SK = "60e55110f76883a13d030b2f6bd11883422d5abde717569fc0731f51237169fc"
+PK = "a820f230f6ae38503b86c70dc50b61c58a77e45c39ab25c0652bbaa8fa136f2851
+      bd4781c9dcde39fc9d1d52c9e60268061e7d7632171d91aa8d460acee0e96f1e7c
+      4cfb12d3ff9ab5d5dc91c277db75c845d649ef3c4f63aebc364cd55ded0c"
+header = "ffeeddccbbaa00998877665544332211"
+
+signature = "895cd9c0ccb9aca4de913218655346d718711472f2bf1f3e68916de106a
+             0d93cf2f47200819b45920bbda541db2d91480665df253fedab2843055b
+             dc02535d83baddbbb2803ec3808e074f71f199751e"
+
+valid: "false"
+reason: "different header"
+
+C.2.2.  Proof Test Vectors
+
+C.2.2.1.  No Header Valid Proof
+
+m_1 = "9872ad089e452c7b6e283dfac2a80d58e8d0ff71cc4d5e310a1debdda4a45f02"
+m_2 = "c344136d9ab02da4dd5908bbba913ae6f58c2cc844b802a6f811f5fb075f9b80"
+m_3 = "7372e9daa5ed31e6cd5c825eac1b855e84476a1d94932aa348e07b73"
+m_4 = "77fe97eb97a1ebe2e81e4e3597a3ee740a66e9ef2412472c"
+m_5 = "496694774c5604ab1b2544eababcf0f53278ff50"
+m_6 = "515ae153e22aae04ad16f759e07237b4"
+m_7 = "d183ddc6e2665aa4e2f088af"
+m_8 = "ac55fb33a75909ed"
+m_9 = "96012096"
+m_10 = ""
+
+public_key = "a820f230f6ae38503b86c70dc50b61c58a77e45c39ab25c0652bbaa8fa
+              136f2851bd4781c9dcde39fc9d1d52c9e60268061e7d7632171d91aa8d
+              460acee0e96f1e7c4cfb12d3ff9ab5d5dc91c277db75c845d649ef3c4f
+              63aebc364cd55ded0c"
+signature = "ae0b1807865598b3884e3e9b110e8faec662050dc9b4d95309d957fd30f
+             6fc24161f6f8b5680f1f5d1b547be221547915ca665c7b3087a336d5e0c
+             5fcfea62576afd13e563b730ef6d6d81f9944ab95b"
+header = ""
+presentation_header = "bed231d880675ed101ead304512e043ade9958dd0241ea70b
+                       4b3957fba941501"
+revealed_indexes = [1, 3, 5, 7]
+
+T = "a658203bac7d7221494e6c6885dec63984fbcae75c5042fda3ba0e2c3c8e38e8318
+     30c1e592b025340d148b012037682"
+domain = "41c5fe0290d0da734ce9bba57bfe0dfc14f3f9cfef18a0d7438cf2075fd71c
+          c7"
+challenge = "3f5f2904b6100e01b6cf94d9d6c5501fbbfd2e5e57c2dcb1cf117c41eed
+             cda57"
+
+proof = "89cefce40c3dc7adcc8bcd07d92767d0f0397d0e120511b58b8403b531fa573
+         987003fd235bdfe6fb5e9da937774c7799397bc951cd4030a78f8dae7820bfa
+         150a243d74c3aa34daf6299dc0baaf7796705e952e2c8ac7d37c69e91db8501
+         2d61f3387f096a022361972d6afd2c095eeb4adc95f72cfb739539f27f1917c
+         7cc80fba233fd9eef52196cc31183d7c4168e6b87a66b249225398c31e2950e
+         3e24420d3af3eeee3308933a343310cf822287dc95b86eb5716e8ff23cc52c9
+         80d41218bdaeff521a242e5330daee27a1a499ac1a20b0c39477cebf4936d0e
+         c2b95e0384b80bba24febc527b0b640481df2125b58f85708590838ee32789c
+         e1c755a6150ce6bf0650bff3dfff61eae16e88916f9869d75c7884554ea517f
+         8dec320c011d211b1ec05073238d7949fe6d9ff6f729c475bbfc5a21c6fa6d3
+         5df92f79d43c3f78bcd3cb4c6e6de2ac27108316bd8d751fb445c5f6b4e6e10
+         4b227362efe3f5f2904b6100e01b6cf94d9d6c5501fbbfd2e5e57c2dcb1cf11
+         7c41eedcda57"
+
+C.2.2.2.  No Presentation Header Valid Proof
+
+m_1 = "9872ad089e452c7b6e283dfac2a80d58e8d0ff71cc4d5e310a1debdda4a45f02"
+m_2 = "c344136d9ab02da4dd5908bbba913ae6f58c2cc844b802a6f811f5fb075f9b80"
+m_3 = "7372e9daa5ed31e6cd5c825eac1b855e84476a1d94932aa348e07b73"
+m_4 = "77fe97eb97a1ebe2e81e4e3597a3ee740a66e9ef2412472c"
+m_5 = "496694774c5604ab1b2544eababcf0f53278ff50"
+m_6 = "515ae153e22aae04ad16f759e07237b4"
+m_7 = "d183ddc6e2665aa4e2f088af"
+m_8 = "ac55fb33a75909ed"
+m_9 = "96012096"
+m_10 = ""
+
+public_key = "a820f230f6ae38503b86c70dc50b61c58a77e45c39ab25c0652bbaa8fa
+              136f2851bd4781c9dcde39fc9d1d52c9e60268061e7d7632171d91aa8d
+              460acee0e96f1e7c4cfb12d3ff9ab5d5dc91c277db75c845d649ef3c4f
+              63aebc364cd55ded0c"
+signature = "895cd9c0ccb9aca4de913218655346d718711472f2bf1f3e68916de106a
+             0d93cf2f47200819b45920bbda541db2d91480665df253fedab2843055b
+             dc02535d83baddbbb2803ec3808e074f71f199751e"
+header = "11223344556677889900aabbccddeeff"
+presentation_header = ""
+revealed_indexes = [1, 3, 5, 7]
+
+T = "822cd8bc6b68ac133fd5eccbef1ce1bbbc01a7ca825287c11a2d239d26f814f1477
+     3047607ba655bf4d6882a4ae1dab0"
+domain = "6272832582a0ac96e6fe53e879422f24c51680b25fbf17bad22a35ea93ce5b
+          47"
+challenge = "09585f44695f088ea39bda2317224f47208c7f77570deae84efea007c14
+             f18ef"
+
+proof = "812a204f66c9084feed7383894d910f2c17399b3c4b4bed05660921de8539f5
+         042318c356609496a6ca0a26626661be78ca723b7182ccd314924b93a399765
+         4fcd77e29e3847dc881f422a751017705173ec094d2997221e134710d4fff1b
+         d332fd2f270e96b6b8de89b2fff1294dcd5bd0e1eb314b199f7fb7f5702839f
+         409e167c6a78eb3a57a08a7996330f83ac167d51c57f4ebabea87ad8e08b4b3
+         875926d9d2427df59abd2e2befe32774b03668a5080c54412f81c4cbf47571b
+         15a35c4f93bd38805c3224ca6c4d2f387c28288e8fffb0ab0c43cdb860f31c7
+         39b3091192268789d3da05b97d277ab91699a209c97e9057a6cf66c9d4d311e
+         a09c680d4aa2485bfdbaa7ee954a2e0b4f6ea542eda44a1adf2b19f63332b9d
+         e00f46c533f1c696bc8b4aea5cc56b0cf12ecdba434b36324d754eabf1734e6
+         c3301f300435797edcb007eae6ef75bc5d5500a1ce74ba8f4e0c5c8836f4237
+         1c2c469265909585f44695f088ea39bda2317224f47208c7f77570deae84efe
+         a007c14f18ef"
+
+C.2.3.  Hash to Scalar Test Vectors
+
+   Using the following input message,
+
+msg = "9872ad089e452c7b6e283dfac2a80d58e8d0ff71cc4d5e310a1debdda4a45f02"
+
+   And the default dst defined in hash_to_scalar (#hash-to-scalar),
+   i.e.,
+
+dst = "4242535f424c53313233383147315f584d443a5348412d3235365f535357555f5
+       24f5f4832475f484d32535f4832535f"
+
+   We get the following scalar, encoded with I2OSP and represented in
+   big endian order,
+
+scalar = "0f90cbee27beb214e6545becb8404640d3612da5d6758dffeccd77ed716980
+          7c"
+
+Appendix D.  Proof Generation and Verification Algorithmic Explanation
+
+   The following section provides a high level explanation of how the
+   ProofGen and ProofVerify operations work.  ProofGen can be
+   categorized as a generic non-interactive zero-knowledge proof-of-
+   knowledge (nizk).  A nizk works as follows; Assume the group points
+   J_0, J_1, ..., J_n and the exponents e_0, e_1, ..., e_n.  Assume also
+   that all the group point are publicly known, while only the exponent
+   e_0 is known to the verifier and the exponents e_1, ..., e_n are
+   known only by the prover.  The nizk can be used to prove a
+   relationship of the form,
+
+   J_O * e_0 = J_1 * e_1 + J_2 * e_2 + ... + J_n * e_n
+
+   While revealing nothing about the secret exponents (i.e., e_1, ...,
+   e_n).
+
+   For BBS, let the prover be in possession of a BBS signature (A, e) on
+   messages msg_1, ..., msg_L and a domain value (see Sign (#signature-
+   generation-sign)).  Let A = B * (1/(e + SK)) where SK the signer's
+   secret key and,
+
+   [1]    B = P1 + Q_1 * domain + H_1 * msg_1 + ... + H_L * msg_L
+
+   Let (i1, ..., iR) be the indexes of the messages the prover wants to
+   disclose and (j1, ..., jU) be the indexes corresponding to
+   undisclosed messages (i.e., (j1, ..., jU) = range(1, L) \ (i1, ...,
+   iR)).  To prove knowledge of a signature on the disclosed messages,
+   work as follows;
+
+   *  Prove possession of a valid signature.  As defined above, a
+      signature (A, e), on messages msg_1, ..., msg_L is valid, if A = B
+      * 1/(e + SK), where B as in [1].  However we cannot reveal neither
+      A, e nor B to the verifier (signature is uniquely identifiable and
+      B will reveal information about the signed messages, even the
+      undisclosed ones).  To get around this, we need to hide the
+      signature (A, e) and the value of B, in a way that will allow
+      proving knowledge of such ellements with the aformentioned
+      relationship (i.e., that A = B * 1/(e + SK)), without revealing
+      their value.  We do this by randomizing them.  To do that, take
+      uniformly random r1 in [1, r-1], and calculate,
+
+      [2]    Abar = A * r1,
+      [3]    Bbar = B * r1 + Abar * (-e)
+
+      The values (Abar, Bbar) will be part of the proof and are used to
+      prove possession of a BBS signature, without revealing the
+      signature itself.  Note that; if Abar and Bbar are constructed
+      using a valid BBS signatures as above, then Abar * SK = Bbar =>
+      e(Abar, PK) = e(Bbar, BP2) where SK, PK the signer's secret and
+      public key and BP2 the base element in G2 (used to create the
+      signer’s PK, see Section 3.4.2).  This last equation is something
+      that the verifier can check.  This also serves to bind the proof
+      to the signer's PK.
+
+   *  Prove that the disclosed messages are signed by that signature.
+      Set the following,
+
+      [4]    D = P1 + Q_1 * domain + H_i1 * msg_i1 + ... + H_iR * msg_iR
+      [5]    r1' = r1 ^ -1 mod r
+
+      If the Abar and Bbar values are constructed using a valid BBS
+      signature as in [2] and [3], then the following equation will
+      hold,
+
+    [6]    D = Bbar * r1' + Abar * (e * r1') - H_ji * msg_j1 - ...
+                                                     ... - H_jU * msg_jU
+
+   Note that the verifier will know the elements in the left side of [6]
+   (i.e., D, or rather they will know all the values needed to calculate
+   D, as it depends on the public doamin value and the disclosed
+   messages) but not the exponents in the right side (i.e., r1', e and
+   the undisclosed messages: msg_j1, ..., msg_jU).  However, using a
+   nizk, the prover can convince the verifier that they (the prover)
+   know the exponents that satisfy that equation, without disclosing
+   them.
+
+   If the above equation ([6]) holds, and e(Abar, PK) = e(Bbar, BP2),
+   one could solve [6] to get B = Bbar * r1' + Abar * e * r1' (where B
+   as in [1]).  Note that B will also contain the disclosed messages.
+   Then, using the properties of pairings, one can see that,
+
+   e(Abar * r1', PK + BP2 * e) = (B, BP2)
+
+   which is exactly what Verify (#signature-verification-verify) checks
+   for A = Abar * r1'.  So seting A = Abar * r1', the values A, e, B
+   will format a valid BBS signature.  Note that the verifier doesn't
+   know r1', e or all the values to compute B.  However, they know that
+   the prover knows them, and as we saw above, knowledge of those values
+   means knowledge of a valid signature on (among others) the disclosed
+   messages.
+
+   To sum up; in order to validate the proof, a verifier checks that
+   e(Abar, PK) = e(Bbar, BP2) and verifies the nizk.  Validating the
+   proof, will guarantee the authenticity and integrity of the disclosed
+   messages, as well as knowledge of the undisclosed messages and of the
+   signature.
+
+Appendix E.  Document History
+
+   -00
+
+   *  Initial version
+
+   -01
+
+   *  Populated fixtures
+
+   *  Added SHA-256 based ciphersuite
+
+   *  Fixed typo in ProofVerify
+
+   *  Clarify ASCII string usage in DST
+
+   *  Added MapMessageToScalar test vectors
+
+   *  Fix typo in ciphersuite name
+
+   -02
+
+   *  Variety of editiorial clarifications
+
+   *  Clarified integer endianness
+
+   *  Revised the encode for hash operation
+
+   *  Shifted to using CSPRNG instead of PRF
+
+   *  Removed total number of messages from proof verify operation
+
+   *  Added deterministic proof fixtures
+
+   *  Shifted to multiple CSPRNG calls to calculate random elements,
+      instead of expand_message
+
+   *  Updated hash_to_scalar to a single output
+
+   -03
+
+   *  Updated core operation based on new academic paper
+      (https://eprint.iacr.org/2023/275)
+
+   *  Variety of editorial updates
+
+   *  Updated exception and error handling
+
+   *  Added extension point for the operation with which the generators
+      are created, allowing ciphersuites to define different operations
+      for creating the generator points.
+
+   *  Added extension point for the operation with which the input
+      messages are mapped to scalar values, allowing ciphersuites to
+      define different message-to-scalar mapping operations
+
+   *  Added signature/proof fixtures with an empty header or an empty
+      presentation header input
+
+   *  Updated the fixtures to use variable length messages (one of which
+      is now the empty message "")
+
+   *  04
+
+   *  Restructure Proof Generation and Verification operation to
+      different subroutines.
+
+   *  Separate high-level (Interface) operations from low-level (Core)
+      operations.
+
+   *  Update the ciphersuite ID to remove from it the create_generators
+      and map_message_to_scalar IDs, since those are defined as part of
+      the high-level interface instead of the ciphersuite.
+
+   *  Add a commitment optional value to the CoreSign operation.  The
+      commitment value is added to allow using BBS as part of other
+      protocols but is ignored in this document.
+
+   *  Update test-vectors display.
+
+Authors' Addresses
+
+   Tobias Looker
+   MATTR
+   Email: tobias.looker@mattr.global
+
+
+   Vasilis Kalos
+   MATTR
+   Email: vasilis.kalos@mattr.global
+
+
+   Andrew Whitehead
+   Portage
+   Email: andrew.whitehead@portagecybertech.com
+
+
+   Mike Lodder
+   CryptID
+   Email: redmike7@gmail.com
