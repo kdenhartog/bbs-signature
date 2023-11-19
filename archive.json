@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2023-11-16T00:09:12.340632+00:00",
+  "timestamp": "2023-11-19T00:09:53.941789+00:00",
   "repo": "decentralized-identity/bbs-signature",
   "labels": [
     {
@@ -34306,13 +34306,13 @@
       "labels": [],
       "body": "Based on the WG discussions, update the BBS Proof based on [CDL16].\r\n\r\n(Uses  #287)",
       "createdAt": "2023-10-14T19:38:32Z",
-      "updatedAt": "2023-11-08T17:52:59Z",
+      "updatedAt": "2023-11-18T23:12:47Z",
       "baseRepository": "decentralized-identity/bbs-signature",
       "baseRefName": "main",
       "baseRefOid": "76936111f906325bc0518a48744b5d4ea62a1086",
       "headRepository": "decentralized-identity/bbs-signature",
       "headRefName": "vasilis/cdl-proof",
-      "headRefOid": "7954f34c890fe63105e3555fe6f82216147b8c86",
+      "headRefOid": "770ed0fd8035d67f821b22f3628754e45697642f",
       "closedAt": null,
       "mergedAt": null,
       "mergedBy": null,
