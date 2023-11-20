@@ -5,11 +5,11 @@
 CFRG                                                           T. Looker
 Internet-Draft                                                  V. Kalos
 Intended status: Informational                                     MATTR
-Expires: 25 April 2024                                      A. Whitehead
+Expires: 23 May 2024                                        A. Whitehead
                                                                  Portage
                                                                M. Lodder
                                                                  CryptID
-                                                         23 October 2023
+                                                        20 November 2023
 
 
                         The BBS Signature Scheme
@@ -50,7 +50,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 25 April 2024.
+   This Internet-Draft will expire on 23 May 2024.
 
 Copyright Notice
 
@@ -146,8 +146,9 @@ Table of Contents
        7.4.5.  Proof Fixtures
    8.  IANA Considerations
    9.  Acknowledgements
-   10. Normative References
-   11. Informative References
+   10. References
+     10.1.  Normative References
+     10.2.  Informative References
    Appendix A.  BLS12-381 hash_to_curve Definition Using SHAKE-256
      A.1.  BLS12-381 G1
    Appendix B.  Use Cases
@@ -263,43 +264,29 @@ Table of Contents
    The following terminology is used throughout this document:
 
    SK  The secret key for the signature scheme.
-
    PK  The public key for the signature scheme.
-
    message  An octet string, representing a signed message.
-
    L  The total number of signed messages.
-
    R  The number of message indexes that are disclosed (revealed) in a
       proof-of-knowledge of a signature.
-
    U  The number of message indexes that are undisclosed in a proof-of-
       knowledge of a signature.
-
    scalar  An integer between 0 and r-1, where r is the prime order of
       the selected groups, defined by each ciphersuite (see also
       Notation (#notation)).
-
    generator  A valid point on the selected subgroup of the curve being
       used that is employed to commit a value.
-
    signature  The digital signature output.
-
    nonce  A cryptographic nonce
-
    presentation_header (ph)  A payload generated and bound to the
       context of a specific spk.
-
    dst  The domain separation tag.
-
    I2OSP  An operation that transforms a non-negative integer into an
       octet string, defined in Section 4 of [RFC8017].  Note, the output
       of this operation is in big-endian order.
-
    OS2IP  An operation that transforms a octet string into an non-
       negative integer, defined in Section 4 of [RFC8017].  Note, the
       input of this operation must be in big-endian order.
-
    INVALID, ABORT  Error indicators.  INVALID refers to an error
       encountered during the Deserialization or Procedure steps of an
       operation.  An INVALID value can be returned by a subroutine and
@@ -314,20 +301,16 @@ Table of Contents
    The following notation and primitives are used:
 
    a || b  Denotes the concatenation of octet strings a and b.
-
    I \ J  For sets I and J, denotes the difference of the two sets i.e.,
       all the elements of I that do not appear in J, in the same order
       as they were in I.
-
    X[a..b]  Denotes a slice of the array X containing all elements from
       and including the value at index a until and including the value
       at index b.  Note when this syntax is applied to an octet string,
       each element in the array X is assumed to be a single byte.
-
    range(a, b)  For integers a and b, with a <= b, denotes the ascending
       ordered list of all integers between a and b inclusive (i.e., the
       integers "i" such that a <= i <= b).
-
    length(input)  Takes as input either an array or an octet string.  If
       the input is an array, returns the number of elements of the
       array.  If the input is an octet string, returns the number of
@@ -343,22 +326,15 @@ Table of Contents
       a pairing-friendly curve, this document denotes operations in E1
       and E2 in additive notation, i.e., P + Q denotes point addition
       and x * P denotes scalar multiplication.
-
    G1, G2  subgroups of E1 and E2 (respectively) having prime order r.
-
    GT  a subgroup, of prime order r, of the multiplicative group of a
       field extension.
-
    e  G1 x G2 -> GT: a non-degenerate bilinear map.
-
    r  The prime order of the G1 and G2 subgroups.
-
    BP1, BP2  base (constant) points on the G1 and G2 subgroups
       respectively.
-
    Identity_G1, Identity_G2, Identity_GT  The identity element for the
       G1, G2, and GT subgroups respectively.
-
    hash_to_curve_g1(ostr, dst) -> P  A cryptographic hash function that
       takes an arbitrary octet string as input and returns a point in
       G1, using the hash_to_curve operation defined in
@@ -366,18 +342,15 @@ Table of Contents
       separation tag for that operation (more specifically, the inputted
       dst will become the DST parameter for the hash_to_field operation,
       called by hash_to_curve).
-
    point_to_octets_g1(P) -> ostr, point_to_octets_g2(P) -> ostr  returns
       the canonical representation of the point P for the respective
       subgroup as an octet string.  This operation is also known as
       serialization.
-
    octets_to_point_g1(ostr) -> P, octets_to_point_g2(ostr) -> P  returns
       the point P for the respective subgroup corresponding to the
       canonical representation ostr, or INVALID if ostr is not a valid
       output of the respective point_to_octets_g* function.  This
       operation is also known as deserialization.
-
    subgroup_check(P) -> VALID or INVALID  returns VALID when the point P
       is an element of the subgroup of order r, and INVALID otherwise.
       This function can always be implemented by checking that r * P is
@@ -436,7 +409,6 @@ Table of Contents
 
    *  A set of low level (core) operations, taking care of the main
       cryptographic functionality.
-
    *  An Application Interface (API), that uses the core operations in a
       secure way.
 
@@ -446,7 +418,6 @@ Table of Contents
    job of the Interface to:
 
    1.  Create the necessary generators.
-
    2.  Map the messages to scalars (see Section 3.3.3).
 
    This allows for extensibility of the core scheme without exposing the
@@ -506,10 +477,8 @@ Table of Contents
 
    *  Points in G* will be serialized using the point_to_octets_g*
       implementation for a particular ciphersuite.
-
    *  Non-negative integers will be serialized using I2OSP with an
       output length of 8 bytes.
-
    *  Scalars will be serialized using I2OSP with a constant output
       length defined by a particular ciphersuite.
 
@@ -805,10 +774,8 @@ Procedure:
    specifically,
 
    *  hash_to_scalar is defined in Section 4.2.2
-
    *  calculate_domain and calculate_challenge are defined in
       Section 4.2.3 and Section 3.7.4 correspondingly.
-
    *  serialize, signature_to_octets, octets_to_signature,
       proof_to_octets, octets_to_proof and octets_to_pubkey are defined
       in Section 4.2.4
@@ -1564,12 +1531,10 @@ Procedure:
       points of G1.  This means that given only the points H_1, ..., H_i
       it should be infeasible to guess H_(i+1) (or any H_j with j > i),
       for any i.
-
    *  The returned points must be unique with very high probability,
       that would not lessen the targeted security level of the
       ciphersuite.  Specifically, for a security level k, the
       probability of a collision should be at most 1/2^k.
-
    *  It should be infeasible to guess the discrete logarithm of the
       returned points, for any base, even with knowledge of the public
       parameters that were used to create those generators (like the
@@ -1581,7 +1546,6 @@ Procedure:
       H_2 = P_1 * r_2, ..., H_count = P_1 * r_count would be insecure
       (given knowledge of the seed), but given knowledge of only the
       points H_1, ..., H_count, the sequence would appear random.
-
    *  The returned points must be different from the Identity point of
       G1 as well as the constant point P1 defined by the ciphersuite.
 
@@ -1592,7 +1556,6 @@ Procedure:
 
    *  It MUST be deterministic and constant time for a specific number
       of generators.
-
    *  It MUST use proper domain separation for both the
       create_generators procedure, as well as all of the internally-
       called procedures.
@@ -1660,13 +1623,10 @@ C1 == C2.
    *  The returned scalars MUST be independent.  More specifically,
       knowledge of any subset of the returned scalars MUST NOT reveal
       any information about the scalars not in that subset.
-
    *  Unique inputs MUST result to unique outputs.
-
    *  If the inputted vector of messages does not include any
       duplicates, the outputted scalars MUST NOT include any duplicates
       either.
-
    *  It MUST be deterministic and constant time on the length of the
       inputted vector of messages.
 
@@ -1955,10 +1915,8 @@ Procedure:
 
    1.  Two (2) valid points of the G1 subgroup, different from the
        identity point of G1 (i.e., Abar, Bbar, in ProofGen)
-
    2.  Three (3) integers representing scalars in the range of 1 to r-1
        inclusive (i.e., c, r2^, r3^, in ProofGen).
-
    3.  A number of integers representing scalars in the range of 1 to
        r-1 inclusive, corresponding to the undisclosed from the proof
        messages (i.e., m^_j1, ..., m^_jU, in ProofGen, where U the
@@ -1997,14 +1955,11 @@ Procedure:
 
    1.  Two (2) valid points of the G1 subgroup, each of which must not
        equal the identity point.
-
    2.  Two (2) integers representing scalars in the range of 1 to r-1
        inclusive.
-
    3.  A set of integers representing scalars in the range of 1 to r-1
        inclusive, corresponding to the undisclosed from the proof
        message commitments.  This set can be empty (i.e., "()").
-
    4.  One (1) integer representing a scalar in the range of 1 to r-1
        inclusive, corresponding to the proof's challenge (c).
 
@@ -2258,7 +2213,6 @@ Procedure:
    *  Clearly specify the expected format of the commitment value, how
       it should be constructed and how it should be validated by the
       Signer.
-
    *  Include a detailed and peer reviewed analyses, showcasing that,
       under reasonable cryptographic assumptions the documented scheme
       that uses the commitment value, results to a secure signature
@@ -3209,7 +3163,9 @@ proof = "812a204f66c9084feed7383894d910f2c17399b3c4b4bed05660921de8539f5
    Orie Steele, Christian Paquin, Alessandro Guggino, Tomislav Markovski
    and Greg Bernstein.
 
-10.  Normative References
+10.  References
+
+10.1.  Normative References
 
    [DRBG]     NIST, "Recommendation for Random Number Generation Using
               Deterministic Random Bit Generators",
@@ -3259,14 +3215,17 @@ proof = "812a204f66c9084feed7383894d910f2c17399b3c4b4bed05660921de8539f5
               <https://nvlpubs.nist.gov/nistpubs/FIPS/
               NIST.FIPS.202.pdf>.
 
-11.  Informative References
+10.2.  Informative References
 
    [ADR02]    An, J. H., Dodis, Y., and T. Rabin, "On the Security of
-              Joint Signature and Encryption", pages 83-107, April 2002,
+              Joint Signature and Encryption", In EUROCRYPT,
+              pages 83-107, April 2002,
               <https://doi.org/10.1007/3-540-46035-7_6>.
 
    [ASM06]    Au, M. H., Susilo, W., and Y. Mu, "Constant-Size Dynamic
-              k-TAA", Springer, Berlin, Heidelberg, 2006,
+              k-TAA", In International Conference on Security and
+              Cryptography for Networks, pages 111-125,
+              Springer, Berlin, Heidelberg, 2006,
               <https://link.springer.com/chapter/10.1007/11832072_8>.
 
    [BBB17]    Bünz, B. B., Bootle, J. B., Boneh, D. B., Poelstra, A. P.,
@@ -3276,7 +3235,7 @@ proof = "812a204f66c9084feed7383894d910f2c17399b3c4b4bed05660921de8539f5
               <https://ia.cr/2017/1066>.
 
    [BBS04]    Boneh, D., Boyen, X., and H. Shacham, "Short Group
-              Signatures", pages 41-55, 2004,
+              Signatures", In Advances in Cryptology, pages 41-55, 2004,
               <https://link.springer.com/
               chapter/10.1007/978-3-540-28628-8_3>.
 
@@ -3285,12 +3244,14 @@ proof = "812a204f66c9084feed7383894d910f2c17399b3c4b4bed05660921de8539f5
 
    [CDL16]    Camenisch, J., Drijvers, M., and A. Lehmann, "Anonymous
               Attestation Using the Strong Diffie Hellman Assumption
-              Revisited", Springer, Cham, 2016,
+              Revisited", In International Conference on Trust and
+              Trustworthy Computing, pages 1-20, Springer, Cham, 2016,
               <https://eprint.iacr.org/2016/663.pdf>.
 
    [HDWH12]   Heninger, N., Durumeric, Z., Wustrow, E., and J.A.
               Halderman, "Mining your Ps and Qs: Detection of widespread
-              weak keys in network devices", pages 205-220, August 2012,
+              weak keys in network devices", In USENIX Security,
+              pages 205-220, August 2012,
               <https://www.usenix.org/system/files/conference/
               usenixsecurity12/sec12-final228.pdf>.
 
@@ -3308,7 +3269,8 @@ proof = "812a204f66c9084feed7383894d910f2c17399b3c4b4bed05660921de8539f5
 
    [P91]      Pedersen, T. P. P., "Non-Interactive and Information-
               Theoretic Secure Verifiable Secret Sharing", In CRYPTO,
-              1991, <https://ia.cr/2023/275>.
+              1991, <https://link.springer.com/
+              chapter/10.1007/3-540-46766-1_9>.
 
    [TZ23]     Tessaro, S. T. and C. Z. Zhu, "Revisiting BBS Signatures",
               In EUROCRYPT, 2023, <https://ia.cr/2023/275>.
@@ -4169,34 +4131,22 @@ Appendix E.  Document History
    -01
 
    *  Populated fixtures
-
    *  Added SHA-256 based ciphersuite
-
    *  Fixed typo in ProofVerify
-
    *  Clarify ASCII string usage in DST
-
    *  Added MapMessageToScalar test vectors
-
    *  Fix typo in ciphersuite name
 
    -02
 
    *  Variety of editiorial clarifications
-
    *  Clarified integer endianness
-
    *  Revised the encode for hash operation
-
    *  Shifted to using CSPRNG instead of PRF
-
    *  Removed total number of messages from proof verify operation
-
    *  Added deterministic proof fixtures
-
    *  Shifted to multiple CSPRNG calls to calculate random elements,
       instead of expand_message
-
    *  Updated hash_to_scalar to a single output
 
    -03

@@ -7,7 +7,7 @@ none                                                           M. Lodder
                                                                T. Looker
                                                                    Mattr
                                                             A. Whitehead
-                                                         23 October 2023
+                                                        20 November 2023
 
 
          Blind Signatures extension of the BBS Signature Scheme
@@ -44,8 +44,9 @@ Table of Contents
      5.5.  BlindMessagesProofVerify
    6.  Security Considerations
    7.  IANA Considerations
-   8.  Normative References
-   9.  Informative References
+   8.  References
+     8.1.  Normative References
+     8.2.  Informative References
    Appendix A.  Appendix
      A.1.  Test Vectors
    Authors' Addresses
@@ -62,12 +63,9 @@ Table of Contents
 
    U  The set of messages that are blinded from the signer during a
       blind signing.
-
    K  The set of messages that are known to the signer during a blind
       signing.
-
    s'  The signature blinding factor held by the signature recipient.
-
    blind_signature  The blind digital signature output.
 
 1.2.  Notation
@@ -126,7 +124,6 @@ Table of Contents
           by the Client for the commitment, and the generators
           (h[U+1],...,h[K]), used by the Signer for the known messages,
           is indeed empty.
-
        *  Create the blind signature using the BlindSign function.  Note
           that the blinded signature is not a valid BBS signature.
 
@@ -329,7 +326,9 @@ Procedure:
 
    This document does not make any requests of IANA.
 
-8.  Normative References
+8.  References
+
+8.1.  Normative References
 
    [I-D.irtf-cfrg-pairing-friendly-curves]
               Sakemi, Y., Kobayashi, T., Saito, T., and R. S. Wahby,
@@ -343,7 +342,7 @@ Procedure:
               DOI 10.17487/RFC2119, March 1997,
               <https://www.rfc-editor.org/info/rfc2119>.
 
-9.  Informative References
+8.2.  Informative References
 
    [BBS-DRAFT]
               Lodder, M., Looker, T., Whitehead, A., and V. Kalos, "The

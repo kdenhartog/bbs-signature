@@ -22,13 +22,13 @@
     intervaltree 3.1.0
     Jinja2 3.1.2
     lxml 4.9.3
-    platformdirs 3.11.0
+    platformdirs 4.0.0
     pycountry 22.3.5
     PyYAML 6.0
     requests 2.31.0
     setuptools 67.7.2
     six 1.16.0
-    wcwidth 0.2.8
+    wcwidth 0.2.10
 -->
 <link href="draft-irtf-cfrg-bbs-signatures.xml" rel="alternate" type="application/rfc+xml">
 <link href="#copyright" rel="license">
@@ -1027,11 +1027,11 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <thead><tr>
 <td class="left">Internet-Draft</td>
 <td class="center">The BBS Signature Scheme</td>
-<td class="right">October 2023</td>
+<td class="right">November 2023</td>
 </tr></thead>
 <tfoot><tr>
 <td class="left">Looker, et al.</td>
-<td class="center">Expires 25 April 2024</td>
+<td class="center">Expires 23 May 2024</td>
 <td class="right">[Page]</td>
 </tr></tfoot>
 </table>
@@ -1044,12 +1044,12 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <dd class="internet-draft">draft-irtf-cfrg-bbs-signatures-latest</dd>
 <dt class="label-published">Published:</dt>
 <dd class="published">
-<time datetime="2023-10-23" class="published">23 October 2023</time>
+<time datetime="2023-11-20" class="published">20 November 2023</time>
     </dd>
 <dt class="label-intended-status">Intended Status:</dt>
 <dd class="intended-status">Informational</dd>
 <dt class="label-expires">Expires:</dt>
-<dd class="expires"><time datetime="2024-04-25">25 April 2024</time></dd>
+<dd class="expires"><time datetime="2024-05-23">23 May 2024</time></dd>
 <dt class="label-authors">Authors:</dt>
 <dd class="authors">
 <div class="author">
@@ -1103,7 +1103,7 @@ svg :is([fill="white"], [fill^="#fff"]) {
         time. It is inappropriate to use Internet-Drafts as reference
         material or to cite them other than as "work in progress."<a href="#section-boilerplate.1-3" class="pilcrow">¶</a></p>
 <p id="section-boilerplate.1-4">
-        This Internet-Draft will expire on 25 April 2024.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
+        This Internet-Draft will expire on 23 May 2024.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="copyright">
@@ -1401,74 +1401,79 @@ svg :is([fill="white"], [fill^="#fff"]) {
             <p id="section-toc.1-1.9.1"><a href="#section-9" class="auto internal xref">9</a>.  <a href="#name-acknowledgements" class="internal xref">Acknowledgements</a></p>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.10">
-            <p id="section-toc.1-1.10.1"><a href="#section-10" class="auto internal xref">10</a>. <a href="#name-normative-references" class="internal xref">Normative References</a></p>
+            <p id="section-toc.1-1.10.1"><a href="#section-10" class="auto internal xref">10</a>. <a href="#name-references" class="internal xref">References</a></p>
+<ul class="compact toc ulBare ulEmpty">
+<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.10.2.1">
+                <p id="section-toc.1-1.10.2.1.1"><a href="#section-10.1" class="auto internal xref">10.1</a>.  <a href="#name-normative-references" class="internal xref">Normative References</a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.10.2.2">
+                <p id="section-toc.1-1.10.2.2.1"><a href="#section-10.2" class="auto internal xref">10.2</a>.  <a href="#name-informative-references" class="internal xref">Informative References</a></p>
+</li>
+            </ul>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.11">
-            <p id="section-toc.1-1.11.1"><a href="#section-11" class="auto internal xref">11</a>. <a href="#name-informative-references" class="internal xref">Informative References</a></p>
+            <p id="section-toc.1-1.11.1"><a href="#appendix-A" class="auto internal xref">Appendix A</a>.  <a href="#name-bls12-381-hash_to_curve-def" class="internal xref">BLS12-381 hash_to_curve Definition Using SHAKE-256</a></p>
+<ul class="compact toc ulBare ulEmpty">
+<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.11.2.1">
+                <p id="section-toc.1-1.11.2.1.1"><a href="#appendix-A.1" class="auto internal xref">A.1</a>.  <a href="#name-bls12-381-g1" class="internal xref">BLS12-381 G1</a></p>
+</li>
+            </ul>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.12">
-            <p id="section-toc.1-1.12.1"><a href="#appendix-A" class="auto internal xref">Appendix A</a>.  <a href="#name-bls12-381-hash_to_curve-def" class="internal xref">BLS12-381 hash_to_curve Definition Using SHAKE-256</a></p>
+            <p id="section-toc.1-1.12.1"><a href="#appendix-B" class="auto internal xref">Appendix B</a>.  <a href="#name-use-cases" class="internal xref">Use Cases</a></p>
 <ul class="compact toc ulBare ulEmpty">
 <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.12.2.1">
-                <p id="section-toc.1-1.12.2.1.1"><a href="#appendix-A.1" class="auto internal xref">A.1</a>.  <a href="#name-bls12-381-g1" class="internal xref">BLS12-381 G1</a></p>
+                <p id="section-toc.1-1.12.2.1.1"><a href="#appendix-B.1" class="auto internal xref">B.1</a>.  <a href="#name-non-correlating-security-to" class="internal xref">Non-correlating Security Token</a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.12.2.2">
+                <p id="section-toc.1-1.12.2.2.1"><a href="#appendix-B.2" class="auto internal xref">B.2</a>.  <a href="#name-improved-bearer-security-to" class="internal xref">Improved Bearer Security Token</a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.12.2.3">
+                <p id="section-toc.1-1.12.2.3.1"><a href="#appendix-B.3" class="auto internal xref">B.3</a>.  <a href="#name-selectively-disclosure-enab" class="internal xref">Selectively Disclosure Enabled Identity Credentials</a></p>
 </li>
             </ul>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.13">
-            <p id="section-toc.1-1.13.1"><a href="#appendix-B" class="auto internal xref">Appendix B</a>.  <a href="#name-use-cases" class="internal xref">Use Cases</a></p>
+            <p id="section-toc.1-1.13.1"><a href="#appendix-C" class="auto internal xref">Appendix C</a>.  <a href="#name-additional-test-vectors" class="internal xref">Additional Test Vectors</a></p>
 <ul class="compact toc ulBare ulEmpty">
 <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.13.2.1">
-                <p id="section-toc.1-1.13.2.1.1"><a href="#appendix-B.1" class="auto internal xref">B.1</a>.  <a href="#name-non-correlating-security-to" class="internal xref">Non-correlating Security Token</a></p>
+                <p id="section-toc.1-1.13.2.1.1"><a href="#appendix-C.1" class="auto internal xref">C.1</a>.  <a href="#name-bls12-381-shake-256-ciphers" class="internal xref">BLS12-381-SHAKE-256 Ciphersuite</a></p>
+<ul class="compact toc ulBare ulEmpty">
+<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.13.2.1.2.1">
+                    <p id="section-toc.1-1.13.2.1.2.1.1"><a href="#appendix-C.1.1" class="auto internal xref">C.1.1</a>.  <a href="#name-signature-test-vectors" class="internal xref">Signature Test Vectors</a></p>
+</li>
+                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.13.2.1.2.2">
+                    <p id="section-toc.1-1.13.2.1.2.2.1"><a href="#appendix-C.1.2" class="auto internal xref">C.1.2</a>.  <a href="#name-proof-test-vectors" class="internal xref">Proof Test Vectors</a></p>
+</li>
+                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.13.2.1.2.3">
+                    <p id="section-toc.1-1.13.2.1.2.3.1"><a href="#appendix-C.1.3" class="auto internal xref">C.1.3</a>.  <a href="#name-hash-to-scalar-test-vectors" class="internal xref">Hash to Scalar Test Vectors</a></p>
+</li>
+                </ul>
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.13.2.2">
-                <p id="section-toc.1-1.13.2.2.1"><a href="#appendix-B.2" class="auto internal xref">B.2</a>.  <a href="#name-improved-bearer-security-to" class="internal xref">Improved Bearer Security Token</a></p>
+                <p id="section-toc.1-1.13.2.2.1"><a href="#appendix-C.2" class="auto internal xref">C.2</a>.  <a href="#name-bls12-381-sha-256-ciphersui" class="internal xref">BLS12-381-SHA-256 Ciphersuite</a></p>
+<ul class="compact toc ulBare ulEmpty">
+<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.13.2.2.2.1">
+                    <p id="section-toc.1-1.13.2.2.2.1.1"><a href="#appendix-C.2.1" class="auto internal xref">C.2.1</a>.  <a href="#name-signature-test-vectors-2" class="internal xref">Signature Test Vectors</a></p>
 </li>
-              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.13.2.3">
-                <p id="section-toc.1-1.13.2.3.1"><a href="#appendix-B.3" class="auto internal xref">B.3</a>.  <a href="#name-selectively-disclosure-enab" class="internal xref">Selectively Disclosure Enabled Identity Credentials</a></p>
+                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.13.2.2.2.2">
+                    <p id="section-toc.1-1.13.2.2.2.2.1"><a href="#appendix-C.2.2" class="auto internal xref">C.2.2</a>.  <a href="#name-proof-test-vectors-2" class="internal xref">Proof Test Vectors</a></p>
+</li>
+                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.13.2.2.2.3">
+                    <p id="section-toc.1-1.13.2.2.2.3.1"><a href="#appendix-C.2.3" class="auto internal xref">C.2.3</a>.  <a href="#name-hash-to-scalar-test-vectors-2" class="internal xref">Hash to Scalar Test Vectors</a></p>
+</li>
+                </ul>
 </li>
             </ul>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.14">
-            <p id="section-toc.1-1.14.1"><a href="#appendix-C" class="auto internal xref">Appendix C</a>.  <a href="#name-additional-test-vectors" class="internal xref">Additional Test Vectors</a></p>
-<ul class="compact toc ulBare ulEmpty">
-<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.14.2.1">
-                <p id="section-toc.1-1.14.2.1.1"><a href="#appendix-C.1" class="auto internal xref">C.1</a>.  <a href="#name-bls12-381-shake-256-ciphers" class="internal xref">BLS12-381-SHAKE-256 Ciphersuite</a></p>
-<ul class="compact toc ulBare ulEmpty">
-<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.14.2.1.2.1">
-                    <p id="section-toc.1-1.14.2.1.2.1.1"><a href="#appendix-C.1.1" class="auto internal xref">C.1.1</a>.  <a href="#name-signature-test-vectors" class="internal xref">Signature Test Vectors</a></p>
-</li>
-                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.14.2.1.2.2">
-                    <p id="section-toc.1-1.14.2.1.2.2.1"><a href="#appendix-C.1.2" class="auto internal xref">C.1.2</a>.  <a href="#name-proof-test-vectors" class="internal xref">Proof Test Vectors</a></p>
-</li>
-                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.14.2.1.2.3">
-                    <p id="section-toc.1-1.14.2.1.2.3.1"><a href="#appendix-C.1.3" class="auto internal xref">C.1.3</a>.  <a href="#name-hash-to-scalar-test-vectors" class="internal xref">Hash to Scalar Test Vectors</a></p>
-</li>
-                </ul>
-</li>
-              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.14.2.2">
-                <p id="section-toc.1-1.14.2.2.1"><a href="#appendix-C.2" class="auto internal xref">C.2</a>.  <a href="#name-bls12-381-sha-256-ciphersui" class="internal xref">BLS12-381-SHA-256 Ciphersuite</a></p>
-<ul class="compact toc ulBare ulEmpty">
-<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.14.2.2.2.1">
-                    <p id="section-toc.1-1.14.2.2.2.1.1"><a href="#appendix-C.2.1" class="auto internal xref">C.2.1</a>.  <a href="#name-signature-test-vectors-2" class="internal xref">Signature Test Vectors</a></p>
-</li>
-                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.14.2.2.2.2">
-                    <p id="section-toc.1-1.14.2.2.2.2.1"><a href="#appendix-C.2.2" class="auto internal xref">C.2.2</a>.  <a href="#name-proof-test-vectors-2" class="internal xref">Proof Test Vectors</a></p>
-</li>
-                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.14.2.2.2.3">
-                    <p id="section-toc.1-1.14.2.2.2.3.1"><a href="#appendix-C.2.3" class="auto internal xref">C.2.3</a>.  <a href="#name-hash-to-scalar-test-vectors-2" class="internal xref">Hash to Scalar Test Vectors</a></p>
-</li>
-                </ul>
-</li>
-            </ul>
+            <p id="section-toc.1-1.14.1"><a href="#appendix-D" class="auto internal xref">Appendix D</a>.  <a href="#name-proof-generation-and-verifi" class="internal xref">Proof Generation and Verification Algorithmic Explanation</a></p>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.15">
-            <p id="section-toc.1-1.15.1"><a href="#appendix-D" class="auto internal xref">Appendix D</a>.  <a href="#name-proof-generation-and-verifi" class="internal xref">Proof Generation and Verification Algorithmic Explanation</a></p>
+            <p id="section-toc.1-1.15.1"><a href="#appendix-E" class="auto internal xref">Appendix E</a>.  <a href="#name-document-history" class="internal xref">Document History</a></p>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.16">
-            <p id="section-toc.1-1.16.1"><a href="#appendix-E" class="auto internal xref">Appendix E</a>.  <a href="#name-document-history" class="internal xref">Document History</a></p>
-</li>
-          <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.17">
-            <p id="section-toc.1-1.17.1"><a href="#appendix-F" class="auto internal xref"></a><a href="#name-authors-addresses" class="internal xref">Authors' Addresses</a></p>
+            <p id="section-toc.1-1.16.1"><a href="#appendix-F" class="auto internal xref"></a><a href="#name-authors-addresses" class="internal xref">Authors' Addresses</a></p>
 </li>
         </ul>
 </nav>
@@ -1526,6 +1531,7 @@ svg :is([fill="white"], [fill^="#fff"]) {
                                              (5) ProofVerify
 
 
+
 </pre>
 </div>
 <figcaption><a href="#figure-1" class="selfRef">Figure 1</a>:
@@ -1538,7 +1544,7 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <a href="#section-1.1" class="section-number selfRef">1.1. </a><a href="#name-terminology" class="section-name selfRef">Terminology</a>
         </h3>
 <p id="section-1.1-1">The following terminology is used throughout this document:<a href="#section-1.1-1" class="pilcrow">¶</a></p>
-<span class="break"></span><dl class="dlParallel" id="section-1.1-2">
+<span class="break"></span><dl class="dlCompact dlParallel" id="section-1.1-2">
           <dt id="section-1.1-2.1">SK</dt>
           <dd style="margin-left: 1.5em" id="section-1.1-2.2">The secret key for the signature scheme.<a href="#section-1.1-2.2" class="pilcrow">¶</a>
 </dd>
@@ -1608,7 +1614,7 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <a href="#section-1.2" class="section-number selfRef">1.2. </a><a href="#name-notation" class="section-name selfRef">Notation</a>
         </h3>
 <p id="section-1.2-1">The following notation and primitives are used:<a href="#section-1.2-1" class="pilcrow">¶</a></p>
-<span class="break"></span><dl class="dlParallel" id="section-1.2-2">
+<span class="break"></span><dl class="dlCompact dlParallel" id="section-1.2-2">
           <dt id="section-1.2-2.1">a || b</dt>
           <dd style="margin-left: 1.5em" id="section-1.2-2.2">Denotes the concatenation of octet strings a and b.<a href="#section-1.2-2.2" class="pilcrow">¶</a>
 </dd>
@@ -1631,7 +1637,7 @@ svg :is([fill="white"], [fill^="#fff"]) {
         <dd class="break"></dd>
 </dl>
 <p id="section-1.2-3">Terms specific to pairing-friendly elliptic curves that are relevant to this document are restated below, originally defined in <span>[<a href="#I-D.irtf-cfrg-pairing-friendly-curves" class="cite xref">I-D.irtf-cfrg-pairing-friendly-curves</a>]</span>.<a href="#section-1.2-3" class="pilcrow">¶</a></p>
-<span class="break"></span><dl class="dlParallel" id="section-1.2-4">
+<span class="break"></span><dl class="dlCompact dlParallel" id="section-1.2-4">
           <dt id="section-1.2-4.1">E1, E2</dt>
           <dd style="margin-left: 1.5em" id="section-1.2-4.2">elliptic curve groups defined over finite fields. This document assumes that E1 has a more compact representation than E2, i.e., because E1 is defined over a smaller field than E2. For a pairing-friendly curve, this document denotes operations in E1 and E2 in additive notation, i.e., P + Q denotes point addition and x * P denotes scalar multiplication.<a href="#section-1.2-4.2" class="pilcrow">¶</a>
 </dd>
@@ -1744,14 +1750,14 @@ document, are to be interpreted as described in <span>[<a href="#RFC2119" class=
 <a href="#section-3.2" class="section-number selfRef">3.2. </a><a href="#name-interfaces" class="section-name selfRef">Interfaces</a>
         </h3>
 <p id="section-3.2-1">The BBS signature scheme is organized as follows:<a href="#section-3.2-1" class="pilcrow">¶</a></p>
-<ul class="normal">
-<li class="normal" id="section-3.2-2.1">A set of low level (core) operations, taking care of the main cryptographic functionality.<a href="#section-3.2-2.1" class="pilcrow">¶</a>
+<ul class="compact">
+<li class="compact" id="section-3.2-2.1">A set of low level (core) operations, taking care of the main cryptographic functionality.<a href="#section-3.2-2.1" class="pilcrow">¶</a>
 </li>
-          <li class="normal" id="section-3.2-2.2">An Application Interface (API), that uses the core operations in a secure way.<a href="#section-3.2-2.2" class="pilcrow">¶</a>
+          <li class="compact" id="section-3.2-2.2">An Application Interface (API), that uses the core operations in a secure way.<a href="#section-3.2-2.2" class="pilcrow">¶</a>
 </li>
         </ul>
 <p id="section-3.2-3">Each of the core operations (see <a href="#core-operations" class="auto internal xref">Section 3.6</a>), expect a list of points (called the generators, see <a href="#generators" class="auto internal xref">Section 3.3.2</a>) and a list of messages represented as scalar values (see <a href="#messages" class="auto internal xref">Section 3.3.3</a>). It is the job of the Interface to:<a href="#section-3.2-3" class="pilcrow">¶</a></p>
-<ol start="1" type="1" class="normal type-1" id="section-3.2-4">
+<ol start="1" type="1" class="compact type-1" id="section-3.2-4">
 <li id="section-3.2-4.1">Create the necessary generators.<a href="#section-3.2-4.1" class="pilcrow">¶</a>
 </li>
           <li id="section-3.2-4.2">Map the messages to scalars (see <a href="#messages" class="auto internal xref">Section 3.3.3</a>).<a href="#section-3.2-4.2" class="pilcrow">¶</a>
@@ -1796,12 +1802,12 @@ document, are to be interpreted as described in <span>[<a href="#RFC2119" class=
 <a href="#section-3.3.4" class="section-number selfRef">3.3.4. </a><a href="#name-serializing-to-octets" class="section-name selfRef">Serializing to Octets</a>
           </h4>
 <p id="section-3.3.4-1">When serializing one or more values to produce an octet string, each element will be encoded using a specific operation determined by its type. More concretely,<a href="#section-3.3.4-1" class="pilcrow">¶</a></p>
-<ul class="normal">
-<li class="normal" id="section-3.3.4-2.1">Points in <code>G*</code> will be serialized using the <code>point_to_octets_g*</code> implementation for a particular ciphersuite.<a href="#section-3.3.4-2.1" class="pilcrow">¶</a>
+<ul class="compact">
+<li class="compact" id="section-3.3.4-2.1">Points in <code>G*</code> will be serialized using the <code>point_to_octets_g*</code> implementation for a particular ciphersuite.<a href="#section-3.3.4-2.1" class="pilcrow">¶</a>
 </li>
-            <li class="normal" id="section-3.3.4-2.2">Non-negative integers will be serialized using <code>I2OSP</code> with an output length of 8 bytes.<a href="#section-3.3.4-2.2" class="pilcrow">¶</a>
+            <li class="compact" id="section-3.3.4-2.2">Non-negative integers will be serialized using <code>I2OSP</code> with an output length of 8 bytes.<a href="#section-3.3.4-2.2" class="pilcrow">¶</a>
 </li>
-            <li class="normal" id="section-3.3.4-2.3">Scalars will be serialized using <code>I2OSP</code> with a constant output length defined by a particular ciphersuite.<a href="#section-3.3.4-2.3" class="pilcrow">¶</a>
+            <li class="compact" id="section-3.3.4-2.3">Scalars will be serialized using <code>I2OSP</code> with a constant output length defined by a particular ciphersuite.<a href="#section-3.3.4-2.3" class="pilcrow">¶</a>
 </li>
           </ul>
 <p id="section-3.3.4-3">We also use strings in double quotes to represent ASCII-encoded literals. For example "BBS" will be used to refer to the octet string, <code>010000100100001001010011</code>.<a href="#section-3.3.4-3" class="pilcrow">¶</a></p>
@@ -1820,7 +1826,7 @@ document, are to be interpreted as described in <span>[<a href="#RFC2119" class=
           <h4 id="name-secret-key">
 <a href="#section-3.4.1" class="section-number selfRef">3.4.1. </a><a href="#name-secret-key" class="section-name selfRef">Secret Key</a>
           </h4>
-<p id="section-3.4.1-1">This operation generates a secret key (SK) deterministically from a secret octet string (key_material). This operation is the RECOMMENDED way of generating a secret key, but its use is not required for compatibility, and implementations MAY use a different key generation procedure. For security, such an alternative MUST output a secret key that is statistically close to uniformly random in the range from 1 to r-1. An example of an HKDF-based alternative is the KeyGen operation defined in Section 2.3 of <span>[<a href="#I-D.irtf-cfrg-bls-signature" class="cite xref">I-D.irtf-cfrg-bls-signature</a>]</span> (with an appropriate, BBS specific, salt value, like "BBS<em>SIG</em>KEYGEN<em>SALT</em>").<a href="#section-3.4.1-1" class="pilcrow">¶</a></p>
+<p id="section-3.4.1-1">This operation generates a secret key (SK) deterministically from a secret octet string (key_material). This operation is the RECOMMENDED way of generating a secret key, but its use is not required for compatibility, and implementations MAY use a different key generation procedure. For security, such an alternative MUST output a secret key that is statistically close to uniformly random in the range from 1 to r-1. An example of an HKDF-based alternative is the KeyGen operation defined in Section 2.3 of <span>[<a href="#I-D.irtf-cfrg-bls-signature" class="cite xref">I-D.irtf-cfrg-bls-signature</a>]</span> (with an appropriate, BBS specific, salt value, like "BBS_SIG_KEYGEN<em>SALT</em>").<a href="#section-3.4.1-1" class="pilcrow">¶</a></p>
 <p id="section-3.4.1-2">For security, key_material MUST be random and infeasible to guess, e.g. generated by a trusted source of randomness and with enough entropy. See <span>[<a href="#RFC4086" class="cite xref">RFC4086</a>]</span> for suggestions on generating randomness. key_material MUST be at least 32 bytes long, but it MAY be longer.<a href="#section-3.4.1-2" class="pilcrow">¶</a></p>
 <p id="section-3.4.1-3">KeyGen takes an optional input, key_info. This parameter MAY be used to derive distinct keys from the same key material.<a href="#section-3.4.1-3" class="pilcrow">¶</a></p>
 <p id="section-3.4.1-4">Because KeyGen is deterministic, implementations MAY choose either to store the resulting SK or to store key_material and key_info and call KeyGen to derive SK when necessary.<a href="#section-3.4.1-4" class="pilcrow">¶</a></p>
@@ -1849,6 +1855,7 @@ Procedure:
 4. SK = hash_to_scalar(derive_input, key_dst)
 5. if SK is INVALID, return INVALID
 6. return SK
+
 </pre><a href="#section-3.4.1-5" class="pilcrow">¶</a>
 </div>
 </section>
@@ -1874,6 +1881,7 @@ Procedure:
 
 1. W = SK * BP2
 2. return point_to_octets_g2(W)
+
 </pre><a href="#section-3.4.2-2" class="pilcrow">¶</a>
 </div>
 </section>
@@ -1926,6 +1934,7 @@ Procedure:
                                               generators, api_id)
 4. if signature is INVALID, return INVALID
 5. return signature
+
 </pre><a href="#section-3.5.1-2" class="pilcrow">¶</a>
 </div>
 </section>
@@ -1969,6 +1978,7 @@ Procedure:
 3. result = CoreVerify(PK, signature, generators, header,
                                          message_scalars, api_id)
 4. return result
+
 </pre><a href="#section-3.5.2-2" class="pilcrow">¶</a>
 </div>
 </section>
@@ -2020,6 +2030,7 @@ Procedure:
                              message_scalars, disclosed_indexes, api_id)
 4. if proof is INVALID, return INVALID
 5. return proof
+
 </pre><a href="#section-3.5.3-3" class="pilcrow">¶</a>
 </div>
 </section>
@@ -2080,6 +2091,7 @@ Procedure:
 3. result = CoreProofVerify(PK, proof, generators, header, ph,
                              message_scalars, disclosed_indexes, api_id)
 4. return result
+
 </pre><a href="#section-3.5.4-2" class="pilcrow">¶</a>
 </div>
 </section>
@@ -2093,14 +2105,14 @@ Procedure:
         </h3>
 <p id="section-3.6-1">The operations defined in this section perform the low-level cryptographic functionality of BBS Signatures. Those core functions MUST only be invoked by an Application Interface that conform to the requirements outlined in <a href="#defining-new-interfaces" class="auto internal xref">Section 3.8</a>.<a href="#section-3.6-1" class="pilcrow">¶</a></p>
 <p id="section-3.6-2">The operations of this section make use of functions and sub-routines defined in <a href="#utility-operations">Utility Operations</a>. More specifically,<a href="#section-3.6-2" class="pilcrow">¶</a></p>
-<ul class="normal">
-<li class="normal" id="section-3.6-3.1">
+<ul class="compact">
+<li class="compact" id="section-3.6-3.1">
             <code>hash_to_scalar</code> is defined in <a href="#hash-to-scalar" class="auto internal xref">Section 4.2.2</a><a href="#section-3.6-3.1" class="pilcrow">¶</a>
 </li>
-          <li class="normal" id="section-3.6-3.2">
+          <li class="compact" id="section-3.6-3.2">
             <code>calculate_domain</code> and <code>calculate_challenge</code> are defined in <a href="#domain-calculation" class="auto internal xref">Section 4.2.3</a> and <a href="#challenge-calculation" class="auto internal xref">Section 3.7.4</a> correspondingly.<a href="#section-3.6-3.2" class="pilcrow">¶</a>
 </li>
-          <li class="normal" id="section-3.6-3.3">
+          <li class="compact" id="section-3.6-3.3">
             <code>serialize</code>, <code>signature_to_octets</code>, <code>octets_to_signature</code>, <code>proof_to_octets</code>, <code>octets_to_proof</code> and <code>octets_to_pubkey</code> are defined in <a href="#serialization" class="auto internal xref">Section 4.2.4</a><a href="#section-3.6-3.3" class="pilcrow">¶</a>
 </li>
         </ul>
@@ -2169,6 +2181,7 @@ Procedure:
 5. B = P1 + Q_1 * domain + H_1 * msg_1 + ... + H_L * msg_L + commitment
 6. A = B * (1 / (SK + e))
 7. return signature_to_octets((A, e))
+
 </pre><a href="#section-3.6.1-4" class="pilcrow">¶</a>
 </div>
 <p id="section-3.6.1-5"><strong>Note</strong> When computing step 12 of the above procedure there is an extremely small probability (around <code>2^(-r)</code>) that the condition <code>(SK + e) = 0 mod r</code> will be met. How implementations evaluate the inverse of the scalar value <code>0</code> may vary, with some returning an error and others returning <code>0</code> as a result. If the returned value from the inverse operation <code>1/(SK + e)</code> does evaluate to <code>0</code> the value of <code>A</code> will equal <code>Identity_G1</code> thus an invalid signature. Implementations MAY elect to check <code>(SK + e) = 0 mod r</code> prior to step 9, and or <code>A != Identity_G1</code> after step 9 to prevent the production of invalid signatures.<a href="#section-3.6.1-5" class="pilcrow">¶</a></p>
@@ -2225,6 +2238,7 @@ Procedure:
 2. B = P1 + Q_1 * domain + H_1 * msg_1 + ... + H_L * msg_L
 3. if e(A, W + BP2 * e) * e(B, -BP2) != Identity_GT, return INVALID
 4. return VALID
+
 </pre><a href="#section-3.6.2-2" class="pilcrow">¶</a>
 </div>
 </section>
@@ -2298,6 +2312,7 @@ Procedure:
 5. proof = ProofFinalize(init_res, challenge, e, random_scalars,
                                                    undisclosed_messages)
 6. return proof
+
 </pre><a href="#section-3.6.3-7" class="pilcrow">¶</a>
 </div>
 </section>
@@ -2363,6 +2378,7 @@ Procedure:
 4. if cp != challenge, return INVALID
 5. if e(Abar, W) * e(Bbar, -BP2) != Identity_GT, return INVALID
 6. return VALID
+
 </pre><a href="#section-3.6.4-4" class="pilcrow">¶</a>
 </div>
 </section>
@@ -2441,6 +2457,7 @@ Procedure:
 4. Bbar = B * r1 - Abar * e
 5. T =  Abar * r2 + Bbar * r3 + H_j1 * m~_j1 + ... + H_jU * m~_jU
 6. return (Abar, Bbar, T, domain)
+
 </pre><a href="#section-3.7.1-3" class="pilcrow">¶</a>
 </div>
 </section>
@@ -2488,6 +2505,7 @@ Procedure:
 4. for j in (1, ..., U): m^_j = m~_j + undisclosed_j * challenge (mod r)
 5. proof = (Abar, Bbar, r2^, r3^, (m^_j1, ..., m^_jU), challenge)
 6. return proof_to_octets(proof)
+
 </pre><a href="#section-3.7.2-2" class="pilcrow">¶</a>
 </div>
 </section>
@@ -2566,6 +2584,7 @@ Procedure:
 3. T =  Abar * r2^ + Bbar * r3^ + H_j1 * m^_j1 + ... +  H_jU * m^_jU
 4. T = T + D * c
 5. return (Abar, Bbar, T, domain)
+
 </pre><a href="#section-3.7.3-3" class="pilcrow">¶</a>
 </div>
 </section>
@@ -2622,6 +2641,7 @@ Procedure:
 1. c_arr = (Abar, Bbar, C, R, i1, ..., iR, msg_i1, ..., msg_iR, domain)
 2. c_octs = serialize(c_array) || I2OSP(length(ph), 8) || ph
 3. return hash_to_scalar(c_octs, challenge_dst)
+
 </pre><a href="#section-3.7.4-3" class="pilcrow">¶</a>
 </div>
 <p id="section-3.7.4-4"><strong>Note</strong>: If the presentation header (ph) is not supplied in <code>ProofChallengeCalculate</code>, 8 bytes representing a length of 0 (i.e., <code>0x0000000000000000</code>), must still be appended after the <code>c_octs</code> value, during the concatenation step of the above procedure (step 3).<a href="#section-3.7.4-4" class="pilcrow">¶</a></p>
@@ -2639,6 +2659,7 @@ Procedure:
 <p id="section-3.8-3">Each Interface MUST also define a unique ID as a parameter, called <code>api_id</code>. It is REQUIRED from the operations that create generators and map messages to scalars, to also define a unique ID (see <a href="#interface-utilities" class="auto internal xref">Section 4.1</a>). The <code>api_id</code> MUST have the following format:<a href="#section-3.8-3" class="pilcrow">¶</a></p>
 <div class="alignLeft art-text artwork" id="section-3.8-4">
 <pre>ciphersuite_id || CREATE_GENERATORS_ID || MAP_TO_SCALAR_ID || ADD_INFO
+
 </pre><a href="#section-3.8-4" class="pilcrow">¶</a>
 </div>
 <p id="section-3.8-5">Where <code>ciphersuite_id</code> is defined by the ciphersuite, <code>CREATE_GENERATORS_ID</code> is the unique IDs of the operation that creates the generators, <code>MAP_TO_SCALAR_ID</code> is the unique ID of the operation that maps the messages to scalars and the <code>ADD_INFO</code> value is an optional octet string indicating any additional information used to uniquely qualify the Interface. When <code>ADD_INFO</code> is present, it MUST only contain ASCII encoded characters with codes between 0x21 and 0x7e (inclusive) and MUST end with an underscore (ASCII code: 0x5f), other than the last character the string MUST not contain any other underscores (ASCII code: 0x5f). The <code>api_id</code> value, MUST be used by all subroutines an Interface calls, to ensure proper domain separation.<a href="#section-3.8-5" class="pilcrow">¶</a></p>
@@ -2717,12 +2738,14 @@ Procedure:
 3.    v = expand_message(v || I2OSP(i, 8), seed_dst, expand_len)
 4.    generator_i = hash_to_curve_g1(v, generator_dst)
 5. return (generator_1, ..., generator_count)
+
 </pre><a href="#section-4.1.1-3" class="pilcrow">¶</a>
 </div>
 <p id="section-4.1.1-4">The value of <code>v</code> MAY also be cached in order to efficiently extend an existing list of cached generator points.<a href="#section-4.1.1-4" class="pilcrow">¶</a></p>
 <p id="section-4.1.1-5">The <code>CREATE_GENERATORS_ID</code> of the above operation is define as,<a href="#section-4.1.1-5" class="pilcrow">¶</a></p>
 <div class="alignLeft art-text artwork" id="section-4.1.1-6">
 <pre>CREATE_GENERATORS_ID = "H2G_"
+
 </pre><a href="#section-4.1.1-6" class="pilcrow">¶</a>
 </div>
 <div id="defining-new-generators">
@@ -2731,21 +2754,21 @@ Procedure:
 <a href="#section-4.1.1.1" class="section-number selfRef">4.1.1.1. </a><a href="#name-defining-new-generators" class="section-name selfRef">Defining new Generators</a>
             </h5>
 <p id="section-4.1.1.1-1">When defining a new <code>create_generators</code> procedure, the most important property is that the points are pseudo-randomly chosen from the G1 group, given reasonable assumptions and cryptographic primitives. More specifically, the required properties are<a href="#section-4.1.1.1-1" class="pilcrow">¶</a></p>
-<ul class="normal">
-<li class="normal" id="section-4.1.1.1-2.1">The generators should be indistinguishable from uniformly radom points of G1. This means that given only the points <code>H_1, ..., H_i</code> it should be infeasible to guess <code>H_(i+1)</code> (or any <code>H_j</code> with <code>j &gt; i</code>), for any <code>i</code>.<a href="#section-4.1.1.1-2.1" class="pilcrow">¶</a>
+<ul class="compact">
+<li class="compact" id="section-4.1.1.1-2.1">The generators should be indistinguishable from uniformly radom points of G1. This means that given only the points <code>H_1, ..., H_i</code> it should be infeasible to guess <code>H_(i+1)</code> (or any <code>H_j</code> with <code>j &gt; i</code>), for any <code>i</code>.<a href="#section-4.1.1.1-2.1" class="pilcrow">¶</a>
 </li>
-              <li class="normal" id="section-4.1.1.1-2.2">The returned points must be unique with very high probability, that would not lessen the targeted security level of the ciphersuite. Specifically, for a security level <code>k</code>, the probability of a collision should be at most <code>1/2^k</code>.<a href="#section-4.1.1.1-2.2" class="pilcrow">¶</a>
+              <li class="compact" id="section-4.1.1.1-2.2">The returned points must be unique with very high probability, that would not lessen the targeted security level of the ciphersuite. Specifically, for a security level <code>k</code>, the probability of a collision should be at most <code>1/2^k</code>.<a href="#section-4.1.1.1-2.2" class="pilcrow">¶</a>
 </li>
-              <li class="normal" id="section-4.1.1.1-2.3">It should be infeasible to guess the discrete logarithm of the returned points, for any base, even with knowledge of the public parameters that were used to create those generators (like the <code>generator_seed</code> value in <a href="#generators-calculation" class="auto internal xref">Section 4.1.1</a>). Note that pseudo randomness does not necessarily imply this property. For example, an implementation that repeatably hashes a public seed value to create exponents <code>r_1, r_2, ..., r_count</code> (where <code>r_1 = hash(seed), r_2 = hash(r_1), ...</code>) and then returns the points <code>H_1 = P1 * r_1, H_2 = P_1 * r_2, ..., H_count = P_1 * r_count</code> would be insecure (given knowledge of the seed), but given knowledge of only the points <code>H_1, ..., H_count</code>, the sequence would appear random.<a href="#section-4.1.1.1-2.3" class="pilcrow">¶</a>
+              <li class="compact" id="section-4.1.1.1-2.3">It should be infeasible to guess the discrete logarithm of the returned points, for any base, even with knowledge of the public parameters that were used to create those generators (like the <code>generator_seed</code> value in <a href="#generators-calculation" class="auto internal xref">Section 4.1.1</a>). Note that pseudo randomness does not necessarily imply this property. For example, an implementation that repeatably hashes a public seed value to create exponents <code>r_1, r_2, ..., r_count</code> (where <code>r_1 = hash(seed), r_2 = hash(r_1), ...</code>) and then returns the points <code>H_1 = P1 * r_1, H_2 = P_1 * r_2, ..., H_count = P_1 * r_count</code> would be insecure (given knowledge of the seed), but given knowledge of only the points <code>H_1, ..., H_count</code>, the sequence would appear random.<a href="#section-4.1.1.1-2.3" class="pilcrow">¶</a>
 </li>
-              <li class="normal" id="section-4.1.1.1-2.4">The returned points must be different from the Identity point of G1 as well as the constant point <code>P1</code> defined by the ciphersuite.<a href="#section-4.1.1.1-2.4" class="pilcrow">¶</a>
+              <li class="compact" id="section-4.1.1.1-2.4">The returned points must be different from the Identity point of G1 as well as the constant point <code>P1</code> defined by the ciphersuite.<a href="#section-4.1.1.1-2.4" class="pilcrow">¶</a>
 </li>
             </ul>
 <p id="section-4.1.1.1-3">Every operation that is used to return generator points for use with the core BBS operations (<a href="#core-operations" class="auto internal xref">Section 3.6</a>), MUST return points that conform to the aforementioned rules. Such operation must also follow the rules outlined bellow,<a href="#section-4.1.1.1-3" class="pilcrow">¶</a></p>
-<ul class="normal">
-<li class="normal" id="section-4.1.1.1-4.1">It MUST be deterministic and constant time for a specific number of generators.<a href="#section-4.1.1.1-4.1" class="pilcrow">¶</a>
+<ul class="compact">
+<li class="compact" id="section-4.1.1.1-4.1">It MUST be deterministic and constant time for a specific number of generators.<a href="#section-4.1.1.1-4.1" class="pilcrow">¶</a>
 </li>
-              <li class="normal" id="section-4.1.1.1-4.2">It MUST use proper domain separation for both the <code>create_generators</code> procedure, as well as all of the internally-called procedures.<a href="#section-4.1.1.1-4.2" class="pilcrow">¶</a>
+              <li class="compact" id="section-4.1.1.1-4.2">It MUST use proper domain separation for both the <code>create_generators</code> procedure, as well as all of the internally-called procedures.<a href="#section-4.1.1.1-4.2" class="pilcrow">¶</a>
 </li>
             </ul>
 </section>
@@ -2788,11 +2811,13 @@ Procedure:
 2. for i in (1, ..., L):
 3.     msg_scalar_i = hash_to_scalar(messages[i], map_dst)
 4. return (msg_scalar_1, ..., msg_scalar_L)
+
 </pre><a href="#section-4.1.2-2" class="pilcrow">¶</a>
 </div>
 <p id="section-4.1.2-3">The <code>MAP_TO_SCALAR_ID</code> of the above operation is defines as,<a href="#section-4.1.2-3" class="pilcrow">¶</a></p>
 <div class="alignLeft art-text artwork" id="section-4.1.2-4">
 <pre>MAP_TO_SCALAR_ID = "HM2S_"
+
 </pre><a href="#section-4.1.2-4" class="pilcrow">¶</a>
 </div>
 <div id="define-a-new-map-to-scalar">
@@ -2812,17 +2837,18 @@ and C2 = messages_to_scalars(messages).
 
 If we append msg_prime_scalar at the end of C2, it must always hold that
 C1 == C2.
+
 </pre><a href="#section-4.1.2.1-2" class="pilcrow">¶</a>
 </div>
 <p id="section-4.1.2.1-3">Additionally, the new operation MUST conform to the following requirements:<a href="#section-4.1.2.1-3" class="pilcrow">¶</a></p>
-<ul class="normal">
-<li class="normal" id="section-4.1.2.1-4.1">The returned scalars MUST be independent. More specifically, knowledge of any subset of the returned scalars MUST NOT reveal any information about the scalars not in that subset.<a href="#section-4.1.2.1-4.1" class="pilcrow">¶</a>
+<ul class="compact">
+<li class="compact" id="section-4.1.2.1-4.1">The returned scalars MUST be independent. More specifically, knowledge of any subset of the returned scalars MUST NOT reveal any information about the scalars not in that subset.<a href="#section-4.1.2.1-4.1" class="pilcrow">¶</a>
 </li>
-              <li class="normal" id="section-4.1.2.1-4.2">Unique inputs MUST result to unique outputs.<a href="#section-4.1.2.1-4.2" class="pilcrow">¶</a>
+              <li class="compact" id="section-4.1.2.1-4.2">Unique inputs MUST result to unique outputs.<a href="#section-4.1.2.1-4.2" class="pilcrow">¶</a>
 </li>
-              <li class="normal" id="section-4.1.2.1-4.3">If the inputted vector of messages does not include any duplicates, the outputted scalars MUST NOT include any duplicates either.<a href="#section-4.1.2.1-4.3" class="pilcrow">¶</a>
+              <li class="compact" id="section-4.1.2.1-4.3">If the inputted vector of messages does not include any duplicates, the outputted scalars MUST NOT include any duplicates either.<a href="#section-4.1.2.1-4.3" class="pilcrow">¶</a>
 </li>
-              <li class="normal" id="section-4.1.2.1-4.4">It MUST be deterministic and constant time on the length of the inputted vector of messages.<a href="#section-4.1.2.1-4.4" class="pilcrow">¶</a>
+              <li class="compact" id="section-4.1.2.1-4.4">It MUST be deterministic and constant time on the length of the inputted vector of messages.<a href="#section-4.1.2.1-4.4" class="pilcrow">¶</a>
 </li>
             </ul>
 </section>
@@ -2867,6 +2893,7 @@ Procedure:
 1. for i in (1, ..., count):
 2.     r_i = OS2IP(get_random(expand_len)) mod r
 3. return (r_1, r_2, ..., r_count)
+
 </pre><a href="#section-4.2.1-3" class="pilcrow">¶</a>
 </div>
 </section>
@@ -2907,6 +2934,7 @@ Procedure:
 
 1. uniform_bytes = expand_message(msg_octets, dst, expand_len)
 2. return OS2IP(uniform_bytes) mod r
+
 </pre><a href="#section-4.2.2-4" class="pilcrow">¶</a>
 </div>
 </section>
@@ -2960,6 +2988,7 @@ Procedure:
 2. dom_octs = serialize(dom_array) || api_id
 3. dom_input = PK || dom_octs || I2OSP(length(header), 8) || header
 4. return hash_to_scalar(dom_input, domain_dst)
+
 </pre><a href="#section-4.2.3-5" class="pilcrow">¶</a>
 </div>
 <p id="section-4.2.3-6"><strong>Note</strong>: If the header is not supplied in <code>calculate_domain</code>, it defaults to the empty octet string (""). This means that in the concatenation step of the above procedure (step 3), 8 bytes representing a length of 0 (i.e., <code>0x0000000000000000</code>), will still need to be appended at the end, even though a header value is not provided.<a href="#section-4.2.3-6" class="pilcrow">¶</a></p>
@@ -3012,6 +3041,7 @@ Procedure:
 8.      else: return INVALID
 9.      octets_result = octets_result || el_octs
 10. return octets_result
+
 </pre><a href="#section-4.2.4.1-2" class="pilcrow">¶</a>
 </div>
 </section>
@@ -3040,6 +3070,7 @@ Procedure:
 
 1. (A, e) = signature
 2. return serialize((A, e))
+
 </pre><a href="#section-4.2.4.2-3" class="pilcrow">¶</a>
 </div>
 </section>
@@ -3076,6 +3107,7 @@ Procedure:
 9.  e = OS2IP(signature_octets[index..end_index])
 10. if e = 0 OR e &gt;= r, return INVALID
 11. return (A, e)
+
 </pre><a href="#section-4.2.4.3-2" class="pilcrow">¶</a>
 </div>
 </section>
@@ -3087,7 +3119,7 @@ Procedure:
             </h5>
 <p id="section-4.2.4.4-1">This operation describes how to encode a proof, as computed at step 25 in <a href="#proof-generation-proofgen">ProofGen</a>, to an octet string. The input to the operation MUST be a valid proof.<a href="#section-4.2.4.4-1" class="pilcrow">¶</a></p>
 <p id="section-4.2.4.4-2">The inputted proof value must consist of the following components, in that order:<a href="#section-4.2.4.4-2" class="pilcrow">¶</a></p>
-<ol start="1" type="1" class="normal type-1" id="section-4.2.4.4-3">
+<ol start="1" type="1" class="compact type-1" id="section-4.2.4.4-3">
 <li id="section-4.2.4.4-3.1">Two (2) valid points of the G1 subgroup, different from the identity point of G1 (i.e., <code>Abar, Bbar</code>, in ProofGen)<a href="#section-4.2.4.4-3.1" class="pilcrow">¶</a>
 </li>
               <li id="section-4.2.4.4-3.2">Three (3) integers representing scalars in the range of 1 to r-1 inclusive (i.e., <code>c, r2^, r3^</code>, in ProofGen).<a href="#section-4.2.4.4-3.2" class="pilcrow">¶</a>
@@ -3117,6 +3149,7 @@ Procedure:
 
 1. (Abar, Bbar, r2^, r3^, (m^_1, ..., m^_U), c) = proof
 2. return serialize((Abar, Bbar, r2^, r3^, m^_1, ..., m^_U, c))
+
 </pre><a href="#section-4.2.4.4-4" class="pilcrow">¶</a>
 </div>
 </section>
@@ -3128,7 +3161,7 @@ Procedure:
             </h5>
 <p id="section-4.2.4.5-1">This operation describes how to decode an octet string representing a proof, validate it and return the underlying components that make up the proof value.<a href="#section-4.2.4.5-1" class="pilcrow">¶</a></p>
 <p id="section-4.2.4.5-2">The proof value outputted by this operation consists of the following components, in that order:<a href="#section-4.2.4.5-2" class="pilcrow">¶</a></p>
-<ol start="1" type="1" class="normal type-1" id="section-4.2.4.5-3">
+<ol start="1" type="1" class="compact type-1" id="section-4.2.4.5-3">
 <li id="section-4.2.4.5-3.1">Two (2) valid points of the G1 subgroup, each of which must not equal the identity point.<a href="#section-4.2.4.5-3.1" class="pilcrow">¶</a>
 </li>
               <li id="section-4.2.4.5-3.2">Two (2) integers representing scalars in the range of 1 to r-1 inclusive.<a href="#section-4.2.4.5-3.2" class="pilcrow">¶</a>
@@ -3188,6 +3221,7 @@ Procedure:
 17. msg_commitments = ()
 18. If j &gt; 3, set msg_commitments = (s_2, ..., s_(j-2))
 19. return (A_0, A_1, s_0, s_1, msg_commitments, s_(j-1))
+
 </pre><a href="#section-4.2.4.5-4" class="pilcrow">¶</a>
 </div>
 </section>
@@ -3217,6 +3251,7 @@ Procedure:
 3. if subgroup_check(W) is INVALID, return INVALID
 4. If W == Identity_G2, return INVALID
 5. return W
+
 </pre><a href="#section-4.2.4.6-2" class="pilcrow">¶</a>
 </div>
 </section>
@@ -3333,10 +3368,10 @@ Procedure:
 <p id="section-5.11-1">The CoreSign operation defined in <a href="#coresign" class="auto internal xref">Section 3.6.1</a>, specifies an optional commitment input value. The commitment is a point of G1, that can be used to extent the core BBS functionality, by allowing "signing points", meaning that the supplied commitment point will be integrity protected by the signature (see <span>[<a href="#TZ23" class="cite xref">TZ23</a>]</span>). An example use case, is allowing a third party (like the Prover for example), to create messages that will be included in the BBS signature, without those messages being revealed to the Signer, by setting the commitment to be a Pedersen commitment (<span>[<a href="#P91" class="cite xref">P91</a>]</span>) over a list of messages.<a href="#section-5.11-1" class="pilcrow">¶</a></p>
 <p id="section-5.11-2">In cases where the commitment must have a specific form (like in the above example that uses Pedersen commitments), the Signer MUST verify the correctness of the supplied value, prior to using it for signature generation. In the example of the Pedersen commitment, this may include validating a zero-knowledge proof (using a pre-defined set of generators) constructed by the party that supplied the commitment, showcasing that it knows the messages that where used to create it, that those messages are in the correct range etc.<a href="#section-5.11-2" class="pilcrow">¶</a></p>
 <p id="section-5.11-3">Documents extending the BBS core functionality, that use the commitment value are REQUIRED to,<a href="#section-5.11-3" class="pilcrow">¶</a></p>
-<ul class="normal">
-<li class="normal" id="section-5.11-4.1">Clearly specify the expected format of the commitment value, how it should be constructed and how it should be validated by the Signer.<a href="#section-5.11-4.1" class="pilcrow">¶</a>
+<ul class="compact">
+<li class="compact" id="section-5.11-4.1">Clearly specify the expected format of the commitment value, how it should be constructed and how it should be validated by the Signer.<a href="#section-5.11-4.1" class="pilcrow">¶</a>
 </li>
-          <li class="normal" id="section-5.11-4.2">Include a detailed and peer reviewed analyses, showcasing that, under reasonable cryptographic assumptions the documented scheme that uses the commitment value, results to a secure signature protocol, i.e., that the resulting signature is secure under adaptive chosen plaintext attacks.<a href="#section-5.11-4.2" class="pilcrow">¶</a>
+          <li class="compact" id="section-5.11-4.2">Include a detailed and peer reviewed analyses, showcasing that, under reasonable cryptographic assumptions the documented scheme that uses the commitment value, results to a secure signature protocol, i.e., that the resulting signature is secure under adaptive chosen plaintext attacks.<a href="#section-5.11-4.2" class="pilcrow">¶</a>
 </li>
         </ul>
 <p id="section-5.11-5">Applications using the Interface defined in <a href="#bbs-signatures-interface" class="auto internal xref">Section 3.5</a>, MUST ignore the commitment value.<a href="#section-5.11-5" class="pilcrow">¶</a></p>
@@ -3373,11 +3408,12 @@ Procedure:
 <p id="section-6.1.1-1">The following section defines the format of the unique identifier for the ciphersuite denoted <code>ciphersuite_id</code>, which will be represented as an ASCII encoded octet string. The REQUIRED format for this string is<a href="#section-6.1.1-1" class="pilcrow">¶</a></p>
 <div class="alignLeft art-text artwork" id="section-6.1.1-2">
 <pre>  "BBS_" || H2C_SUITE_ID || ADD_INFO
+
 </pre><a href="#section-6.1.1-2" class="pilcrow">¶</a>
 </div>
 <ul class="normal">
 <li class="normal" id="section-6.1.1-3.1">
-              <p id="section-6.1.1-3.1.1">H2C_SUITE_ID is the suite ID of the hash-to-curve suite used to define the hash<em>to</em>curve function.<a href="#section-6.1.1-3.1.1" class="pilcrow">¶</a></p>
+              <p id="section-6.1.1-3.1.1">H2C_SUITE_ID is the suite ID of the hash-to-curve suite used to define the hash_to_curve function.<a href="#section-6.1.1-3.1.1" class="pilcrow">¶</a></p>
 </li>
             <li class="normal" id="section-6.1.1-3.2">
               <p id="section-6.1.1-3.2.1">ADD_INFO is an optional octet string indicating any additional information used to uniquely qualify the ciphersuite. When present this value MUST only contain ASCII encoded characters with codes between 0x21 and 0x7e (inclusive) and MUST end with an underscore (ASCII code: 0x5f), other than the last character the string MUST not contain any other underscores (ASCII code: 0x5f).<a href="#section-6.1.1-3.2.1" class="pilcrow">¶</a></p>
@@ -3474,6 +3510,7 @@ a function that returns the point P in the subgroup G2 corresponding to the cano
 <div class="alignLeft art-text artwork" id="section-6.2.1-2.7.2">
 <pre>P1 = "8929dfbc7e6642c4ed9cba0856e493f8b9d7d5fcb0c31ef8fdcd34d50648a56c79
   5e106e9eada6e0bda386b414150755"
+
 </pre><a href="#section-6.2.1-2.7.2" class="pilcrow">¶</a>
 </div>
 </li>
@@ -3525,6 +3562,7 @@ a function that returns the point P in the subgroup G2 corresponding to the cano
 <div class="alignLeft art-text artwork" id="section-6.2.2-2.7.2">
 <pre>P1 = "a8ce256102840821a3e94ea9025e4662b205762f9776b3a766c872b948f1fd225e
   7c59698588e70d11406d161b4e28c9"
+
 </pre><a href="#section-6.2.2-2.7.2" class="pilcrow">¶</a>
 </div>
 </li>
@@ -3568,6 +3606,7 @@ a function that returns the point P in the subgroup G2 corresponding to the cano
 <div class="alignLeft art-text artwork" id="section-7.1-3">
 <pre>mocked_calculate_random_scalars(count) :=
                              seeded_random_scalars(SEED, count)
+
 </pre><a href="#section-7.1-3" class="pilcrow">¶</a>
 </div>
 <p id="section-7.1-4">The <code>mocked_calculate_random_scalars</code> operation will then be used in place of <code>calculate_random_scalars</code> during the <a href="#proof-generation-proofgen">ProofGen</a> operation's procedure.<a href="#section-7.1-4" class="pilcrow">¶</a></p>
@@ -3609,6 +3648,7 @@ Procedure:
 6.     end_idx = i * expand_len - 1
 7.     r_i = OS2IP(v[start_idx..end_idx]) mod r
 8. return (r_1, ...., r_count)
+
 </pre><a href="#section-7.1-6" class="pilcrow">¶</a>
 </div>
 </section>
@@ -3630,6 +3670,7 @@ m_7 = "d183ddc6e2665aa4e2f088af"
 m_8 = "ac55fb33a75909ed"
 m_9 = "96012096"
 m_10 = ""
+
 </pre><a href="#section-7.2-2" class="pilcrow">¶</a>
 </div>
 </section>
@@ -3649,17 +3690,20 @@ m_10 = ""
 <div class="alignLeft art-text artwork" id="section-7.3.1-2">
 <pre>key_material = "746869732d49532d6a7573742d616e2d546573742d494b4d2d746f2d
                 67656e65726174652d246528724074232d6b6579"
+
 </pre><a href="#section-7.3.1-2" class="pilcrow">¶</a>
 </div>
 <p id="section-7.3.1-3">and the following <code>key_info</code> value<a href="#section-7.3.1-3" class="pilcrow">¶</a></p>
 <div class="alignLeft art-text artwork" id="section-7.3.1-4">
 <pre>key_info = "746869732d49532d736f6d652d6b65792d6d657461646174612d746f2d62
             652d757365642d696e2d746573742d6b65792d67656e"
+
 </pre><a href="#section-7.3.1-4" class="pilcrow">¶</a>
 </div>
 <p id="section-7.3.1-5">Outputs the following SK value<a href="#section-7.3.1-5" class="pilcrow">¶</a></p>
 <div class="alignLeft art-text artwork" id="section-7.3.1-6">
 <pre>SK = "2eee0f60a8a3a8bec0ee942bfd46cbdae9a0738ee68f5a64e7238311cf09a079"
+
 </pre><a href="#section-7.3.1-6" class="pilcrow">¶</a>
 </div>
 <p id="section-7.3.1-7">Following the procedure defined in <a href="#public-key" class="auto internal xref">Section 3.4.2</a> with an input SK value as above produces the following PK value<a href="#section-7.3.1-7" class="pilcrow">¶</a></p>
@@ -3667,6 +3711,7 @@ m_10 = ""
 <pre>PK = "92d37d1d6cd38fea3a873953333eab23a4c0377e3e049974eb62bd45949cdeb18f
       b0490edcd4429adff56e65cbce42cf188b31bddbd619e419b99c2c41b38179eb00
       1963bc3decaae0d9f702c7a8c004f207f46c734a5eae2e8e82833f3e7ea5"
+
 </pre><a href="#section-7.3.1-8" class="pilcrow">¶</a>
 </div>
 </section>
@@ -3698,6 +3743,7 @@ msg_scalar_9 = "1db51bedc825b85efe1dab3e3ab0274fa82bbd39732be3459525faf7
                 0f197650"
 msg_scalar_10 = "27878da72f7775e709bb693d81b819dc4e9fa60711f4ea927740e40
                  073489e78"
+
 </pre><a href="#section-7.3.2-2" class="pilcrow">¶</a>
 </div>
 </section>
@@ -3731,6 +3777,7 @@ H_9 = "ac00b493f92d17837a28d1f5b07991ca5ab9f370ae40d4f9b9f2711749ca20011
        0ce6517dc28400d4ea25dddc146cacc"
 H_10 = "965a6c62451d4be6cb175dec39727dc665762673ee42bf0ac13a37a74784fbd6
         1e84e0915277a6f59863b2bb4f5f6005"
+
 </pre><a href="#section-7.3.3-2" class="pilcrow">¶</a>
 </div>
 </section>
@@ -3762,6 +3809,7 @@ domain = "2f18dd269c11c512256a9d1d57e61a7d2de6ebcf41cac3053f37afedc4e650
 signature = "98eb37fceb31115bf647f2983aef578ad895e55f7451b1add02fa738224
              cb89a31b148eace4d20d001be31d162c58d12574f30e68665b6403956a8
              3b23a16f1daceacce8c5fde25d3defd52d6d5ff2e1"
+
 </pre><a href="#section-7.3.4.1-1" class="pilcrow">¶</a>
 </div>
 </section>
@@ -3797,6 +3845,7 @@ domain = "6f7ee8de30835599bb540d2cb4dd02fd0c6cf8246f14c9ee9a8463f7fd400f
 signature = "97a296c83ed3626fe254d26021c5e9a087b580f1e8bc91bb51efb04420b
              fdaca215fe376a0bc12440bcc52224fb33c696cca9239b9f28dcddb7bd8
              50aae9cd1a9c3e9f3639953fe789dbba53b8f0dd6f"
+
 </pre><a href="#section-7.3.4.2-1" class="pilcrow">¶</a>
 </div>
 </section>
@@ -3811,6 +3860,7 @@ signature = "97a296c83ed3626fe254d26021c5e9a087b580f1e8bc91bb51efb04420b
 <p id="section-7.3.5-1">For the generation of the following fixtures the <code>mocked_calculate_random_scalars</code> defined in <a href="#mocked-random-scalars">Mocked Random Scalars</a> is used, in place of the <code>calculate_random_scalars</code> operation, with the following seed value (hex encoding of the ASCII-encoded 30 first digits of pi)<a href="#section-7.3.5-1" class="pilcrow">¶</a></p>
 <div class="alignLeft art-text artwork" id="section-7.3.5-2">
 <pre>SEED = "332e313431353932363533353839373933323338343632363433333833323739"
+
 </pre><a href="#section-7.3.5-2" class="pilcrow">¶</a>
 </div>
 <p id="section-7.3.5-3">Given the above seed the first 10 scalars returned by the <code>mocked_calculate_random_scalars</code> operation will be,<a href="#section-7.3.5-3" class="pilcrow">¶</a></p>
@@ -3835,6 +3885,7 @@ rand_9 = "513325acdcdec7ea572360587b350a8b095ca19bdd8258c5c69d375e870614
           1a"
 rand_10 = "6474fceba35e7e17365dde1a0284170180e446ae96c82943290d7baa3a6ed
            429"
+
 </pre><a href="#section-7.3.5-4" class="pilcrow">¶</a>
 </div>
 <div id="valid-single-message-proof">
@@ -3871,6 +3922,7 @@ proof = "85c250f9a52faeb883ad9598aed05d31fe5861478d9f33b8de2deed1d92de5c
          bab54d0494dd5354d5a0770b79d2911bb6591ce293e03a0d083bb81fc5bed8a
          44ff67386c0c33ddaaebf7d046849428fc6cf4d08815fa39c94144c79ac50e8
          6a0f5d"
+
 </pre><a href="#section-7.3.5.1-1" class="pilcrow">¶</a>
 </div>
 </section>
@@ -3918,6 +3970,7 @@ proof = "94dfa4e26276f0ccf319b0ade65317e0bac41867aaebc73c7edc38673776cc6
          5d5732bbc6e2e626ce241b8fdc60aea5532f829ace9ed443a679b3e6ffd712c
          e67681537982406ba09ff6a1c6dee258fd22b3f9aa1f28e19a83bbd1141f241
          71f380"
+
 </pre><a href="#section-7.3.5.2-1" class="pilcrow">¶</a>
 </div>
 </section>
@@ -3971,6 +4024,7 @@ proof = "ac0424b2a984c55d0061aa61df105f2c882d393494f3f4205d1e73f93c9c76b
          0b50e7756370f0470cb4630d2a188309f28e1e0582c47a9ec76f86436383581
          2984432a5253f079b3ede1b244a809807ae2088deff841b93d0bca442e346b3
          3d6b8aff8961"
+
 </pre><a href="#section-7.3.5.3-1" class="pilcrow">¶</a>
 </div>
 </section>
@@ -3994,17 +4048,20 @@ proof = "ac0424b2a984c55d0061aa61df105f2c882d393494f3f4205d1e73f93c9c76b
 <div class="alignLeft art-text artwork" id="section-7.4.1-2">
 <pre>key_material = "746869732d49532d6a7573742d616e2d546573742d494b4d2d746f2d
                 67656e65726174652d246528724074232d6b6579"
+
 </pre><a href="#section-7.4.1-2" class="pilcrow">¶</a>
 </div>
 <p id="section-7.4.1-3">and the following <code>key_info</code> value<a href="#section-7.4.1-3" class="pilcrow">¶</a></p>
 <div class="alignLeft art-text artwork" id="section-7.4.1-4">
 <pre>key_info = "746869732d49532d736f6d652d6b65792d6d657461646174612d746f2d62
             652d757365642d696e2d746573742d6b65792d67656e"
+
 </pre><a href="#section-7.4.1-4" class="pilcrow">¶</a>
 </div>
 <p id="section-7.4.1-5">Outputs the following SK value<a href="#section-7.4.1-5" class="pilcrow">¶</a></p>
 <div class="alignLeft art-text artwork" id="section-7.4.1-6">
 <pre>SK = "60e55110f76883a13d030b2f6bd11883422d5abde717569fc0731f51237169fc"
+
 </pre><a href="#section-7.4.1-6" class="pilcrow">¶</a>
 </div>
 <p id="section-7.4.1-7">Following the procedure defined in <a href="#public-key" class="auto internal xref">Section 3.4.2</a> with an input SK value as above produces the following PK value<a href="#section-7.4.1-7" class="pilcrow">¶</a></p>
@@ -4012,6 +4069,7 @@ proof = "ac0424b2a984c55d0061aa61df105f2c882d393494f3f4205d1e73f93c9c76b
 <pre>PK = "a820f230f6ae38503b86c70dc50b61c58a77e45c39ab25c0652bbaa8fa136f2851
       bd4781c9dcde39fc9d1d52c9e60268061e7d7632171d91aa8d460acee0e96f1e7c
       4cfb12d3ff9ab5d5dc91c277db75c845d649ef3c4f63aebc364cd55ded0c"
+
 </pre><a href="#section-7.4.1-8" class="pilcrow">¶</a>
 </div>
 </section>
@@ -4026,6 +4084,7 @@ proof = "ac0424b2a984c55d0061aa61df105f2c882d393494f3f4205d1e73f93c9c76b
 <pre>dst = "4242535f424c53313233383147315f584d443a5348412d3235365f535357555f5
        24f5f4832475f484d32535f4d41505f4d53475f544f5f5343414c41525f41535f
        484153485f"
+
 </pre><a href="#section-7.4.2-2" class="pilcrow">¶</a>
 </div>
 <p id="section-7.4.2-3">The output scalars, encoded to octets using I2OSP and represented in big endian order, are the following,<a href="#section-7.4.2-3" class="pilcrow">¶</a></p>
@@ -4050,6 +4109,7 @@ msg_scalar_9 = "57eb93f417c43200e9784fa5ea5a59168d3dbc38df707a13bb597c87
                 1b2a5f74"
 msg_scalar_10 = "08e3afeb2b4f2b5f907924ef42856616e6f2d5f1fb373736db1cca3
                  2707a7d16"
+
 </pre><a href="#section-7.4.2-4" class="pilcrow">¶</a>
 </div>
 </section>
@@ -4083,6 +4143,7 @@ H_9 = "82701eb98070728e1769525e73abff1783cedc364adb20c05c897a62f2ab2927f
        86f118dcb7819a7b218d8f3fee4bd7f"
 H_10 = "a1f229540474f4d6f1134761b92b788128c7ac8dc9b0c52d5949313267967303
         2ac7db3fb3d79b46b13c1c41ee495bca"
+
 </pre><a href="#section-7.4.3-2" class="pilcrow">¶</a>
 </div>
 </section>
@@ -4114,6 +4175,7 @@ domain = "25d57fab92a8274c68fde5c3f16d4b275e4a156f211ae34b3ab32fbaf506ed
 signature = "88c0eb3bc1d97610c3a66d8a3a73f260f95a3028bccf7fff7d9851e2acd
              9f3f32fdf58a5b34d12df8177adf37aa318a20f72be7d37a8e8d8441d1b
              c0bc75543c681bf061ce7e7f6091fe78c1cb8af103"
+
 </pre><a href="#section-7.4.4.1-1" class="pilcrow">¶</a>
 </div>
 </section>
@@ -4149,6 +4211,7 @@ domain = "6272832582a0ac96e6fe53e879422f24c51680b25fbf17bad22a35ea93ce5b
 signature = "895cd9c0ccb9aca4de913218655346d718711472f2bf1f3e68916de106a
              0d93cf2f47200819b45920bbda541db2d91480665df253fedab2843055b
              dc02535d83baddbbb2803ec3808e074f71f199751e"
+
 </pre><a href="#section-7.4.4.2-1" class="pilcrow">¶</a>
 </div>
 </section>
@@ -4163,6 +4226,7 @@ signature = "895cd9c0ccb9aca4de913218655346d718711472f2bf1f3e68916de106a
 <p id="section-7.4.5-1">Similarly to the proof fixtures for the BLS12381-SHA-256 ciphersuite, the generation of the following fixtures uses the <code>mocked_calculate_random_scalars</code> defined in <a href="#mocked-random-scalars">Mocked Random Scalars</a>, in place of the <code>calculate_random_scalars</code> operation, with the following seed value (hex encoding of the ASCII-encoded 30 first digits of pi).<a href="#section-7.4.5-1" class="pilcrow">¶</a></p>
 <div class="alignLeft art-text artwork" id="section-7.4.5-2">
 <pre>SEED = "332e313431353932363533353839373933323338343632363433333833323739"
+
 
 </pre><a href="#section-7.4.5-2" class="pilcrow">¶</a>
 </div>
@@ -4188,6 +4252,7 @@ rand_9 = "05c2a0af016df58e844db8944082dcaf434de1b1e2e7136ec8a99b939b7162
           23"
 rand_10 = "485e2adab17b76f5334c95bf36c03ccf91cef77dcfcdc6b8a69e2090b3156
            663"
+
 </pre><a href="#section-7.4.5-4" class="pilcrow">¶</a>
 </div>
 <div id="valid-single-message-proof-1">
@@ -4224,6 +4289,7 @@ proof = "8e9bc91d68151e4b105ec0d46ca95fe1526672bed27b26541a648ec990b3b11
          1a9f18701019b520ed3ccf07a298e349222ab059e7ebd84c65e3a2127ec42f5
          f357c27d5601b2193b697a576fd9bd896c25a75004f6604a98707741916769c
          49175f"
+
 </pre><a href="#section-7.4.5.1-1" class="pilcrow">¶</a>
 </div>
 </section>
@@ -4271,6 +4337,7 @@ proof = "89910f223320044fe6342b8dabfeac786f35cc98bb64c95ecb39348281d5a8c
          9faa0438d6516504a7a66ce180b2271101d87519cad823f03f266f66649b388
          e680a58a6e7ae4982ae797890d5d0b574fa73a7ae7023d4dd9f8a9b3a11f208
          256d7c"
+
 </pre><a href="#section-7.4.5.2-1" class="pilcrow">¶</a>
 </div>
 </section>
@@ -4324,6 +4391,7 @@ proof = "812a204f66c9084feed7383894d910f2c17399b3c4b4bed05660921de8539f5
          f1fcf9c12750301c2de6541c0edce5ede7425f75e01fd94a7e6137ebf23460b
          f3f1afec9f21767c467fdd882eb038492a390ee5d0c0f72f50f2ac5cedb705f
          c465f7bc093b"
+
 </pre><a href="#section-7.4.5.3-1" class="pilcrow">¶</a>
 </div>
 </section>
@@ -4353,102 +4421,107 @@ proof = "812a204f66c9084feed7383894d910f2c17399b3c4b4bed05660921de8539f5
 </section>
 </div>
 <section id="section-10">
-      <h2 id="name-normative-references">
-<a href="#section-10" class="section-number selfRef">10. </a><a href="#name-normative-references" class="section-name selfRef">Normative References</a>
+      <h2 id="name-references">
+<a href="#section-10" class="section-number selfRef">10. </a><a href="#name-references" class="section-name selfRef">References</a>
       </h2>
+<section id="section-10.1">
+        <h3 id="name-normative-references">
+<a href="#section-10.1" class="section-number selfRef">10.1. </a><a href="#name-normative-references" class="section-name selfRef">Normative References</a>
+        </h3>
 <dl class="references">
 <dt id="DRBG">[DRBG]</dt>
-      <dd>
+        <dd>
 <span class="refAuthor">NIST</span>, <span class="refTitle">"Recommendation for Random Number Generation Using Deterministic Random Bit Generators"</span>, <span>&lt;<a href="https://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-90Ar1.pdf">https://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-90Ar1.pdf</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="I-D.irtf-cfrg-hash-to-curve">[I-D.irtf-cfrg-hash-to-curve]</dt>
-      <dd>
+        <dd>
 <span class="refAuthor">Faz-Hernandez, A.</span>, <span class="refAuthor">Scott, S.</span>, <span class="refAuthor">Sullivan, N.</span>, <span class="refAuthor">Wahby, R. S.</span>, and <span class="refAuthor">C. A. Wood</span>, <span class="refTitle">"Hashing to Elliptic Curves"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-irtf-cfrg-hash-to-curve-16</span>, <time datetime="2022-06-15" class="refDate">15 June 2022</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-irtf-cfrg-hash-to-curve-16">https://datatracker.ietf.org/doc/html/draft-irtf-cfrg-hash-to-curve-16</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="I-D.irtf-cfrg-pairing-friendly-curves">[I-D.irtf-cfrg-pairing-friendly-curves]</dt>
-      <dd>
+        <dd>
 <span class="refAuthor">Sakemi, Y.</span>, <span class="refAuthor">Kobayashi, T.</span>, <span class="refAuthor">Saito, T.</span>, and <span class="refAuthor">R. S. Wahby</span>, <span class="refTitle">"Pairing-Friendly Curves"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-irtf-cfrg-pairing-friendly-curves-11</span>, <time datetime="2022-11-06" class="refDate">6 November 2022</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-irtf-cfrg-pairing-friendly-curves-11">https://datatracker.ietf.org/doc/html/draft-irtf-cfrg-pairing-friendly-curves-11</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="RFC2119">[RFC2119]</dt>
-      <dd>
+        <dd>
 <span class="refAuthor">Bradner, S.</span>, <span class="refTitle">"Key words for use in RFCs to Indicate Requirement Levels"</span>, <span class="seriesInfo">BCP 14</span>, <span class="seriesInfo">RFC 2119</span>, <span class="seriesInfo">DOI 10.17487/RFC2119</span>, <time datetime="1997-03" class="refDate">March 1997</time>, <span>&lt;<a href="https://www.rfc-editor.org/info/rfc2119">https://www.rfc-editor.org/info/rfc2119</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="RFC4086">[RFC4086]</dt>
-      <dd>
+        <dd>
 <span class="refAuthor">Eastlake 3rd, D.</span>, <span class="refAuthor">Schiller, J.</span>, and <span class="refAuthor">S. Crocker</span>, <span class="refTitle">"Randomness Requirements for Security"</span>, <span class="seriesInfo">BCP 106</span>, <span class="seriesInfo">RFC 4086</span>, <span class="seriesInfo">DOI 10.17487/RFC4086</span>, <time datetime="2005-06" class="refDate">June 2005</time>, <span>&lt;<a href="https://www.rfc-editor.org/info/rfc4086">https://www.rfc-editor.org/info/rfc4086</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="RFC8017">[RFC8017]</dt>
-      <dd>
+        <dd>
 <span class="refAuthor">Moriarty, K., Ed.</span>, <span class="refAuthor">Kaliski, B.</span>, <span class="refAuthor">Jonsson, J.</span>, and <span class="refAuthor">A. Rusch</span>, <span class="refTitle">"PKCS #1: RSA Cryptography Specifications Version 2.2"</span>, <span class="seriesInfo">RFC 8017</span>, <span class="seriesInfo">DOI 10.17487/RFC8017</span>, <time datetime="2016-11" class="refDate">November 2016</time>, <span>&lt;<a href="https://www.rfc-editor.org/info/rfc8017">https://www.rfc-editor.org/info/rfc8017</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="RFC8937">[RFC8937]</dt>
-      <dd>
+        <dd>
 <span class="refAuthor">Cremers, C.</span>, <span class="refAuthor">Garratt, L.</span>, <span class="refAuthor">Smyshlyaev, S.</span>, <span class="refAuthor">Sullivan, N.</span>, and <span class="refAuthor">C. Wood</span>, <span class="refTitle">"Randomness Improvements for Security Protocols"</span>, <span class="seriesInfo">RFC 8937</span>, <span class="seriesInfo">DOI 10.17487/RFC8937</span>, <time datetime="2020-10" class="refDate">October 2020</time>, <span>&lt;<a href="https://www.rfc-editor.org/info/rfc8937">https://www.rfc-editor.org/info/rfc8937</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="SHA2">[SHA2]</dt>
-      <dd>
+        <dd>
 <span class="refAuthor">NIST</span>, <span class="refTitle">"Secure Hash Standard (SHS)"</span>, <span>&lt;<a href="https://nvlpubs.nist.gov/nistpubs/FIPS/NIST.FIPS.180-4.pdf">https://nvlpubs.nist.gov/nistpubs/FIPS/NIST.FIPS.180-4.pdf</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="SHA3">[SHA3]</dt>
-    <dd>
+      <dd>
 <span class="refAuthor">NIST</span>, <span class="refTitle">"SHA-3 Standard: Permutation-Based Hash and Extendable-Output Functions"</span>, <span>&lt;<a href="https://nvlpubs.nist.gov/nistpubs/FIPS/NIST.FIPS.202.pdf">https://nvlpubs.nist.gov/nistpubs/FIPS/NIST.FIPS.202.pdf</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 </dl>
 </section>
-<section id="section-11">
-      <h2 id="name-informative-references">
-<a href="#section-11" class="section-number selfRef">11. </a><a href="#name-informative-references" class="section-name selfRef">Informative References</a>
-      </h2>
+<section id="section-10.2">
+        <h3 id="name-informative-references">
+<a href="#section-10.2" class="section-number selfRef">10.2. </a><a href="#name-informative-references" class="section-name selfRef">Informative References</a>
+        </h3>
 <dl class="references">
 <dt id="ADR02">[ADR02]</dt>
-      <dd>
-<span class="refAuthor">An, J. H.</span>, <span class="refAuthor">Dodis, Y.</span>, and <span class="refAuthor">T. Rabin</span>, <span class="refTitle">"On the Security of Joint Signature and Encryption"</span>, <span class="seriesInfo">pages 83-107</span>, <time datetime="2002-04" class="refDate">April 2002</time>, <span>&lt;<a href="https://doi.org/10.1007/3-540-46035-7_6">https://doi.org/10.1007/3-540-46035-7_6</a>&gt;</span>. </dd>
+        <dd>
+<span class="refAuthor">An, J. H.</span>, <span class="refAuthor">Dodis, Y.</span>, and <span class="refAuthor">T. Rabin</span>, <span class="refTitle">"On the Security of Joint Signature and Encryption"</span>, <span class="seriesInfo">In EUROCRYPT</span>, <span class="seriesInfo">pages 83-107</span>, <time datetime="2002-04" class="refDate">April 2002</time>, <span>&lt;<a href="https://doi.org/10.1007/3-540-46035-7_6">https://doi.org/10.1007/3-540-46035-7_6</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="ASM06">[ASM06]</dt>
-      <dd>
-<span class="refAuthor">Au, M. H.</span>, <span class="refAuthor">Susilo, W.</span>, and <span class="refAuthor">Y. Mu</span>, <span class="refTitle">"Constant-Size Dynamic k-TAA"</span>, <span class="seriesInfo">Springer, Berlin, Heidelberg</span>, <time datetime="2006" class="refDate">2006</time>, <span>&lt;<a href="https://link.springer.com/chapter/10.1007/11832072_8">https://link.springer.com/chapter/10.1007/11832072_8</a>&gt;</span>. </dd>
+        <dd>
+<span class="refAuthor">Au, M. H.</span>, <span class="refAuthor">Susilo, W.</span>, and <span class="refAuthor">Y. Mu</span>, <span class="refTitle">"Constant-Size Dynamic k-TAA"</span>, <span class="seriesInfo">In International Conference on Security and Cryptography for Networks</span>, <span class="seriesInfo">pages 111-125</span>, <span class="seriesInfo">Springer, Berlin, Heidelberg</span>, <time datetime="2006" class="refDate">2006</time>, <span>&lt;<a href="https://link.springer.com/chapter/10.1007/11832072_8">https://link.springer.com/chapter/10.1007/11832072_8</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="BBB17">[BBB17]</dt>
-      <dd>
+        <dd>
 <span class="refAuthor">Bünz, B. B.</span>, <span class="refAuthor">Bootle, J. B.</span>, <span class="refAuthor">Boneh, D. B.</span>, <span class="refAuthor">Poelstra, A. P.</span>, <span class="refAuthor">Wuille, P. W.</span>, and <span class="refAuthor">G. W. Maxwell</span>, <span class="refTitle">"Bulletproofs: Short Proofs for Confidential Transactions and More"</span>, <span class="seriesInfo">In 2018 IEEE Symposium on Security and Privacy</span>, <time datetime="2017" class="refDate">2017</time>, <span>&lt;<a href="https://ia.cr/2017/1066">https://ia.cr/2017/1066</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="BBS04">[BBS04]</dt>
-      <dd>
-<span class="refAuthor">Boneh, D.</span>, <span class="refAuthor">Boyen, X.</span>, and <span class="refAuthor">H. Shacham</span>, <span class="refTitle">"Short Group Signatures"</span>, <span class="seriesInfo">pages 41-55</span>, <time datetime="2004" class="refDate">2004</time>, <span>&lt;<a href="https://link.springer.com/chapter/10.1007/978-3-540-28628-8_3">https://link.springer.com/chapter/10.1007/978-3-540-28628-8_3</a>&gt;</span>. </dd>
+        <dd>
+<span class="refAuthor">Boneh, D.</span>, <span class="refAuthor">Boyen, X.</span>, and <span class="refAuthor">H. Shacham</span>, <span class="refTitle">"Short Group Signatures"</span>, <span class="seriesInfo">In Advances in Cryptology</span>, <span class="seriesInfo">pages 41-55</span>, <time datetime="2004" class="refDate">2004</time>, <span>&lt;<a href="https://link.springer.com/chapter/10.1007/978-3-540-28628-8_3">https://link.springer.com/chapter/10.1007/978-3-540-28628-8_3</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="Bowe19">[Bowe19]</dt>
-      <dd>
+        <dd>
 <span class="refAuthor">Bowe, S.</span>, <span class="refTitle">"Faster subgroup checks for BLS12-381"</span>, <time datetime="2019-07" class="refDate">July 2019</time>, <span>&lt;<a href="https://eprint.iacr.org/2019/814">https://eprint.iacr.org/2019/814</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="CDL16">[CDL16]</dt>
-      <dd>
-<span class="refAuthor">Camenisch, J.</span>, <span class="refAuthor">Drijvers, M.</span>, and <span class="refAuthor">A. Lehmann</span>, <span class="refTitle">"Anonymous Attestation Using the Strong Diffie Hellman Assumption Revisited"</span>, <span class="seriesInfo">Springer, Cham</span>, <time datetime="2016" class="refDate">2016</time>, <span>&lt;<a href="https://eprint.iacr.org/2016/663.pdf">https://eprint.iacr.org/2016/663.pdf</a>&gt;</span>. </dd>
+        <dd>
+<span class="refAuthor">Camenisch, J.</span>, <span class="refAuthor">Drijvers, M.</span>, and <span class="refAuthor">A. Lehmann</span>, <span class="refTitle">"Anonymous Attestation Using the Strong Diffie Hellman Assumption Revisited"</span>, <span class="seriesInfo">In International Conference on Trust and Trustworthy Computing</span>, <span class="seriesInfo">pages 1-20</span>, <span class="seriesInfo">Springer, Cham</span>, <time datetime="2016" class="refDate">2016</time>, <span>&lt;<a href="https://eprint.iacr.org/2016/663.pdf">https://eprint.iacr.org/2016/663.pdf</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="HDWH12">[HDWH12]</dt>
-      <dd>
-<span class="refAuthor">Heninger, N.</span>, <span class="refAuthor">Durumeric, Z.</span>, <span class="refAuthor">Wustrow, E.</span>, and <span class="refAuthor">J.A. Halderman</span>, <span class="refTitle">"Mining your Ps and Qs: Detection of widespread weak keys in network devices"</span>, <span class="seriesInfo">pages 205-220</span>, <time datetime="2012-08" class="refDate">August 2012</time>, <span>&lt;<a href="https://www.usenix.org/system/files/conference/usenixsecurity12/sec12-final228.pdf">https://www.usenix.org/system/files/conference/usenixsecurity12/sec12-final228.pdf</a>&gt;</span>. </dd>
+        <dd>
+<span class="refAuthor">Heninger, N.</span>, <span class="refAuthor">Durumeric, Z.</span>, <span class="refAuthor">Wustrow, E.</span>, and <span class="refAuthor">J.A. Halderman</span>, <span class="refTitle">"Mining your Ps and Qs: Detection of widespread weak keys in network devices"</span>, <span class="seriesInfo">In USENIX Security</span>, <span class="seriesInfo">pages 205-220</span>, <time datetime="2012-08" class="refDate">August 2012</time>, <span>&lt;<a href="https://www.usenix.org/system/files/conference/usenixsecurity12/sec12-final228.pdf">https://www.usenix.org/system/files/conference/usenixsecurity12/sec12-final228.pdf</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="I-D.irtf-cfrg-bls-signature">[I-D.irtf-cfrg-bls-signature]</dt>
-      <dd>
+        <dd>
 <span class="refAuthor">Boneh, D.</span>, <span class="refAuthor">Gorbunov, S.</span>, <span class="refAuthor">Wahby, R. S.</span>, <span class="refAuthor">Wee, H.</span>, <span class="refAuthor">Wood, C. A.</span>, and <span class="refAuthor">Z. Zhang</span>, <span class="refTitle">"BLS Signatures"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-irtf-cfrg-bls-signature-05</span>, <time datetime="2022-06-16" class="refDate">16 June 2022</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-irtf-cfrg-bls-signature-05">https://datatracker.ietf.org/doc/html/draft-irtf-cfrg-bls-signature-05</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="ISO8601">[ISO8601]</dt>
-      <dd>
+        <dd>
 <span class="refAuthor">ISO</span>, <span class="refTitle">"Date and time — Representations for information interchange — Part 1: Basic rules"</span>, <span>&lt;<a href="https://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-90Ar1.pdf">https://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-90Ar1.pdf</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="P91">[P91]</dt>
-      <dd>
-<span class="refAuthor">Pedersen, T. P. P.</span>, <span class="refTitle">"Non-Interactive and Information-Theoretic Secure Verifiable Secret Sharing"</span>, <span class="seriesInfo">In CRYPTO</span>, <time datetime="1991" class="refDate">1991</time>, <span>&lt;<a href="https://ia.cr/2023/275">https://ia.cr/2023/275</a>&gt;</span>. </dd>
+        <dd>
+<span class="refAuthor">Pedersen, T. P. P.</span>, <span class="refTitle">"Non-Interactive and Information-Theoretic Secure Verifiable Secret Sharing"</span>, <span class="seriesInfo">In CRYPTO</span>, <time datetime="1991" class="refDate">1991</time>, <span>&lt;<a href="https://link.springer.com/chapter/10.1007/3-540-46766-1_9">https://link.springer.com/chapter/10.1007/3-540-46766-1_9</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="TZ23">[TZ23]</dt>
-      <dd>
+        <dd>
 <span class="refAuthor">Tessaro, S. T.</span> and <span class="refAuthor">C. Z. Zhu</span>, <span class="refTitle">"Revisiting BBS Signatures"</span>, <span class="seriesInfo">In EUROCRYPT</span>, <time datetime="2023" class="refDate">2023</time>, <span>&lt;<a href="https://ia.cr/2023/275">https://ia.cr/2023/275</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="ZCASH-REVIEW">[ZCASH-REVIEW]</dt>
-    <dd>
+      <dd>
 <span class="refAuthor">NCC Group</span>, <span class="refTitle">"Zcash Overwinter Consensus and Sapling Cryptography Review"</span>, <span>&lt;<a href="https://research.nccgroup.com/wp-content/uploads/2020/07/NCC_Group_Zcash2018_Public_Report_2019-01-30_v1.3.pdf">https://research.nccgroup.com/wp-content/uploads/2020/07/NCC_Group_Zcash2018_Public_Report_2019-01-30_v1.3.pdf</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 </dl>
+</section>
 </section>
 <div id="bls12-381-hash-to-curve-definition-using-shake-256">
 <section id="appendix-A">
@@ -4502,6 +4575,7 @@ proof = "812a204f66c9084feed7383894d910f2c17399b3c4b4bed05660921de8539f5
             [@!I-D.irtf-cfrg-hash-to-curve]
 
 *  h_eff: 0xd201000000010001
+
 </pre><a href="#appendix-A.1-2" class="pilcrow">¶</a>
 </div>
 <p id="appendix-A.1-3">Note that the h_eff values for this suite are copied from that defined for the <code>BLS12381G1_XMD:SHA-256_SSWU_RO_</code> suite defined in section 8.8.1 of <span>[<a href="#I-D.irtf-cfrg-hash-to-curve" class="cite xref">I-D.irtf-cfrg-hash-to-curve</a>]</span>.<a href="#appendix-A.1-3" class="pilcrow">¶</a></p>
@@ -4592,6 +4666,7 @@ domain = "333d8686761cff65a3a2ef20bfa217d37bdf19105e87c210e9ce64ea1210a1
 signature = "abfa513cdb323e47214b7c182fb623197a0681b753f897545a73d82ee13
              3a8ecf69db9aa09fe425df4e7687d99d779db5c66199c0dc9d2a442d331
              c43f56e060edc69a69ed2f13de3813b98ce6b05737"
+
 </pre><a href="#appendix-C.1.1.1-1" class="pilcrow">¶</a>
 </div>
 </section>
@@ -4617,6 +4692,7 @@ signature = "98eb37fceb31115bf647f2983aef578ad895e55f7451b1add02fa738224
 
 valid: "false"
 reason: "modified message"
+
 </pre><a href="#appendix-C.1.1.2-2" class="pilcrow">¶</a>
 </div>
 </section>
@@ -4643,6 +4719,7 @@ signature = "98eb37fceb31115bf647f2983aef578ad895e55f7451b1add02fa738224
 
 valid: "false"
 reason: "extra unsigned message"
+
 </pre><a href="#appendix-C.1.1.3-2" class="pilcrow">¶</a>
 </div>
 </section>
@@ -4669,6 +4746,7 @@ signature = "97a296c83ed3626fe254d26021c5e9a087b580f1e8bc91bb51efb04420b
 
 valid: "false"
 reason: "missing messages"
+
 </pre><a href="#appendix-C.1.1.4-2" class="pilcrow">¶</a>
 </div>
 </section>
@@ -4704,6 +4782,7 @@ signature = "97a296c83ed3626fe254d26021c5e9a087b580f1e8bc91bb51efb04420b
 
 valid: "false"
 reason: "re-ordered messages"
+
 </pre><a href="#appendix-C.1.1.5-2" class="pilcrow">¶</a>
 </div>
 </section>
@@ -4738,6 +4817,7 @@ signature = "97a296c83ed3626fe254d26021c5e9a087b580f1e8bc91bb51efb04420b
 
 valid: "false"
 reason: "wrong public key"
+
 </pre><a href="#appendix-C.1.1.6-2" class="pilcrow">¶</a>
 </div>
 </section>
@@ -4772,6 +4852,7 @@ signature = "97a296c83ed3626fe254d26021c5e9a087b580f1e8bc91bb51efb04420b
 
 valid: "false"
 reason: "different header"
+
 </pre><a href="#appendix-C.1.1.7-2" class="pilcrow">¶</a>
 </div>
 </section>
@@ -4832,6 +4913,7 @@ proof = "ae46046037ed58bfa5771c603895b26b42748a3071a1dc9f8a272a4bc030bc3
          0bd483c66828bc66032b91fbe8a309408e595e085a1b55e2dd12789e6f522ef
          5682ac46deb628e03e4eb0303af7162f36a119313c3396fe6bca6082238fe39
          6e8c08e607c4"
+
 </pre><a href="#appendix-C.1.2.1-1" class="pilcrow">¶</a>
 </div>
 </section>
@@ -4884,6 +4966,7 @@ proof = "ac0424b2a984c55d0061aa61df105f2c882d393494f3f4205d1e73f93c9c76b
          68d1216c753fb988fbcfe9280232c25cac1570873a66d3f4a7e713fb19723f5
          b99338f053f08fae9f905b10e0526451968e25569e3779f642a4d2b6bcc1e00
          be28e2711d1a"
+
 </pre><a href="#appendix-C.1.2.2-1" class="pilcrow">¶</a>
 </div>
 </section>
@@ -4898,18 +4981,21 @@ proof = "ac0424b2a984c55d0061aa61df105f2c882d393494f3f4205d1e73f93c9c76b
 <p id="appendix-C.1.3-1">Using the following input message,<a href="#appendix-C.1.3-1" class="pilcrow">¶</a></p>
 <div class="alignLeft art-text artwork" id="appendix-C.1.3-2">
 <pre>msg = "9872ad089e452c7b6e283dfac2a80d58e8d0ff71cc4d5e310a1debdda4a45f02"
+
 </pre><a href="#appendix-C.1.3-2" class="pilcrow">¶</a>
 </div>
 <p id="appendix-C.1.3-3">And the default dst defined in <a href="#hash-to-scalar">hash_to_scalar</a>, i.e.,<a href="#appendix-C.1.3-3" class="pilcrow">¶</a></p>
 <div class="alignLeft art-text artwork" id="appendix-C.1.3-4">
 <pre>dst = "4242535f424c53313233383147315f584f463a5348414b452d3235365f5353575
        55f524f5f4832475f484d32535f4832535f"
+
 </pre><a href="#appendix-C.1.3-4" class="pilcrow">¶</a>
 </div>
 <p id="appendix-C.1.3-5">We get the following scalar, encoded with I2OSP and represented in big endian order,<a href="#appendix-C.1.3-5" class="pilcrow">¶</a></p>
 <div class="alignLeft art-text artwork" id="appendix-C.1.3-6">
 <pre>scalar = "0500031f786fde5326aa9370dd7ffe9535ec7a52cf2b8f432cad5d9acfb73c
           d3"
+
 </pre><a href="#appendix-C.1.3-6" class="pilcrow">¶</a>
 </div>
 </section>
@@ -4957,6 +5043,7 @@ domain = "41c5fe0290d0da734ce9bba57bfe0dfc14f3f9cfef18a0d7438cf2075fd71c
 signature = "ae0b1807865598b3884e3e9b110e8faec662050dc9b4d95309d957fd30f
              6fc24161f6f8b5680f1f5d1b547be221547915ca665c7b3087a336d5e0c
              5fcfea62576afd13e563b730ef6d6d81f9944ab95b"
+
 </pre><a href="#appendix-C.2.1.1-1" class="pilcrow">¶</a>
 </div>
 </section>
@@ -4982,6 +5069,7 @@ signature = "88c0eb3bc1d97610c3a66d8a3a73f260f95a3028bccf7fff7d9851e2acd
 
 valid: "false"
 reason: "modified message"
+
 </pre><a href="#appendix-C.2.1.2-2" class="pilcrow">¶</a>
 </div>
 </section>
@@ -5008,6 +5096,7 @@ signature = "88c0eb3bc1d97610c3a66d8a3a73f260f95a3028bccf7fff7d9851e2acd
 
 valid: "false"
 reason: "extra unsigned message"
+
 </pre><a href="#appendix-C.2.1.3-2" class="pilcrow">¶</a>
 </div>
 </section>
@@ -5034,6 +5123,7 @@ signature = "895cd9c0ccb9aca4de913218655346d718711472f2bf1f3e68916de106a
 
 valid: "false"
 reason: "missing messages"
+
 </pre><a href="#appendix-C.2.1.4-2" class="pilcrow">¶</a>
 </div>
 </section>
@@ -5069,6 +5159,7 @@ signature = "895cd9c0ccb9aca4de913218655346d718711472f2bf1f3e68916de106a
 
 valid: "false"
 reason: "re-ordered messages"
+
 </pre><a href="#appendix-C.2.1.5-2" class="pilcrow">¶</a>
 </div>
 </section>
@@ -5103,6 +5194,7 @@ signature = "895cd9c0ccb9aca4de913218655346d718711472f2bf1f3e68916de106a
 
 valid: "false"
 reason: "wrong public key"
+
 </pre><a href="#appendix-C.2.1.6-2" class="pilcrow">¶</a>
 </div>
 </section>
@@ -5137,6 +5229,7 @@ signature = "895cd9c0ccb9aca4de913218655346d718711472f2bf1f3e68916de106a
 
 valid: "false"
 reason: "different header"
+
 </pre><a href="#appendix-C.2.1.7-2" class="pilcrow">¶</a>
 </div>
 </section>
@@ -5197,6 +5290,7 @@ proof = "89cefce40c3dc7adcc8bcd07d92767d0f0397d0e120511b58b8403b531fa573
          5df92f79d43c3f78bcd3cb4c6e6de2ac27108316bd8d751fb445c5f6b4e6e10
          4b227362efe3f5f2904b6100e01b6cf94d9d6c5501fbbfd2e5e57c2dcb1cf11
          7c41eedcda57"
+
 </pre><a href="#appendix-C.2.2.1-1" class="pilcrow">¶</a>
 </div>
 </section>
@@ -5249,6 +5343,7 @@ proof = "812a204f66c9084feed7383894d910f2c17399b3c4b4bed05660921de8539f5
          c3301f300435797edcb007eae6ef75bc5d5500a1ce74ba8f4e0c5c8836f4237
          1c2c469265909585f44695f088ea39bda2317224f47208c7f77570deae84efe
          a007c14f18ef"
+
 </pre><a href="#appendix-C.2.2.2-1" class="pilcrow">¶</a>
 </div>
 </section>
@@ -5263,18 +5358,21 @@ proof = "812a204f66c9084feed7383894d910f2c17399b3c4b4bed05660921de8539f5
 <p id="appendix-C.2.3-1">Using the following input message,<a href="#appendix-C.2.3-1" class="pilcrow">¶</a></p>
 <div class="alignLeft art-text artwork" id="appendix-C.2.3-2">
 <pre>msg = "9872ad089e452c7b6e283dfac2a80d58e8d0ff71cc4d5e310a1debdda4a45f02"
+
 </pre><a href="#appendix-C.2.3-2" class="pilcrow">¶</a>
 </div>
 <p id="appendix-C.2.3-3">And the default dst defined in <a href="#hash-to-scalar">hash_to_scalar</a>, i.e.,<a href="#appendix-C.2.3-3" class="pilcrow">¶</a></p>
 <div class="alignLeft art-text artwork" id="appendix-C.2.3-4">
 <pre>dst = "4242535f424c53313233383147315f584d443a5348412d3235365f535357555f5
        24f5f4832475f484d32535f4832535f"
+
 </pre><a href="#appendix-C.2.3-4" class="pilcrow">¶</a>
 </div>
 <p id="appendix-C.2.3-5">We get the following scalar, encoded with I2OSP and represented in big endian order,<a href="#appendix-C.2.3-5" class="pilcrow">¶</a></p>
 <div class="alignLeft art-text artwork" id="appendix-C.2.3-6">
 <pre>scalar = "0f90cbee27beb214e6545becb8404640d3612da5d6758dffeccd77ed716980
           7c"
+
 </pre><a href="#appendix-C.2.3-6" class="pilcrow">¶</a>
 </div>
 </section>
@@ -5291,12 +5389,14 @@ proof = "812a204f66c9084feed7383894d910f2c17399b3c4b4bed05660921de8539f5
 <p id="appendix-D-1">The following section provides a high level explanation of how the ProofGen and ProofVerify operations work. ProofGen can be categorized as a generic non-interactive zero-knowledge proof-of-knowledge (<code>nizk</code>). A <code>nizk</code> works as follows; Assume the group points <code>J_0</code>, <code>J_1</code>, ..., <code>J_n</code> and the exponents <code>e_0</code>, <code>e_1</code>, ..., <code>e_n</code>. Assume also that all the group point are publicly known, while only the exponent <code>e_0</code> is known to the verifier and the exponents <code>e_1</code>, ..., <code>e_n</code> are known only by the prover. The <code>nizk</code> can be used to prove a relationship of the form,<a href="#appendix-D-1" class="pilcrow">¶</a></p>
 <div class="alignLeft art-text artwork" id="appendix-D-2">
 <pre>J_O * e_0 = J_1 * e_1 + J_2 * e_2 + ... + J_n * e_n
+
 </pre><a href="#appendix-D-2" class="pilcrow">¶</a>
 </div>
 <p id="appendix-D-3">While revealing nothing about the secret exponents (i.e., <code>e_1</code>, ..., <code>e_n</code>).<a href="#appendix-D-3" class="pilcrow">¶</a></p>
 <p id="appendix-D-4">For BBS, let the prover be in possession of a BBS signature <code>(A, e)</code> on messages <code>msg_1, ..., msg_L</code> and a <code>domain</code> value (see <a href="#signature-generation-sign">Sign</a>). Let <code>A = B * (1/(e + SK))</code> where <code>SK</code> the signer's secret key and,<a href="#appendix-D-4" class="pilcrow">¶</a></p>
 <div class="alignLeft art-text artwork" id="appendix-D-5">
 <pre>[1]    B = P1 + Q_1 * domain + H_1 * msg_1 + ... + H_L * msg_L
+
 </pre><a href="#appendix-D-5" class="pilcrow">¶</a>
 </div>
 <p id="appendix-D-6">Let <code>(i1, ..., iR)</code> be the indexes of the messages the prover wants to disclose and <code>(j1, ..., jU)</code> be the indexes corresponding to undisclosed messages (i.e., <code>(j1, ..., jU) = range(1, L) \ (i1, ..., iR)</code>). To prove knowledge of a signature on the disclosed messages, work as follows;<a href="#appendix-D-6" class="pilcrow">¶</a></p>
@@ -5306,6 +5406,7 @@ proof = "812a204f66c9084feed7383894d910f2c17399b3c4b4bed05660921de8539f5
 <div class="alignLeft art-text artwork" id="appendix-D-7.1.2">
 <pre>[2]    Abar = A * r1,
 [3]    Bbar = B * r1 + Abar * (-e)
+
 </pre><a href="#appendix-D-7.1.2" class="pilcrow">¶</a>
 </div>
 <p id="appendix-D-7.1.3">The values <code>(Abar, Bbar)</code> will be part of the proof and are used to prove possession of a BBS signature, without revealing the signature itself. Note that; if <code>Abar</code> and <code>Bbar</code> are constructed using a valid BBS signatures as above, then <code>Abar * SK = Bbar =&gt; e(Abar, PK) = e(Bbar, BP2)</code> where <code>SK</code>, <code>PK</code> the signer's secret and public key and <code>BP2</code> the base element in <code>G2</code> (used to create the signer’s <code>PK</code>, see <a href="#public-key" class="auto internal xref">Section 3.4.2</a>). This last equation is something that the verifier can check. This also serves to bind the proof to the signer's <code>PK</code>.<a href="#appendix-D-7.1.3" class="pilcrow">¶</a></p>
@@ -5315,12 +5416,14 @@ proof = "812a204f66c9084feed7383894d910f2c17399b3c4b4bed05660921de8539f5
 <div class="alignLeft art-text artwork" id="appendix-D-7.2.2">
 <pre>[4]    D = P1 + Q_1 * domain + H_i1 * msg_i1 + ... + H_iR * msg_iR
 [5]    r1' = r1 ^ -1 mod r
+
 </pre><a href="#appendix-D-7.2.2" class="pilcrow">¶</a>
 </div>
 <p id="appendix-D-7.2.3">If the <code>Abar</code> and <code>Bbar</code> values are constructed using a valid BBS signature as in [2] and [3], then the following equation will hold,<a href="#appendix-D-7.2.3" class="pilcrow">¶</a></p>
 <div class="alignLeft art-text artwork" id="appendix-D-7.2.4">
 <pre>[6]    D = Bbar * r1' + Abar * (e * r1') - H_ji * msg_j1 - ...
                                                  ... - H_jU * msg_jU
+
 </pre><a href="#appendix-D-7.2.4" class="pilcrow">¶</a>
 </div>
 </li>
@@ -5329,6 +5432,7 @@ proof = "812a204f66c9084feed7383894d910f2c17399b3c4b4bed05660921de8539f5
 <p id="appendix-D-9">If the above equation ([6]) holds, and <code>e(Abar, PK) = e(Bbar, BP2)</code>, one could solve [6] to get <code>B = Bbar * r1' + Abar * e * r1'</code> (where <code>B</code> as in [1]). Note that <code>B</code> will also contain the disclosed messages. Then, using the properties of pairings, one can see that,<a href="#appendix-D-9" class="pilcrow">¶</a></p>
 <div class="alignLeft art-text artwork" id="appendix-D-10">
 <pre>e(Abar * r1', PK + BP2 * e) = (B, BP2)
+
 </pre><a href="#appendix-D-10" class="pilcrow">¶</a>
 </div>
 <p id="appendix-D-11">which is exactly what <a href="#signature-verification-verify">Verify</a> checks for <code>A = Abar * r1'</code>. So seting <code>A = Abar * r1'</code>, the values <code>A</code>, <code>e</code>, <code>B</code> will format a valid BBS signature. Note that the verifier doesn't know <code>r1'</code>, <code>e</code> or all the values to compute <code>B</code>. However, they know that the prover knows them, and as we saw above, knowledge of those values means knowledge of a valid signature on (among others) the disclosed messages.<a href="#appendix-D-11" class="pilcrow">¶</a></p>
@@ -5341,42 +5445,42 @@ proof = "812a204f66c9084feed7383894d910f2c17399b3c4b4bed05660921de8539f5
 <a href="#appendix-E" class="section-number selfRef">Appendix E. </a><a href="#name-document-history" class="section-name selfRef">Document History</a>
       </h2>
 <p id="appendix-E-1">-00<a href="#appendix-E-1" class="pilcrow">¶</a></p>
-<ul class="normal">
-<li class="normal" id="appendix-E-2.1">Initial version<a href="#appendix-E-2.1" class="pilcrow">¶</a>
+<ul class="compact">
+<li class="compact" id="appendix-E-2.1">Initial version<a href="#appendix-E-2.1" class="pilcrow">¶</a>
 </li>
       </ul>
 <p id="appendix-E-3">-01<a href="#appendix-E-3" class="pilcrow">¶</a></p>
-<ul class="normal">
-<li class="normal" id="appendix-E-4.1">Populated fixtures<a href="#appendix-E-4.1" class="pilcrow">¶</a>
+<ul class="compact">
+<li class="compact" id="appendix-E-4.1">Populated fixtures<a href="#appendix-E-4.1" class="pilcrow">¶</a>
 </li>
-        <li class="normal" id="appendix-E-4.2">Added SHA-256 based ciphersuite<a href="#appendix-E-4.2" class="pilcrow">¶</a>
+        <li class="compact" id="appendix-E-4.2">Added SHA-256 based ciphersuite<a href="#appendix-E-4.2" class="pilcrow">¶</a>
 </li>
-        <li class="normal" id="appendix-E-4.3">Fixed typo in ProofVerify<a href="#appendix-E-4.3" class="pilcrow">¶</a>
+        <li class="compact" id="appendix-E-4.3">Fixed typo in ProofVerify<a href="#appendix-E-4.3" class="pilcrow">¶</a>
 </li>
-        <li class="normal" id="appendix-E-4.4">Clarify ASCII string usage in DST<a href="#appendix-E-4.4" class="pilcrow">¶</a>
+        <li class="compact" id="appendix-E-4.4">Clarify ASCII string usage in DST<a href="#appendix-E-4.4" class="pilcrow">¶</a>
 </li>
-        <li class="normal" id="appendix-E-4.5">Added MapMessageToScalar test vectors<a href="#appendix-E-4.5" class="pilcrow">¶</a>
+        <li class="compact" id="appendix-E-4.5">Added MapMessageToScalar test vectors<a href="#appendix-E-4.5" class="pilcrow">¶</a>
 </li>
-        <li class="normal" id="appendix-E-4.6">Fix typo in ciphersuite name<a href="#appendix-E-4.6" class="pilcrow">¶</a>
+        <li class="compact" id="appendix-E-4.6">Fix typo in ciphersuite name<a href="#appendix-E-4.6" class="pilcrow">¶</a>
 </li>
       </ul>
 <p id="appendix-E-5">-02<a href="#appendix-E-5" class="pilcrow">¶</a></p>
-<ul class="normal">
-<li class="normal" id="appendix-E-6.1">Variety of editiorial clarifications<a href="#appendix-E-6.1" class="pilcrow">¶</a>
+<ul class="compact">
+<li class="compact" id="appendix-E-6.1">Variety of editiorial clarifications<a href="#appendix-E-6.1" class="pilcrow">¶</a>
 </li>
-        <li class="normal" id="appendix-E-6.2">Clarified integer endianness<a href="#appendix-E-6.2" class="pilcrow">¶</a>
+        <li class="compact" id="appendix-E-6.2">Clarified integer endianness<a href="#appendix-E-6.2" class="pilcrow">¶</a>
 </li>
-        <li class="normal" id="appendix-E-6.3">Revised the encode for hash operation<a href="#appendix-E-6.3" class="pilcrow">¶</a>
+        <li class="compact" id="appendix-E-6.3">Revised the encode for hash operation<a href="#appendix-E-6.3" class="pilcrow">¶</a>
 </li>
-        <li class="normal" id="appendix-E-6.4">Shifted to using CSPRNG instead of PRF<a href="#appendix-E-6.4" class="pilcrow">¶</a>
+        <li class="compact" id="appendix-E-6.4">Shifted to using CSPRNG instead of PRF<a href="#appendix-E-6.4" class="pilcrow">¶</a>
 </li>
-        <li class="normal" id="appendix-E-6.5">Removed total number of messages from proof verify operation<a href="#appendix-E-6.5" class="pilcrow">¶</a>
+        <li class="compact" id="appendix-E-6.5">Removed total number of messages from proof verify operation<a href="#appendix-E-6.5" class="pilcrow">¶</a>
 </li>
-        <li class="normal" id="appendix-E-6.6">Added deterministic proof fixtures<a href="#appendix-E-6.6" class="pilcrow">¶</a>
+        <li class="compact" id="appendix-E-6.6">Added deterministic proof fixtures<a href="#appendix-E-6.6" class="pilcrow">¶</a>
 </li>
-        <li class="normal" id="appendix-E-6.7">Shifted to multiple CSPRNG calls to calculate random elements, instead of expand_message<a href="#appendix-E-6.7" class="pilcrow">¶</a>
+        <li class="compact" id="appendix-E-6.7">Shifted to multiple CSPRNG calls to calculate random elements, instead of expand_message<a href="#appendix-E-6.7" class="pilcrow">¶</a>
 </li>
-        <li class="normal" id="appendix-E-6.8">Updated hash<em>to</em>scalar to a single output<a href="#appendix-E-6.8" class="pilcrow">¶</a>
+        <li class="compact" id="appendix-E-6.8">Updated hash_to_scalar to a single output<a href="#appendix-E-6.8" class="pilcrow">¶</a>
 </li>
       </ul>
 <p id="appendix-E-7">-03<a href="#appendix-E-7" class="pilcrow">¶</a></p>
