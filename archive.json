@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2023-11-19T00:09:53.941789+00:00",
+  "timestamp": "2023-11-21T00:09:24.196327+00:00",
   "repo": "decentralized-identity/bbs-signature",
   "labels": [
     {
@@ -34306,7 +34306,7 @@
       "labels": [],
       "body": "Based on the WG discussions, update the BBS Proof based on [CDL16].\r\n\r\n(Uses  #287)",
       "createdAt": "2023-10-14T19:38:32Z",
-      "updatedAt": "2023-11-18T23:12:47Z",
+      "updatedAt": "2023-11-20T18:06:45Z",
       "baseRepository": "decentralized-identity/bbs-signature",
       "baseRefName": "main",
       "baseRefOid": "76936111f906325bc0518a48744b5d4ea62a1086",
@@ -34373,6 +34373,19 @@
               "updatedAt": "2023-11-08T17:53:00Z"
             }
           ]
+        },
+        {
+          "id": "PRR_kwDOF8lax85nvHar",
+          "commit": {
+            "abbreviatedOid": "770ed0f"
+          },
+          "author": "Wind4Greg",
+          "authorAssociation": "NONE",
+          "state": "APPROVED",
+          "body": "All test vectors confirmed against proof generation/verification update to specification via my independent JavaScript based implementation. Enhanced information (PNG scalars) in test vectors are a great help to implementers!",
+          "createdAt": "2023-11-20T18:06:45Z",
+          "updatedAt": "2023-11-20T18:06:45Z",
+          "comments": []
         }
       ]
     },
@@ -34451,7 +34464,7 @@
       "labels": [],
       "body": "Not a breaking change. Implementations used 0-indexing already,. even though was not clearly specified in the draft.",
       "createdAt": "2023-10-23T10:22:44Z",
-      "updatedAt": "2023-11-06T16:50:36Z",
+      "updatedAt": "2023-11-20T19:14:12Z",
       "baseRepository": "decentralized-identity/bbs-signature",
       "baseRefName": "main",
       "baseRefOid": "76936111f906325bc0518a48744b5d4ea62a1086",
@@ -34524,6 +34537,32 @@
               "updatedAt": "2023-11-06T16:50:36Z"
             }
           ]
+        },
+        {
+          "id": "PRR_kwDOF8lax85nvJ_y",
+          "commit": {
+            "abbreviatedOid": "d3ba5dd"
+          },
+          "author": "Wind4Greg",
+          "authorAssociation": "NONE",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2023-11-20T18:11:49Z",
+          "updatedAt": "2023-11-20T18:11:49Z",
+          "comments": []
+        },
+        {
+          "id": "PRR_kwDOF8lax85nvna5",
+          "commit": {
+            "abbreviatedOid": "d3ba5dd"
+          },
+          "author": "andrewwhitehead",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2023-11-20T19:14:12Z",
+          "updatedAt": "2023-11-20T19:14:12Z",
+          "comments": []
         }
       ]
     },
@@ -34539,7 +34578,7 @@
       "labels": [],
       "body": "Closes #256.",
       "createdAt": "2023-10-29T18:36:44Z",
-      "updatedAt": "2023-11-06T16:39:17Z",
+      "updatedAt": "2023-11-20T19:18:21Z",
       "baseRepository": "decentralized-identity/bbs-signature",
       "baseRefName": "main",
       "baseRefOid": "76936111f906325bc0518a48744b5d4ea62a1086",
@@ -34550,7 +34589,15 @@
       "mergedAt": null,
       "mergedBy": null,
       "mergeCommit": null,
-      "comments": [],
+      "comments": [
+        {
+          "author": "BasileiosKal",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "Discussed on the WG 20th of Nov. Will update wording to use \"collusion\" instead of \"coalition\".",
+          "createdAt": "2023-11-20T19:18:20Z",
+          "updatedAt": "2023-11-20T19:18:20Z"
+        }
+      ],
       "reviews": [
         {
           "id": "PRR_kwDOF8lax85lnTkG",
@@ -34623,6 +34670,19 @@
               "updatedAt": "2023-11-06T16:39:35Z"
             }
           ]
+        },
+        {
+          "id": "PRR_kwDOF8lax85nvJeO",
+          "commit": {
+            "abbreviatedOid": "ae8a3cd"
+          },
+          "author": "Wind4Greg",
+          "authorAssociation": "NONE",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2023-11-20T18:10:19Z",
+          "updatedAt": "2023-11-20T18:10:19Z",
+          "comments": []
         }
       ]
     },
@@ -34631,25 +34691,35 @@
       "id": "PR_kwDOF8lax85etg1F",
       "title": "Fix Pedersen commitment reference",
       "url": "https://github.com/decentralized-identity/bbs-signature/pull/293",
-      "state": "OPEN",
+      "state": "MERGED",
       "author": "BasileiosKal",
       "authorAssociation": "CONTRIBUTOR",
       "assignees": [],
       "labels": [],
       "body": "",
       "createdAt": "2023-11-06T16:34:20Z",
-      "updatedAt": "2023-11-08T16:08:12Z",
+      "updatedAt": "2023-11-20T19:19:02Z",
       "baseRepository": "decentralized-identity/bbs-signature",
       "baseRefName": "main",
       "baseRefOid": "76936111f906325bc0518a48744b5d4ea62a1086",
       "headRepository": "decentralized-identity/bbs-signature",
       "headRefName": "vasilis/fix-reference",
       "headRefOid": "25024335acf100d864ff988dc3d6c1e38067a4a5",
-      "closedAt": null,
-      "mergedAt": null,
-      "mergedBy": null,
-      "mergeCommit": null,
-      "comments": [],
+      "closedAt": "2023-11-20T19:19:02Z",
+      "mergedAt": "2023-11-20T19:19:02Z",
+      "mergedBy": "BasileiosKal",
+      "mergeCommit": {
+        "oid": "5c52e059ce837d21c844acadf86e89188c538400"
+      },
+      "comments": [
+        {
+          "author": "BasileiosKal",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "Multiple approvals. Editorial update. Merging",
+          "createdAt": "2023-11-20T19:18:55Z",
+          "updatedAt": "2023-11-20T19:18:55Z"
+        }
+      ],
       "reviews": [
         {
           "id": "PRR_kwDOF8lax85mkG3Y",
@@ -34662,6 +34732,19 @@
           "body": "",
           "createdAt": "2023-11-08T16:08:12Z",
           "updatedAt": "2023-11-08T16:08:12Z",
+          "comments": []
+        },
+        {
+          "id": "PRR_kwDOF8lax85nvIVK",
+          "commit": {
+            "abbreviatedOid": "2502433"
+          },
+          "author": "Wind4Greg",
+          "authorAssociation": "NONE",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2023-11-20T18:07:55Z",
+          "updatedAt": "2023-11-20T18:07:55Z",
           "comments": []
         }
       ]
@@ -34678,7 +34761,7 @@
       "labels": [],
       "body": "## Possible typo\r\nIn section 3.6.3.  CoreProofGen I noticed that \"signature_result\" became \"signature_res\" and fixed that. Specifically\r\n\r\n```\r\n2. init_res = ProofInit(PK, signature_res, generators, random_scalars,\r\n                          header, messages, undisclosed_indexes, api_id)\r\n```\r\n\r\nIf it is not a typo and there is a reason for that, close this pull request.",
       "createdAt": "2023-11-09T10:40:34Z",
-      "updatedAt": "2023-11-09T11:22:54Z",
+      "updatedAt": "2023-11-20T19:19:59Z",
       "baseRepository": "decentralized-identity/bbs-signature",
       "baseRefName": "main",
       "baseRefOid": "76936111f906325bc0518a48744b5d4ea62a1086",
@@ -34698,7 +34781,47 @@
           "updatedAt": "2023-11-09T11:22:54Z"
         }
       ],
-      "reviews": []
+      "reviews": [
+        {
+          "id": "PRR_kwDOF8lax85nvo_P",
+          "commit": {
+            "abbreviatedOid": "d76bd48"
+          },
+          "author": "BasileiosKal",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2023-11-20T19:19:16Z",
+          "updatedAt": "2023-11-20T19:19:16Z",
+          "comments": []
+        },
+        {
+          "id": "PRR_kwDOF8lax85nvpKp",
+          "commit": {
+            "abbreviatedOid": "d76bd48"
+          },
+          "author": "andrewwhitehead",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2023-11-20T19:19:48Z",
+          "updatedAt": "2023-11-20T19:19:48Z",
+          "comments": []
+        },
+        {
+          "id": "PRR_kwDOF8lax85nvpOJ",
+          "commit": {
+            "abbreviatedOid": "d76bd48"
+          },
+          "author": "Wind4Greg",
+          "authorAssociation": "NONE",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2023-11-20T19:19:59Z",
+          "updatedAt": "2023-11-20T19:19:59Z",
+          "comments": []
+        }
+      ]
     }
   ]
 }
