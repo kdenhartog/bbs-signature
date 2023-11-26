@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2023-11-23T00:09:19.032390+00:00",
+  "timestamp": "2023-11-26T00:09:55.410202+00:00",
   "repo": "decentralized-identity/bbs-signature",
   "labels": [
     {
@@ -34761,7 +34761,7 @@
       "labels": [],
       "body": "## Possible typo\r\nIn section 3.6.3.  CoreProofGen I noticed that \"signature_result\" became \"signature_res\" and fixed that. Specifically\r\n\r\n```\r\n2. init_res = ProofInit(PK, signature_res, generators, random_scalars,\r\n                          header, messages, undisclosed_indexes, api_id)\r\n```\r\n\r\nIf it is not a typo and there is a reason for that, close this pull request.",
       "createdAt": "2023-11-09T10:40:34Z",
-      "updatedAt": "2023-11-20T19:19:59Z",
+      "updatedAt": "2023-11-23T19:34:25Z",
       "baseRepository": "decentralized-identity/bbs-signature",
       "baseRefName": "main",
       "baseRefOid": "76936111f906325bc0518a48744b5d4ea62a1086",
@@ -34819,6 +34819,19 @@
           "body": "",
           "createdAt": "2023-11-20T19:19:59Z",
           "updatedAt": "2023-11-20T19:19:59Z",
+          "comments": []
+        },
+        {
+          "id": "PRR_kwDOF8lax85oIBpy",
+          "commit": {
+            "abbreviatedOid": "d76bd48"
+          },
+          "author": "tplooker",
+          "authorAssociation": "MEMBER",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2023-11-23T19:34:25Z",
+          "updatedAt": "2023-11-23T19:34:25Z",
           "comments": []
         }
       ]
