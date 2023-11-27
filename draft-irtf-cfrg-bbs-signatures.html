@@ -1031,7 +1031,7 @@ svg :is([fill="white"], [fill^="#fff"]) {
 </tr></thead>
 <tfoot><tr>
 <td class="left">Looker, et al.</td>
-<td class="center">Expires 23 May 2024</td>
+<td class="center">Expires 30 May 2024</td>
 <td class="right">[Page]</td>
 </tr></tfoot>
 </table>
@@ -1044,12 +1044,12 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <dd class="internet-draft">draft-irtf-cfrg-bbs-signatures-latest</dd>
 <dt class="label-published">Published:</dt>
 <dd class="published">
-<time datetime="2023-11-20" class="published">20 November 2023</time>
+<time datetime="2023-11-27" class="published">27 November 2023</time>
     </dd>
 <dt class="label-intended-status">Intended Status:</dt>
 <dd class="intended-status">Informational</dd>
 <dt class="label-expires">Expires:</dt>
-<dd class="expires"><time datetime="2024-05-23">23 May 2024</time></dd>
+<dd class="expires"><time datetime="2024-05-30">30 May 2024</time></dd>
 <dt class="label-authors">Authors:</dt>
 <dd class="authors">
 <div class="author">
@@ -1103,7 +1103,7 @@ svg :is([fill="white"], [fill^="#fff"]) {
         time. It is inappropriate to use Internet-Drafts as reference
         material or to cite them other than as "work in progress."<a href="#section-boilerplate.1-3" class="pilcrow">¶</a></p>
 <p id="section-boilerplate.1-4">
-        This Internet-Draft will expire on 23 May 2024.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
+        This Internet-Draft will expire on 30 May 2024.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="copyright">
@@ -1171,7 +1171,10 @@ svg :is([fill="white"], [fill^="#fff"]) {
                     <p id="section-toc.1-1.3.2.3.2.3.1"><a href="#section-3.3.3" class="auto internal xref">3.3.3</a>.  <a href="#name-messages" class="internal xref">Messages</a></p>
 </li>
                   <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3.2.3.2.4">
-                    <p id="section-toc.1-1.3.2.3.2.4.1"><a href="#section-3.3.4" class="auto internal xref">3.3.4</a>.  <a href="#name-serializing-to-octets" class="internal xref">Serializing to Octets</a></p>
+                    <p id="section-toc.1-1.3.2.3.2.4.1"><a href="#section-3.3.4" class="auto internal xref">3.3.4</a>.  <a href="#name-indexing-of-arrays" class="internal xref">Indexing of Arrays</a></p>
+</li>
+                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3.2.3.2.5">
+                    <p id="section-toc.1-1.3.2.3.2.5.1"><a href="#section-3.3.5" class="auto internal xref">3.3.5</a>.  <a href="#name-serializing-to-octets" class="internal xref">Serializing to Octets</a></p>
 </li>
                 </ul>
 </li>
@@ -1627,12 +1630,12 @@ svg :is([fill="white"], [fill^="#fff"]) {
           <dd style="margin-left: 1.5em" id="section-1.2-2.6">Denotes a slice of the array <code>X</code> containing all elements from and including the value at index <code>a</code> until and including the value at index <code>b</code>. Note when this syntax is applied to an octet string, each element in the array <code>X</code> is assumed to be a single byte.<a href="#section-1.2-2.6" class="pilcrow">¶</a>
 </dd>
           <dd class="break"></dd>
-<dt id="section-1.2-2.7">range(a, b)</dt>
-          <dd style="margin-left: 1.5em" id="section-1.2-2.8">For integers a and b, with a &lt;= b, denotes the ascending ordered list of all integers between a and b inclusive (i.e., the integers "i" such that a &lt;= i &lt;= b).<a href="#section-1.2-2.8" class="pilcrow">¶</a>
+<dt id="section-1.2-2.7">length(input)</dt>
+          <dd style="margin-left: 1.5em" id="section-1.2-2.8">Takes as input either an array or an octet string. If the input is an array, returns the number of elements of the array. If the input is an octet string, returns the number of bytes of the inputted octet string.<a href="#section-1.2-2.8" class="pilcrow">¶</a>
 </dd>
           <dd class="break"></dd>
-<dt id="section-1.2-2.9">length(input)</dt>
-          <dd style="margin-left: 1.5em" id="section-1.2-2.10">Takes as input either an array or an octet string. If the input is an array, returns the number of elements of the array. If the input is an octet string, returns the number of bytes of the inputted octet string.<a href="#section-1.2-2.10" class="pilcrow">¶</a>
+<dt id="section-1.2-2.9">X[i]</dt>
+          <dd style="margin-left: 1.5em" id="section-1.2-2.10">Denotes the element of array <code>X</code> at index <code>i</code>. Note that arrays in this document are considered "zero-indexed", meaning that element indexing starts from 0 rather than 1. For example, if <code>X = [a, b, c, d]</code> then <code>X[0] = a</code>, <code>X[1] = b</code>, <code>X[2] = c</code> and <code>X[3] = d</code>.<a href="#section-1.2-2.10" class="pilcrow">¶</a>
 </dd>
         <dd class="break"></dd>
 </dl>
@@ -1796,22 +1799,45 @@ document, are to be interpreted as described in <span>[<a href="#RFC2119" class=
 <p id="section-3.3.3-1">In this document, the messages to be signed are defined as octet-strings. Each message must be mapped to a scalar value before passed to one of the core BBS operations (<a href="#core-operations" class="auto internal xref">Section 3.6</a>). There are various ways to map a message to a scalar value. The BBS Signatures Interface defined in this document (see <a href="#bbs-signatures-interface" class="auto internal xref">Section 3.5</a>), makes use of a hash function (see <a href="#messages-to-scalars" class="auto internal xref">Section 4.1.2</a>). See <a href="#mapping-messages-to-scalars" class="auto internal xref">Section 5.12</a> for more details and guidance on using alternative mapping methods.<a href="#section-3.3.3-1" class="pilcrow">¶</a></p>
 </section>
 </div>
-<div id="serializing-to-octets">
+<div id="indexing-of-arrays">
 <section id="section-3.3.4">
-          <h4 id="name-serializing-to-octets">
-<a href="#section-3.3.4" class="section-number selfRef">3.3.4. </a><a href="#name-serializing-to-octets" class="section-name selfRef">Serializing to Octets</a>
+          <h4 id="name-indexing-of-arrays">
+<a href="#section-3.3.4" class="section-number selfRef">3.3.4. </a><a href="#name-indexing-of-arrays" class="section-name selfRef">Indexing of Arrays</a>
           </h4>
-<p id="section-3.3.4-1">When serializing one or more values to produce an octet string, each element will be encoded using a specific operation determined by its type. More concretely,<a href="#section-3.3.4-1" class="pilcrow">¶</a></p>
+<p id="section-3.3.4-1">Note that arrays in this document use the zero-based numbering common in many programming languages, meaning that element indexing starts from 0 (see <a href="#notation" class="auto internal xref">Section 1.2</a>). This is distinct from naming used during deserialization of arrays, where natural (one-based) numbering might be used as part of the names of the array's elements for clarity in that context.<a href="#section-3.3.4-1" class="pilcrow">¶</a></p>
+<p id="section-3.3.4-2">For example, if <code>X</code> is an array of <code>n</code> elements, we may write,<a href="#section-3.3.4-2" class="pilcrow">¶</a></p>
+<div class="alignLeft art-text artwork" id="section-3.3.4-3">
+<pre>[a_1, a_2, ..., a_n] = X
+
+</pre><a href="#section-3.3.4-3" class="pilcrow">¶</a>
+</div>
+<p id="section-3.3.4-4">The above would indicate that<a href="#section-3.3.4-4" class="pilcrow">¶</a></p>
+<div class="alignLeft art-text artwork" id="section-3.3.4-5">
+<pre>X[0] = a_1
+X[1] = a_2
+// ... and so on, up to
+X[n-1] = a_n
+
+</pre><a href="#section-3.3.4-5" class="pilcrow">¶</a>
+</div>
+</section>
+</div>
+<div id="serializing-to-octets">
+<section id="section-3.3.5">
+          <h4 id="name-serializing-to-octets">
+<a href="#section-3.3.5" class="section-number selfRef">3.3.5. </a><a href="#name-serializing-to-octets" class="section-name selfRef">Serializing to Octets</a>
+          </h4>
+<p id="section-3.3.5-1">When serializing one or more values to produce an octet string, each element will be encoded using a specific operation determined by its type. More concretely,<a href="#section-3.3.5-1" class="pilcrow">¶</a></p>
 <ul class="compact">
-<li class="compact" id="section-3.3.4-2.1">Points in <code>G*</code> will be serialized using the <code>point_to_octets_g*</code> implementation for a particular ciphersuite.<a href="#section-3.3.4-2.1" class="pilcrow">¶</a>
+<li class="compact" id="section-3.3.5-2.1">Points in <code>G*</code> will be serialized using the <code>point_to_octets_g*</code> implementation for a particular ciphersuite.<a href="#section-3.3.5-2.1" class="pilcrow">¶</a>
 </li>
-            <li class="compact" id="section-3.3.4-2.2">Non-negative integers will be serialized using <code>I2OSP</code> with an output length of 8 bytes.<a href="#section-3.3.4-2.2" class="pilcrow">¶</a>
+            <li class="compact" id="section-3.3.5-2.2">Non-negative integers will be serialized using <code>I2OSP</code> with an output length of 8 bytes.<a href="#section-3.3.5-2.2" class="pilcrow">¶</a>
 </li>
-            <li class="compact" id="section-3.3.4-2.3">Scalars will be serialized using <code>I2OSP</code> with a constant output length defined by a particular ciphersuite.<a href="#section-3.3.4-2.3" class="pilcrow">¶</a>
+            <li class="compact" id="section-3.3.5-2.3">Scalars will be serialized using <code>I2OSP</code> with a constant output length defined by a particular ciphersuite.<a href="#section-3.3.5-2.3" class="pilcrow">¶</a>
 </li>
           </ul>
-<p id="section-3.3.4-3">We also use strings in double quotes to represent ASCII-encoded literals. For example "BBS" will be used to refer to the octet string, <code>010000100100001001010011</code>.<a href="#section-3.3.4-3" class="pilcrow">¶</a></p>
-<p id="section-3.3.4-4">Those rules will be used explicitly on every operation. See also <a href="#serialize">Serialize</a>.<a href="#section-3.3.4-4" class="pilcrow">¶</a></p>
+<p id="section-3.3.5-3">We also use strings in double quotes to represent ASCII-encoded literals. For example "BBS" will be used to refer to the octet string, <code>010000100100001001010011</code>.<a href="#section-3.3.5-3" class="pilcrow">¶</a></p>
+<p id="section-3.3.5-4">Those rules will be used explicitly on every operation. See also <a href="#serialize">Serialize</a>.<a href="#section-3.3.5-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 </section>
@@ -1826,7 +1852,7 @@ document, are to be interpreted as described in <span>[<a href="#RFC2119" class=
           <h4 id="name-secret-key">
 <a href="#section-3.4.1" class="section-number selfRef">3.4.1. </a><a href="#name-secret-key" class="section-name selfRef">Secret Key</a>
           </h4>
-<p id="section-3.4.1-1">This operation generates a secret key (SK) deterministically from a secret octet string (key_material). This operation is the RECOMMENDED way of generating a secret key, but its use is not required for compatibility, and implementations MAY use a different key generation procedure. For security, such an alternative MUST output a secret key that is statistically close to uniformly random in the range from 1 to r-1. An example of an HKDF-based alternative is the KeyGen operation defined in Section 2.3 of <span>[<a href="#I-D.irtf-cfrg-bls-signature" class="cite xref">I-D.irtf-cfrg-bls-signature</a>]</span> (with an appropriate, BBS specific, salt value, like "BBS_SIG_KEYGEN<em>SALT</em>").<a href="#section-3.4.1-1" class="pilcrow">¶</a></p>
+<p id="section-3.4.1-1">This operation generates a secret key (SK) deterministically from a secret octet string (key_material). This operation is the RECOMMENDED way of generating a secret key, but its use is not required for compatibility, and implementations MAY use a different key generation procedure. For security, such an alternative MUST output a secret key that is statistically close to uniformly random in the range from 1 to r - 1. An example of an HKDF-based alternative is the KeyGen operation defined in Section 2.3 of <span>[<a href="#I-D.irtf-cfrg-bls-signature" class="cite xref">I-D.irtf-cfrg-bls-signature</a>]</span> (with an appropriate, BBS specific, salt value, like "BBS_SIG_KEYGEN<em>SALT</em>").<a href="#section-3.4.1-1" class="pilcrow">¶</a></p>
 <p id="section-3.4.1-2">For security, key_material MUST be random and infeasible to guess, e.g. generated by a trusted source of randomness and with enough entropy. See <span>[<a href="#RFC4086" class="cite xref">RFC4086</a>]</span> for suggestions on generating randomness. key_material MUST be at least 32 bytes long, but it MAY be longer.<a href="#section-3.4.1-2" class="pilcrow">¶</a></p>
 <p id="section-3.4.1-3">KeyGen takes an optional input, key_info. This parameter MAY be used to derive distinct keys from the same key material.<a href="#section-3.4.1-3" class="pilcrow">¶</a></p>
 <p id="section-3.4.1-4">Because KeyGen is deterministic, implementations MAY choose either to store the resulting SK or to store key_material and key_info and call KeyGen to derive SK when necessary.<a href="#section-3.4.1-4" class="pilcrow">¶</a></p>
@@ -2251,7 +2277,7 @@ Procedure:
 <p id="section-3.6.3-1">This operation computes a zero-knowledge proof-of-knowledge of a signature, while optionally selectively disclosing from the original set of signed messages. The "prover" may also supply a presentation header, see <a href="#presentation-header-selection">Presentation header selection</a> for more details. Validating the resulting proof (using the <code>ProofVerify</code> algorithm defined in <a href="#proof-verification-proofverify" class="auto internal xref">Section 3.5.4</a>), guarantees the integrity and authenticity of the revealed messages, as well as the possession of a valid signature (for the public key <code>PK</code>) by the prover.<a href="#section-3.6.3-1" class="pilcrow">¶</a></p>
 <p id="section-3.6.3-2">The <code>ProofGen</code> operation will accept that signature as an input. It is RECOMMENDED to validate that signature, using the inputted public key <code>PK</code>, with the <code>Verify</code> operation defined in <a href="#signature-verification-verify" class="auto internal xref">Section 3.5.2</a>.<a href="#section-3.6.3-2" class="pilcrow">¶</a></p>
 <p id="section-3.6.3-3">The operation works by first initializing the proof using the <code>ProofInit</code> subroutine defined in <a href="#proof-initialization" class="auto internal xref">Section 3.7.1</a>. The result will be passed to the challenge calculation operation (<code>ProofChallengeCalculate</code>, defined in <a href="#challenge-calculation" class="auto internal xref">Section 3.7.4</a>). The outputted challenge, together with the initialization result, will be used by the <code>ProofFinalize</code> subroutine defined in <a href="#proof-finalization" class="auto internal xref">Section 3.7.2</a>, which will return the proof value.<a href="#section-3.6.3-3" class="pilcrow">¶</a></p>
-<p id="section-3.6.3-4">The messages supplied in this operation MUST be in the same order as when supplied to <a href="#signature-generation-sign">Sign</a>. To specify which of those messages will be disclosed, the prover can supply the list of indexes (<code>disclosed_indexes</code>) that the disclosed messages have in the array of signed messages. Each element in <code>disclosed_indexes</code> MUST be a non-negative integer, in the range from 1 to <code>length(messages)</code>.<a href="#section-3.6.3-4" class="pilcrow">¶</a></p>
+<p id="section-3.6.3-4">The messages supplied in this operation MUST be in the same order as when supplied to <a href="#signature-generation-sign">Sign</a>. To specify which of those messages will be disclosed, the prover can supply the list of indexes (<code>disclosed_indexes</code>) that the disclosed messages have in the array of signed messages. Each element in <code>disclosed_indexes</code> MUST be a non-negative integer, in the range from 0 to <code>length(messages) - 1</code>.<a href="#section-3.6.3-4" class="pilcrow">¶</a></p>
 <p id="section-3.6.3-5">The operation calculates multiple random scalars using the <code>calculate_random_scalars</code> utility operation defined in <a href="#random-scalars" class="auto internal xref">Section 4.2.1</a>. See also <a href="#randomness-requirements" class="auto internal xref">Section 5.10</a> for considerations and requirements on random scalars generation.<a href="#section-3.6.3-5" class="pilcrow">¶</a></p>
 <p id="section-3.6.3-6">To allow for flexibility in implementations, although ProofGen defines a specific value for <code>expand_len</code>, applications may use any value larger than <code>ceil((ceil(log2(r))+k)/8)</code> (for example, for the BLS12-381-SHAKE-256 and BLS12-381-SHA-256 ciphersuites, an implementation can elect to use a value of 64, instead of 48, as to allow for certain optimizations).<a href="#section-3.6.3-6" class="pilcrow">¶</a></p>
 <div class="alignLeft art-text artwork" id="section-3.6.3-7">
@@ -2273,10 +2299,10 @@ Inputs:
 - messages (OPTIONAL), a vector of scalars representing the messages.
                        If not supplied, it defaults to the empty
                        array "()".
-- disclosed_indexes (OPTIONAL), vector of unsigned integers in ascending
-                                order. Indexes of disclosed messages. If
-                                not supplied, it defaults to the empty
-                                array "()".
+- disclosed_indexes (OPTIONAL), vector of non-negative integers in
+                                ascending order. Indexes of disclosed
+                                messages. If not supplied, it defaults
+                                to the empty array "()".
 - api_id (OPTIONAL), an octet string. If not supplied it defaults to the
                      empty octet string ("").
 
@@ -2294,12 +2320,13 @@ Deserialization:
 5.  R = length(disclosed_indexes)
 6.  if R &gt; L, return INVALID
 7.  U = L - R
-8.  undisclosed_indexes = range(1, L) \ disclosed_indexes
-9.  (i1, ..., iR) = disclosed_indexes
-10. (j1, ..., jU) = undisclosed_indexes
+8.  for i in disclosed_indexes, if i &lt; 0 or i &gt; L - 1, return INVALID
+9.  undisclosed_indexes = (0, 1, ..., L - 1) \ disclosed_indexes
+10. (i1, ..., iR) = disclosed_indexes
+11. (j1, ..., jU) = undisclosed_indexes
 
-11. disclosed_messages = (messages[i1], ..., messages[iR])
-12. undisclosed_messages = (messages[j1], ..., messages[jU])
+12. disclosed_messages = (messages[i1], ..., messages[iR])
+13. undisclosed_messages = (messages[j1], ..., messages[jU])
 
 Procedure:
 
@@ -2308,10 +2335,11 @@ Procedure:
                           header, messages, undisclosed_indexes, api_id)
 3. if init_res is INVALID, return INVALID
 4. challenge = ProofChallengeCalculate(init_res, disclosed_indexes,
-                                         disclosed_messages, ph, api_id)
-5. proof = ProofFinalize(init_res, challenge, e, random_scalars,
+                                                 disclosed_messages, ph)
+5. if challenge is INVALID, return INVALID
+6. proof = ProofFinalize(init_res, challenge, e, random_scalars,
                                                    undisclosed_messages)
-6. return proof
+7. return proof
 
 </pre><a href="#section-3.6.3-7" class="pilcrow">¶</a>
 </div>
@@ -2324,7 +2352,7 @@ Procedure:
           </h4>
 <p id="section-3.6.4-1">This operation checks that a proof is valid for a header, vector of disclosed messages (along side their index corresponding to their original position when signed) and presentation header against a public key (PK).<a href="#section-3.6.4-1" class="pilcrow">¶</a></p>
 <p id="section-3.6.4-2">The operation works by first initializing the proof verification using the <code>ProofVerifyInit</code> subroutine defined in <a href="#proof-verification-initialization" class="auto internal xref">Section 3.7.3</a>. The result will be inputted to the challenge calculation operation (<code>ProofChallengeCalculate</code>, defined in <a href="#challenge-calculation" class="auto internal xref">Section 3.7.4</a>). The resulting challenge and the 2 first component of the received proof (points of G1) will be checked for correctness (steps 4 and 5 in the following procedure), to verify the proof.<a href="#section-3.6.4-2" class="pilcrow">¶</a></p>
-<p id="section-3.6.4-3">The operation accepts the messages that the prover indicated to be disclosed. Those messages MUST be in the same order as when supplied to <a href="#signature-generation-sign">Sign</a> (as a subset of the signed messages). Lastly, it also accepts the indexes that the disclosed messages had in the original array of messages supplied to <a href="#signature-generation-sign">Sign</a> (i.e., the <code>disclosed_indexes</code> list supplied to <a href="#proof-generation-proofgen">ProofGen</a>). Every element in this list MUST be a non-negative integer in the range from 1 to L, in ascending order.<a href="#section-3.6.4-3" class="pilcrow">¶</a></p>
+<p id="section-3.6.4-3">The operation accepts the messages that the prover indicated to be disclosed. Those messages MUST be in the same order as when supplied to <a href="#signature-generation-sign">Sign</a> (as a subset of the signed messages). Lastly, it also accepts the indexes that the disclosed messages had in the original array of messages supplied to <a href="#signature-generation-sign">Sign</a> (i.e., the <code>disclosed_indexes</code> list supplied to <a href="#proof-generation-proofgen">ProofGen</a>). Every element in this list MUST be a non-negative integer, in ascending order.<a href="#section-3.6.4-3" class="pilcrow">¶</a></p>
 <div class="alignLeft art-text artwork" id="section-3.6.4-4">
 <pre>result = CoreProofVerify(PK, proof, generators, header, ph,
                           disclosed_messages, disclosed_indexes, api_id)
@@ -2339,15 +2367,15 @@ Inputs:
 - header (OPTIONAL), an optional octet string containing context and
                      application specific information. If not supplied,
                      it defaults to an empty string.
-- ph (OPTIONAL), an octet string containing the presentation header. If not
-                 supplied, it defaults to an empty string.
+- ph (OPTIONAL), an octet string containing the presentation header. If
+                 not supplied, it defaults to an empty string.
 - disclosed_messages (OPTIONAL), a vector of scalars representing the
                                  messages. If not supplied, it defaults
                                  to the empty array "()".
-- disclosed_indexes (OPTIONAL), vector of unsigned integers in ascending
-                                order. Indexes of disclosed messages. If
-                                not supplied, it defaults to the empty
-                                array "()".
+- disclosed_indexes (OPTIONAL), vector of non-negative integers in
+                                ascending order. Indexes of disclosed
+                                messages. If not supplied, it defaults
+                                to the empty array "()".
 - api_id (OPTIONAL), an octet string. If not supplied it defaults to the
                      empty octet string ("").
 
@@ -2366,7 +2394,6 @@ Deserialization:
 3. (Abar, Bbar, r2^, r3^, commitments, cp) = proof_result
 4. W = octets_to_pubkey(PK)
 5. if W is INVALID, return INVALID
-6. (i1, ..., iR) = disclosed_indexes
 
 Procedure:
 
@@ -2375,9 +2402,10 @@ Procedure:
 2. if init_res is INVALID, return INVALID
 3. challenge = ProofChallengeCalculate(init_res, disclosed_indexes,
                                                    messages, ph, api_id)
-4. if cp != challenge, return INVALID
-5. if e(Abar, W) * e(Bbar, -BP2) != Identity_GT, return INVALID
-6. return VALID
+4. if challenge is INVALID, return INVALID
+5. if cp != challenge, return INVALID
+6. if e(Abar, W) * e(Bbar, -BP2) != Identity_GT, return INVALID
+7. return VALID
 
 </pre><a href="#section-3.6.4-4" class="pilcrow">¶</a>
 </div>
@@ -2396,7 +2424,7 @@ Procedure:
           <h4 id="name-proof-initialization">
 <a href="#section-3.7.1" class="section-number selfRef">3.7.1. </a><a href="#name-proof-initialization" class="section-name selfRef">Proof Initialization</a>
           </h4>
-<p id="section-3.7.1-1">This operation initializes the proof and returns part of the input that will be passed to the challenge calculation operation (i.e., <code>ProofChallengeCalculate</code>, <a href="#challenge-calculation" class="auto internal xref">Section 3.7.4</a>), during the <code>ProofGen</code> operation defined in <a href="#proof-generation-proofgen" class="auto internal xref">Section 3.5.3</a>. As one of its inputs, it accepts a list of random scalars (<code>random_scalars</code>) and a list of unsigned integers, in ascending order, representing the indexes of the messages the Prover choses to disclose (<code>undisclosed_indexes</code> see <a href="#proof-generation-proofgen" class="auto internal xref">Section 3.5.3</a>). The list of random scalars MUST have exactly 3 more items than the list of undisclosed indexes (i.e., it must hold that <code>length(random_scalars) = length(undisclosed_indexes) + 3</code>).<a href="#section-3.7.1-1" class="pilcrow">¶</a></p>
+<p id="section-3.7.1-1">This operation initializes the proof and returns part of the input that will be passed to the challenge calculation operation (i.e., <code>ProofChallengeCalculate</code>, <a href="#challenge-calculation" class="auto internal xref">Section 3.7.4</a>), during the <code>ProofGen</code> operation defined in <a href="#proof-generation-proofgen" class="auto internal xref">Section 3.5.3</a>. As its inputs, it accepts a list of random scalars (<code>random_scalars</code>), the signed header, the list of signed messages (<code>messages</code>) represented as scalar values and a list of unsigned integers in the range from <code>0</code> to <code>length(messages) - 1</code> (inclusive), in ascending order, representing the indexes of the messages the Prover choses to not disclose (<code>undisclosed_indexes</code> see <a href="#proof-generation-proofgen" class="auto internal xref">Section 3.5.3</a>). The list of random scalars MUST have exactly 3 more items than the list of undisclosed indexes (i.e., it must hold that <code>length(random_scalars) = length(undisclosed_indexes) + 3</code>).<a href="#section-3.7.1-1" class="pilcrow">¶</a></p>
 <p id="section-3.7.1-2">This operation makes use of the <code>create_generators</code> function, defined in <a href="#generators-calculation" class="auto internal xref">Section 4.1.1</a> and the <code>calculate_domain</code> function defined in <a href="#domain-calculation" class="auto internal xref">Section 4.2.3</a>.<a href="#section-3.7.1-2" class="pilcrow">¶</a></p>
 <div class="alignLeft art-text artwork" id="section-3.7.1-3">
 <pre>init_res = ProofInit(PK, signature, generators, random_scalars,
@@ -2414,7 +2442,7 @@ Inputs:
                      empty octet string ("").
 - messages (OPTIONAL), vector of scalar values. If not supplied, it
                        defaults to the empty array "()".
-- undisclosed_indexes (OPTIONAL), vector of unsigned integers in
+- undisclosed_indexes (OPTIONAL), vector of non-negative integers in
                                   ascending order. If not supplied, it
                                   defaults to the empty array "()".
 - api_id (OPTIONAL), an octet string. If not supplied it defaults to the
@@ -2446,7 +2474,7 @@ Deserialization:
 
 ABORT if:
 
-1. for i in undisclosed_indexes, i &lt; 1 or i &gt; L
+1. for i in undisclosed_indexes, i &lt; 0 or i &gt; L - 1
 2. U &gt; L
 
 Procedure:
@@ -2502,8 +2530,8 @@ Procedure:
 1. r4 = - r1^-1 (mod r)
 2. r2^ = r2 + e_value * r4 * challenge (mod r)
 3. r3^ = r3 + r4 * challenge (mod r)
-4. for j in (1, ..., U): m^_j = m~_j + undisclosed_j * challenge (mod r)
-5. proof = (Abar, Bbar, r2^, r3^, (m^_j1, ..., m^_jU), challenge)
+4. for j in (1, 2, ..., U): m^_j = m~_j + undisclosed_j * challenge (mod r)
+5. proof = (Abar, Bbar, r2^, r3^, (m^_1, ..., m^_U), challenge)
 6. return proof_to_octets(proof)
 
 </pre><a href="#section-3.7.2-2" class="pilcrow">¶</a>
@@ -2540,9 +2568,9 @@ Inputs:
 - disclosed_messages (OPTIONAL), vector of scalar values. If not
                                  supplied, it defaults to the empty
                                  array "()".
-- disclosed_indexes (OPTIONAL), vector of unsigned integers in ascending
-                                order. If not supplied, it defaults to
-                                the empty array "()".
+- disclosed_indexes (OPTIONAL), vector of non-negative integers in
+                                ascending order. If not supplied, it
+                                defaults to the empty array "()".
 - api_id (OPTIONAL), an octet string. If not supplied it defaults to the
                      empty octet string ("").
 
@@ -2562,20 +2590,17 @@ Deserialization:
 3.  R = length(disclosed_indexes)
 4.  L = R + U
 5.  (i1, ..., iR) = disclosed_indexes
-6.  (j1, ..., jU) = range(1, L) \ disclosed_indexes
-7.  (msg_i1, ..., msg_iR) = disclosed_messages
-8.  (m^_j1, ...., m^_jU) = commitments
+6.  for i in disclosed_indexes, if i &lt; 0 or i &gt; L - 1, return INVALID
+7.  (j1, ..., jU) = (0, 1, ..., L - 1) \ disclosed_indexes
+8.  if length(disclosed_messages) != R, return INVALID
+9.  (msg_i1, ..., msg_iR) = disclosed_messages
+10. (m^_j1, ...., m^_jU) = commitments
 
-9.  if length(generators) != L + 1, return INVALID
-10. (Q_1, MsgGenerators) = generators
-11. (H_1, ..., H_L) = MsgGenerators
-12. (H_i1, ..., H_iR) = (MsgGenerators[i1], ..., MsgGenerators[iR])
-13. (H_j1, ..., H_jU) = (MsgGenerators[j1], ..., MsgGenerators[jU])
-
-ABORT if:
-
-1. for i in (i1, ..., iR), i &lt; 1 or i &gt; L
-2. length(disclosed_messages) != R
+11. if length(generators) != L + 1, return INVALID
+12. (Q_1, MsgGenerators) = generators
+13. (H_1, ..., H_L) = MsgGenerators
+14. (H_i1, ..., H_iR) = (MsgGenerators[i1], ..., MsgGenerators[iR])
+15. (H_j1, ..., H_jU) = (MsgGenerators[j1], ..., MsgGenerators[jU])
 
 Procedure:
 
@@ -2628,12 +2653,13 @@ Deserialization:
 
 1. R = length(i_array)
 2. (i1, ..., iR) = i_array
+3. if length(msg_array) != R, return INVALID
 3. (msg_i1, ..., msg_iR) = msg_array
 4. (Abar, Bbar, C, domain) = init_res
 
 ABORT if:
 
-1. R &gt; 2^64 - 1 or R != length(msg_array)
+1. R &gt; 2^64 - 1
 2. length(ph) &gt; 2^64 - 1
 
 Procedure:
@@ -2734,7 +2760,7 @@ ABORT if:
 Procedure:
 
 1. v = expand_message(generator_seed, seed_dst, expand_len)
-2. for i in range(1, count):
+2. for i in (1, 2, ..., count):
 3.    v = expand_message(v || I2OSP(i, 8), seed_dst, expand_len)
 4.    generator_i = hash_to_curve_g1(v, generator_dst)
 5. return (generator_1, ..., generator_count)
@@ -2890,7 +2916,7 @@ Outputs:
 
 Procedure:
 
-1. for i in (1, ..., count):
+1. for i in (1, 2, ..., count):
 2.     r_i = OS2IP(get_random(expand_len)) mod r
 3. return (r_1, r_2, ..., r_count)
 
@@ -2903,7 +2929,7 @@ Procedure:
           <h4 id="name-hash-to-scalar">
 <a href="#section-4.2.2" class="section-number selfRef">4.2.2. </a><a href="#name-hash-to-scalar" class="section-name selfRef">Hash to Scalar</a>
           </h4>
-<p id="section-4.2.2-1">This operation describes how to hash an arbitrary octet string to <code>n</code> scalar values in the multiplicative group of integers mod r (i.e., values in the range [1, r-1]).  This procedure acts as a helper function, used internally in various places within the operations described in the spec. To hash a message to a scalar that would be passed as input to the <a href="#sisignature-generation-signgn">Sign</a>, <a href="#signature-verification-verify">Verify</a>, <a href="#proof-generation-proofgen">ProofGen</a> and <a href="#proof-verification-proofverify">ProofVerify</a> functions, one must use <a href="#mapmessagetoscalar">MapMessageToScalarAsHash</a> instead.<a href="#section-4.2.2-1" class="pilcrow">¶</a></p>
+<p id="section-4.2.2-1">This operation describes how to hash an arbitrary octet string to <code>n</code> scalar values in the multiplicative group of integers mod r (i.e., values in the range from  1 to r - 1).  This procedure acts as a helper function, used internally in various places within the operations described in the spec. To hash a message to a scalar that would be passed as input to the <a href="#sisignature-generation-signgn">Sign</a>, <a href="#signature-verification-verify">Verify</a>, <a href="#proof-generation-proofgen">ProofGen</a> and <a href="#proof-verification-proofverify">ProofVerify</a> functions, one must use <a href="#mapmessagetoscalar">MapMessageToScalarAsHash</a> instead.<a href="#section-4.2.2-1" class="pilcrow">¶</a></p>
 <p id="section-4.2.2-2">The operation takes as input an octet string representing the message to hash (msg), the number of the scalars to return (count) as well as an optional domain separation tag (dst). The length of the dst MUST be less than 255 octets. See section 5.3.3 of <span>[<a href="#I-D.irtf-cfrg-hash-to-curve" class="cite xref">I-D.irtf-cfrg-hash-to-curve</a>]</span> for guidance on using larger dst values. If a dst is not supplied, its value MUST default to the octet string returned from ciphersuite_id || "H2S_", where ciphersuite_id is the octet string representing the unique ID of the ciphersuite and "H2S_" is an ASCII string comprised of 4 bytes.<a href="#section-4.2.2-2" class="pilcrow">¶</a></p>
 <p id="section-4.2.2-3"><strong>Note</strong> This operation makes use of <code>expand_message</code> defined in <span>[<a href="#I-D.irtf-cfrg-hash-to-curve" class="cite xref">I-D.irtf-cfrg-hash-to-curve</a>]</span>. The operation <code>expand_message</code> may fail (abort). In that case, <code>hash_to_scalar</code> MUST also ABORT.<a href="#section-4.2.2-3" class="pilcrow">¶</a></p>
 <div class="alignLeft art-text artwork" id="section-4.2.2-4">
@@ -3004,7 +3030,7 @@ Procedure:
             <h5 id="name-serialize">
 <a href="#section-4.2.4.1" class="section-number selfRef">4.2.4.1. </a><a href="#name-serialize" class="section-name selfRef">Serialize</a>
             </h5>
-<p id="section-4.2.4.1-1">This operation describes how to transform multiple elements of different types (i.e., elements that are not already in a octet string format) to a single octet string (see <a href="#serializing-to-octets" class="auto internal xref">Section 3.3.4</a>). The inputted elements can be points, scalars (see <a href="#terminology">Terminology</a>) or integers between 0 and 2^64-1. The resulting octet string will then either be used as an input to a hash function (i.e., in <a href="#signature-generation-sign">Sign</a>, <a href="#proof-generation-proofgen">ProofGen</a> etc.), or to serialize a signature or proof (see <a href="#signaturetooctets">SignatureToOctets</a> and <a href="#prooftooctets">ProofToOctets</a>).<a href="#section-4.2.4.1-1" class="pilcrow">¶</a></p>
+<p id="section-4.2.4.1-1">This operation describes how to transform multiple elements of different types (i.e., elements that are not already in a octet string format) to a single octet string (see <a href="#serializing-to-octets" class="auto internal xref">Section 3.3.5</a>). The inputted elements can be points, scalars (see <a href="#terminology">Terminology</a>) or integers between 0 and 2^64-1. The resulting octet string will then either be used as an input to a hash function (i.e., in <a href="#signature-generation-sign">Sign</a>, <a href="#proof-generation-proofgen">ProofGen</a> etc.), or to serialize a signature or proof (see <a href="#signaturetooctets">SignatureToOctets</a> and <a href="#prooftooctets">ProofToOctets</a>).<a href="#section-4.2.4.1-1" class="pilcrow">¶</a></p>
 <div class="alignLeft art-text artwork" id="section-4.2.4.1-2">
 <pre>octets_result = serialize(input_array)
 
@@ -3122,9 +3148,9 @@ Procedure:
 <ol start="1" type="1" class="compact type-1" id="section-4.2.4.4-3">
 <li id="section-4.2.4.4-3.1">Two (2) valid points of the G1 subgroup, different from the identity point of G1 (i.e., <code>Abar, Bbar</code>, in ProofGen)<a href="#section-4.2.4.4-3.1" class="pilcrow">¶</a>
 </li>
-              <li id="section-4.2.4.4-3.2">Three (3) integers representing scalars in the range of 1 to r-1 inclusive (i.e., <code>c, r2^, r3^</code>, in ProofGen).<a href="#section-4.2.4.4-3.2" class="pilcrow">¶</a>
+              <li id="section-4.2.4.4-3.2">Three (3) integers representing scalars in the range of 1 to r - 1 inclusive (i.e., <code>c, r2^, r3^</code>, in ProofGen).<a href="#section-4.2.4.4-3.2" class="pilcrow">¶</a>
 </li>
-              <li id="section-4.2.4.4-3.3">A number of integers representing scalars in the range of 1 to r-1 inclusive, corresponding to the undisclosed from the proof messages (i.e., <code>m^_j1, ..., m^_jU</code>, in ProofGen, where U the number of undisclosed messages).<a href="#section-4.2.4.4-3.3" class="pilcrow">¶</a>
+              <li id="section-4.2.4.4-3.3">A number of integers representing scalars in the range of 1 to r - 1 inclusive, corresponding to the undisclosed from the proof messages (i.e., <code>m^_j1, ..., m^_jU</code>, in ProofGen, where U the number of undisclosed messages).<a href="#section-4.2.4.4-3.3" class="pilcrow">¶</a>
 </li>
             </ol>
 <div class="alignLeft art-text artwork" id="section-4.2.4.4-4">
@@ -3164,11 +3190,11 @@ Procedure:
 <ol start="1" type="1" class="compact type-1" id="section-4.2.4.5-3">
 <li id="section-4.2.4.5-3.1">Two (2) valid points of the G1 subgroup, each of which must not equal the identity point.<a href="#section-4.2.4.5-3.1" class="pilcrow">¶</a>
 </li>
-              <li id="section-4.2.4.5-3.2">Two (2) integers representing scalars in the range of 1 to r-1 inclusive.<a href="#section-4.2.4.5-3.2" class="pilcrow">¶</a>
+              <li id="section-4.2.4.5-3.2">Two (2) integers representing scalars in the range of 1 to r - 1 inclusive.<a href="#section-4.2.4.5-3.2" class="pilcrow">¶</a>
 </li>
-              <li id="section-4.2.4.5-3.3">A set of integers representing scalars in the range of 1 to r-1 inclusive, corresponding to the undisclosed from the proof message commitments. This set can be empty (i.e., "()").<a href="#section-4.2.4.5-3.3" class="pilcrow">¶</a>
+              <li id="section-4.2.4.5-3.3">A set of integers representing scalars in the range of 1 to r - 1 inclusive, corresponding to the undisclosed from the proof message commitments. This set can be empty (i.e., "()").<a href="#section-4.2.4.5-3.3" class="pilcrow">¶</a>
 </li>
-              <li id="section-4.2.4.5-3.4">One (1) integer representing a scalar in the range of 1 to r-1 inclusive, corresponding to the proof's challenge (<code>c</code>).<a href="#section-4.2.4.5-3.4" class="pilcrow">¶</a>
+              <li id="section-4.2.4.5-3.4">One (1) integer representing a scalar in the range of 1 to r - 1 inclusive, corresponding to the proof's challenge (<code>c</code>).<a href="#section-4.2.4.5-3.4" class="pilcrow">¶</a>
 </li>
             </ol>
 <div class="alignLeft art-text artwork" id="section-4.2.4.5-4">
@@ -3201,7 +3227,7 @@ Procedure:
 
 // Points (i.e., (Abar, Bbar) in ProofGen) de-serialization.
 3.  index = 0
-4.  for i in range(0, 1):
+4.  for i in (0, 1):
 5.      end_index = index + octet_point_length - 1
 6.      A_i = octets_to_point_g1(proof_octets[index..end_index])
 7.      if A_i is INVALID or Identity_G1, return INVALID
@@ -5399,7 +5425,7 @@ proof = "812a204f66c9084feed7383894d910f2c17399b3c4b4bed05660921de8539f5
 
 </pre><a href="#appendix-D-5" class="pilcrow">¶</a>
 </div>
-<p id="appendix-D-6">Let <code>(i1, ..., iR)</code> be the indexes of the messages the prover wants to disclose and <code>(j1, ..., jU)</code> be the indexes corresponding to undisclosed messages (i.e., <code>(j1, ..., jU) = range(1, L) \ (i1, ..., iR)</code>). To prove knowledge of a signature on the disclosed messages, work as follows;<a href="#appendix-D-6" class="pilcrow">¶</a></p>
+<p id="appendix-D-6">Let <code>(i1, ..., iR)</code> be the indexes of the messages the prover wants to disclose and <code>(j1, ..., jU)</code> be the indexes corresponding to undisclosed messages (i.e., <code>(j1, ..., jU) = (1, 2, ..., L) \ (i1, ..., iR)</code>). To prove knowledge of a signature on the disclosed messages, work as follows;<a href="#appendix-D-6" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="appendix-D-7.1">
           <p id="appendix-D-7.1.1">Prove possession of a valid signature. As defined above, a signature <code>(A, e)</code>, on messages <code>msg_1, ..., msg_L</code> is valid, if <code>A = B * 1/(e + SK)</code>, where <code>B</code> as in [1]. However we cannot reveal neither <code>A</code>, <code>e</code> nor <code>B</code> to the verifier (signature is uniquely identifiable and <code>B</code> will reveal information about the signed messages, even the undisclosed ones). To get around this, we need to hide the signature <code>(A, e)</code> and the value of <code>B</code>, in a way that will allow proving knowledge of such ellements with the aformentioned relationship (i.e., that <code>A = B * 1/(e + SK)</code>), without revealing their value. We do this by randomizing them. To do that, take uniformly random <code>r1</code> in <code>[1, r-1]</code>, and calculate,<a href="#appendix-D-7.1.1" class="pilcrow">¶</a></p>
