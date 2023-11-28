@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2023-11-26T00:09:55.410202+00:00",
+  "timestamp": "2023-11-28T00:09:18.171921+00:00",
   "repo": "decentralized-identity/bbs-signature",
   "labels": [
     {
@@ -6771,9 +6771,17 @@
       "labels": [],
       "body": "New (updated) draft on blind signatures: https://basileioskal.github.io/blind-bbs-signatures/draft-bbs-blind-signatures.html\r\n\r\nCouple notes:\r\n- It seems that the commitment value added in `CoreSign` in the main draft is not useful after all. Will probably remove it.\r\n- If agreed, the above would probably replace the current draft and hopefully be submitted at the IETF as well.\r\n- Will add test vectors soon.",
       "createdAt": "2023-11-06T16:03:25Z",
-      "updatedAt": "2023-11-06T16:03:25Z",
+      "updatedAt": "2023-11-27T17:28:20Z",
       "closedAt": null,
-      "comments": []
+      "comments": [
+        {
+          "author": "BasileiosKal",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "Fixtures added: https://github.com/BasileiosKal/blind-bbs-signatures/tree/main/fixtures/fixture_data",
+          "createdAt": "2023-11-27T17:28:19Z",
+          "updatedAt": "2023-11-27T17:28:19Z"
+        }
+      ]
     },
     {
       "number": 295,
@@ -34306,13 +34314,13 @@
       "labels": [],
       "body": "Based on the WG discussions, update the BBS Proof based on [CDL16].\r\n\r\n(Uses  #287)",
       "createdAt": "2023-10-14T19:38:32Z",
-      "updatedAt": "2023-11-20T18:06:45Z",
+      "updatedAt": "2023-11-27T16:58:15Z",
       "baseRepository": "decentralized-identity/bbs-signature",
       "baseRefName": "main",
-      "baseRefOid": "76936111f906325bc0518a48744b5d4ea62a1086",
+      "baseRefOid": "3f5e64f62eb75ef2f094b712a3b6d5042c11b8ba",
       "headRepository": "decentralized-identity/bbs-signature",
       "headRefName": "vasilis/cdl-proof",
-      "headRefOid": "770ed0fd8035d67f821b22f3628754e45697642f",
+      "headRefOid": "fdb89f9ea9d5409e347b34f85c7760ac86efed19",
       "closedAt": null,
       "mergedAt": null,
       "mergedBy": null,
@@ -34457,24 +34465,26 @@
       "id": "PR_kwDOF8lax85dg1WD",
       "title": "Clarify zero indexing of arrays",
       "url": "https://github.com/decentralized-identity/bbs-signature/pull/290",
-      "state": "OPEN",
+      "state": "MERGED",
       "author": "BasileiosKal",
       "authorAssociation": "CONTRIBUTOR",
       "assignees": [],
       "labels": [],
       "body": "Not a breaking change. Implementations used 0-indexing already,. even though was not clearly specified in the draft.",
       "createdAt": "2023-10-23T10:22:44Z",
-      "updatedAt": "2023-11-20T19:14:12Z",
+      "updatedAt": "2023-11-27T16:25:26Z",
       "baseRepository": "decentralized-identity/bbs-signature",
       "baseRefName": "main",
       "baseRefOid": "76936111f906325bc0518a48744b5d4ea62a1086",
       "headRepository": "decentralized-identity/bbs-signature",
       "headRefName": "vasilis/zero-indexing",
       "headRefOid": "d3ba5dd274cf42d5e45b09e46a55a3287a9ba058",
-      "closedAt": null,
-      "mergedAt": null,
-      "mergedBy": null,
-      "mergeCommit": null,
+      "closedAt": "2023-11-27T16:25:26Z",
+      "mergedAt": "2023-11-27T16:25:26Z",
+      "mergedBy": "BasileiosKal",
+      "mergeCommit": {
+        "oid": "126c4a9700b31f05190886942ee12dc0cae9af02"
+      },
       "comments": [
         {
           "author": "BasileiosKal",
@@ -34482,6 +34492,13 @@
           "body": "Discussed on the WG call on the 23rd of Oct. Will resolve conflicts and merge after approval.",
           "createdAt": "2023-10-23T18:35:36Z",
           "updatedAt": "2023-10-23T18:35:36Z"
+        },
+        {
+          "author": "BasileiosKal",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "Discussed on WG call at 20th of Nov. Multiple approvals! Merging",
+          "createdAt": "2023-11-27T16:25:22Z",
+          "updatedAt": "2023-11-27T16:25:22Z"
         }
       ],
       "reviews": [
@@ -34578,13 +34595,13 @@
       "labels": [],
       "body": "Closes #256.",
       "createdAt": "2023-10-29T18:36:44Z",
-      "updatedAt": "2023-11-20T19:18:21Z",
+      "updatedAt": "2023-11-27T16:37:19Z",
       "baseRepository": "decentralized-identity/bbs-signature",
       "baseRefName": "main",
       "baseRefOid": "76936111f906325bc0518a48744b5d4ea62a1086",
       "headRepository": "decentralized-identity/bbs-signature",
       "headRefName": "vasilis/privacy-considerations",
-      "headRefOid": "ae8a3cd70a57e308ecedaed9c4efbc0ad8be3aa1",
+      "headRefOid": "bbfccce780460dc4e4ca3c30965e474a8bdd4e05",
       "closedAt": null,
       "mergedAt": null,
       "mergedBy": null,
@@ -34754,31 +34771,40 @@
       "id": "PR_kwDOF8lax85fBQCt",
       "title": "Update draft-irtf-cfrg-bbs-signatures.md",
       "url": "https://github.com/decentralized-identity/bbs-signature/pull/294",
-      "state": "OPEN",
+      "state": "MERGED",
       "author": "alessandropino",
-      "authorAssociation": "NONE",
+      "authorAssociation": "CONTRIBUTOR",
       "assignees": [],
       "labels": [],
       "body": "## Possible typo\r\nIn section 3.6.3.  CoreProofGen I noticed that \"signature_result\" became \"signature_res\" and fixed that. Specifically\r\n\r\n```\r\n2. init_res = ProofInit(PK, signature_res, generators, random_scalars,\r\n                          header, messages, undisclosed_indexes, api_id)\r\n```\r\n\r\nIf it is not a typo and there is a reason for that, close this pull request.",
       "createdAt": "2023-11-09T10:40:34Z",
-      "updatedAt": "2023-11-23T19:34:25Z",
+      "updatedAt": "2023-11-27T16:26:21Z",
       "baseRepository": "decentralized-identity/bbs-signature",
       "baseRefName": "main",
       "baseRefOid": "76936111f906325bc0518a48744b5d4ea62a1086",
       "headRepository": "alessandropino/bbs-signature",
       "headRefName": "main",
       "headRefOid": "d76bd48d237698a283099c3467c362a7194abb4a",
-      "closedAt": null,
-      "mergedAt": null,
-      "mergedBy": null,
-      "mergeCommit": null,
+      "closedAt": "2023-11-27T16:26:20Z",
+      "mergedAt": "2023-11-27T16:26:20Z",
+      "mergedBy": "BasileiosKal",
+      "mergeCommit": {
+        "oid": "3f5e64f62eb75ef2f094b712a3b6d5042c11b8ba"
+      },
       "comments": [
         {
           "author": "alessandropino",
-          "authorAssociation": "NONE",
+          "authorAssociation": "CONTRIBUTOR",
           "body": "## Possible typo 2\r\nIn section 3.7.4. Challenge Calculation I also noticed that the previously defined c_arr became c_array in the next row\r\n```\r\n1. c_arr = (Abar, Bbar, C, R, i1, ..., iR, msg_i1, ..., msg_iR, domain)\r\n2. c_octs = serialize(c_array) || I2OSP(length(ph), 8) || ph\r\n```\r\nAgain if it is not a typo, close this pull request",
           "createdAt": "2023-11-09T11:22:54Z",
           "updatedAt": "2023-11-09T11:22:54Z"
+        },
+        {
+          "author": "BasileiosKal",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "Multiple approvals. Fixing typos. Merging. Thanks @alessandropino!",
+          "createdAt": "2023-11-27T16:26:15Z",
+          "updatedAt": "2023-11-27T16:26:15Z"
         }
       ],
       "reviews": [
@@ -34832,6 +34858,112 @@
           "body": "",
           "createdAt": "2023-11-23T19:34:25Z",
           "updatedAt": "2023-11-23T19:34:25Z",
+          "comments": []
+        }
+      ]
+    },
+    {
+      "number": 296,
+      "id": "PR_kwDOF8lax85gds9X",
+      "title": "Update ciphersuites",
+      "url": "https://github.com/decentralized-identity/bbs-signature/pull/296",
+      "state": "OPEN",
+      "author": "BasileiosKal",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "- Removes the hash variable from the ciphersuites.\r\n- Fixes the ciphersuite IDs",
+      "createdAt": "2023-11-27T17:23:32Z",
+      "updatedAt": "2023-11-27T20:30:16Z",
+      "baseRepository": "decentralized-identity/bbs-signature",
+      "baseRefName": "main",
+      "baseRefOid": "3f5e64f62eb75ef2f094b712a3b6d5042c11b8ba",
+      "headRepository": "decentralized-identity/bbs-signature",
+      "headRefName": "vasilis/update-suites",
+      "headRefOid": "46fbd496ec02cc559cef7ec559127ed758739306",
+      "closedAt": null,
+      "mergedAt": null,
+      "mergedBy": null,
+      "mergeCommit": null,
+      "comments": [],
+      "reviews": [
+        {
+          "id": "PRR_kwDOF8lax85oYozn",
+          "commit": {
+            "abbreviatedOid": "46fbd49"
+          },
+          "author": "Wind4Greg",
+          "authorAssociation": "NONE",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2023-11-27T20:23:25Z",
+          "updatedAt": "2023-11-27T20:23:25Z",
+          "comments": []
+        },
+        {
+          "id": "PRR_kwDOF8lax85oYsA5",
+          "commit": {
+            "abbreviatedOid": "46fbd49"
+          },
+          "author": "andrewwhitehead",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2023-11-27T20:30:16Z",
+          "updatedAt": "2023-11-27T20:30:16Z",
+          "comments": []
+        }
+      ]
+    },
+    {
+      "number": 297,
+      "id": "PR_kwDOF8lax85gdxoV",
+      "title": "Rm the optional commitment from CoreSign",
+      "url": "https://github.com/decentralized-identity/bbs-signature/pull/297",
+      "state": "OPEN",
+      "author": "BasileiosKal",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "",
+      "createdAt": "2023-11-27T17:37:04Z",
+      "updatedAt": "2023-11-27T20:29:29Z",
+      "baseRepository": "decentralized-identity/bbs-signature",
+      "baseRefName": "main",
+      "baseRefOid": "3f5e64f62eb75ef2f094b712a3b6d5042c11b8ba",
+      "headRepository": "decentralized-identity/bbs-signature",
+      "headRefName": "vassilis/signature-commit",
+      "headRefOid": "55170d3eaad37ed187cbd62cea806e4c3c1a5464",
+      "closedAt": null,
+      "mergedAt": null,
+      "mergedBy": null,
+      "mergeCommit": null,
+      "comments": [],
+      "reviews": [
+        {
+          "id": "PRR_kwDOF8lax85oYpUo",
+          "commit": {
+            "abbreviatedOid": "55170d3"
+          },
+          "author": "Wind4Greg",
+          "authorAssociation": "NONE",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2023-11-27T20:24:41Z",
+          "updatedAt": "2023-11-27T20:24:41Z",
+          "comments": []
+        },
+        {
+          "id": "PRR_kwDOF8lax85oYrtn",
+          "commit": {
+            "abbreviatedOid": "55170d3"
+          },
+          "author": "andrewwhitehead",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2023-11-27T20:29:29Z",
+          "updatedAt": "2023-11-27T20:29:29Z",
           "comments": []
         }
       ]
