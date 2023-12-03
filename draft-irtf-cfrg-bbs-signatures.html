@@ -28,7 +28,7 @@
     requests 2.31.0
     setuptools 67.7.2
     six 1.16.0
-    wcwidth 0.2.10
+    wcwidth 0.2.12
 -->
 <link href="draft-irtf-cfrg-bbs-signatures.xml" rel="alternate" type="application/rfc+xml">
 <link href="#copyright" rel="license">
@@ -1027,11 +1027,11 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <thead><tr>
 <td class="left">Internet-Draft</td>
 <td class="center">The BBS Signature Scheme</td>
-<td class="right">November 2023</td>
+<td class="right">December 2023</td>
 </tr></thead>
 <tfoot><tr>
 <td class="left">Looker, et al.</td>
-<td class="center">Expires 30 May 2024</td>
+<td class="center">Expires 5 June 2024</td>
 <td class="right">[Page]</td>
 </tr></tfoot>
 </table>
@@ -1044,12 +1044,12 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <dd class="internet-draft">draft-irtf-cfrg-bbs-signatures-latest</dd>
 <dt class="label-published">Published:</dt>
 <dd class="published">
-<time datetime="2023-11-27" class="published">27 November 2023</time>
+<time datetime="2023-12-03" class="published">3 December 2023</time>
     </dd>
 <dt class="label-intended-status">Intended Status:</dt>
 <dd class="intended-status">Informational</dd>
 <dt class="label-expires">Expires:</dt>
-<dd class="expires"><time datetime="2024-05-30">30 May 2024</time></dd>
+<dd class="expires"><time datetime="2024-06-05">5 June 2024</time></dd>
 <dt class="label-authors">Authors:</dt>
 <dd class="authors">
 <div class="author">
@@ -1103,7 +1103,7 @@ svg :is([fill="white"], [fill^="#fff"]) {
         time. It is inappropriate to use Internet-Drafts as reference
         material or to cite them other than as "work in progress."<a href="#section-boilerplate.1-3" class="pilcrow">¶</a></p>
 <p id="section-boilerplate.1-4">
-        This Internet-Draft will expire on 30 May 2024.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
+        This Internet-Draft will expire on 5 June 2024.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="copyright">
@@ -3503,9 +3503,9 @@ a function that returns the point P in the subgroup G2 corresponding to the cano
 <a href="#section-6.2" class="section-number selfRef">6.2. </a><a href="#name-bls12-381-ciphersuites" class="section-name selfRef">BLS12-381 Ciphersuites</a>
         </h3>
 <p id="section-6.2-1">The following two ciphersuites are based on the BLS12-381 elliptic curves defined in Section 4.2.1 of <span>[<a href="#I-D.irtf-cfrg-pairing-friendly-curves" class="cite xref">I-D.irtf-cfrg-pairing-friendly-curves</a>]</span>. The targeted security level of both suites in bits is <code>k = 128</code>. The number of bits of the order <code>r</code>, of the G1 and G2 subgroups, is <code>log2(r) = 255</code>. The base points <code>BP1</code> and <code>BP2</code> of G1 and G2 are the points <code>BP</code> and <code>BP'</code> correspondingly, as defined in Section 4.2.1 of <span>[<a href="#I-D.irtf-cfrg-pairing-friendly-curves" class="cite xref">I-D.irtf-cfrg-pairing-friendly-curves</a>]</span>.<a href="#section-6.2-1" class="pilcrow">¶</a></p>
-<p id="section-6.2-2">The first ciphersuite makes use of an extendable output function, and most specifically of SHAKE-256, as defined in Section 6.2 of <span>[<a href="#SHA3" class="cite xref">SHA3</a>]</span>. It also uses the hash-to-curve suite defined by this document in <a href="#bls12-381-hash_to_curve-def">Appendix A.1</a>, which also makes use of the SHAKE-256 function.<a href="#section-6.2-2" class="pilcrow">¶</a></p>
-<p id="section-6.2-3">The second ciphersuite uses SHA-256, as defined in Section 6.2 of <span>[<a href="#SHA2" class="cite xref">SHA2</a>]</span> and the BLS12-381 G1 hash-to-curve suite defined in Section 8.8.1 of the <span>[<a href="#I-D.irtf-cfrg-hash-to-curve" class="cite xref">I-D.irtf-cfrg-hash-to-curve</a>]</span> document.<a href="#section-6.2-3" class="pilcrow">¶</a></p>
-<p id="section-6.2-4">Note that these two ciphersuites differ only in the hash function (SHAKE-256 vs SHA-256) and in the hash-to-curve suites used. The hash-to-curve suites differ in the <code>expand_message</code> variant and underlying hash function. More concretely, the <a href="#bls12-381-shake-256">BLS12-381-SHAKE-256</a> ciphersuite makes use of <code>expand_message_xof</code> with SHAKE-256, while <a href="#bls12-381-sha-256">BLS12-381-SHA-256</a> makes use of <code>expand_message_xmd</code> with SHA-256. Curve parameters are common between the two ciphersuites.<a href="#section-6.2-4" class="pilcrow">¶</a></p>
+<p id="section-6.2-2">The first ciphersuite uses the hash-to-curve suite <code>BLS12381G1_XOF:SHAKE-256_SSWU_RO_</code>, defined by this document in <a href="#bls12-381-hash_to_curve-def">Appendix A.1</a>, which is based on the SHAKE-256 extendable output function, as defined in Section 6.2 of <span>[<a href="#SHA3" class="cite xref">SHA3</a>]</span>.<a href="#section-6.2-2" class="pilcrow">¶</a></p>
+<p id="section-6.2-3">The second ciphersuite uses the hash-to-curve suite <code>BLS12381G1_XMD:SHA-256_SSWU_RO_</code>, defined in Section 8.8.1 of the <span>[<a href="#I-D.irtf-cfrg-hash-to-curve" class="cite xref">I-D.irtf-cfrg-hash-to-curve</a>]</span> document, which is based on the SHA-256, as defined in Section 6.2 of <span>[<a href="#SHA2" class="cite xref">SHA2</a>]</span> .<a href="#section-6.2-3" class="pilcrow">¶</a></p>
+<p id="section-6.2-4">Note that these two ciphersuites differ only in the hash-to-curve suites used. The hash-to-curve suites differ in the <code>expand_message</code> variant and underlying hash function. More concretely, the <a href="#bls12-381-shake-256">BLS12-381-SHAKE-256</a> ciphersuite makes use of <code>expand_message_xof</code> with SHAKE-256, while <a href="#bls12-381-sha-256">BLS12-381-SHA-256</a> makes use of <code>expand_message_xmd</code> with SHA-256. Curve parameters are common between the two ciphersuites.<a href="#section-6.2-4" class="pilcrow">¶</a></p>
 <div id="bls12-381-shake-256">
 <section id="section-6.2.1">
           <h4 id="name-bls12-381-shake-256">
@@ -3514,30 +3514,27 @@ a function that returns the point P in the subgroup G2 corresponding to the cano
 <p id="section-6.2.1-1"><strong>Basic parameters</strong>:<a href="#section-6.2.1-1" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="section-6.2.1-2.1">
-              <p id="section-6.2.1-2.1.1">ciphersuite_id: "BBS_BLS12381G1_XOF:SHAKE-256_SSWU_RO_H2G_HM2S_"<a href="#section-6.2.1-2.1.1" class="pilcrow">¶</a></p>
+              <p id="section-6.2.1-2.1.1">ciphersuite_id: "BBS_BLS12381G1_XOF:SHAKE-256_SSWU_RO_"<a href="#section-6.2.1-2.1.1" class="pilcrow">¶</a></p>
 </li>
             <li class="normal" id="section-6.2.1-2.2">
-              <p id="section-6.2.1-2.2.1">hash: SHAKE-256 as defined in <span>[<a href="#SHA3" class="cite xref">SHA3</a>]</span>.<a href="#section-6.2.1-2.2.1" class="pilcrow">¶</a></p>
+              <p id="section-6.2.1-2.2.1">octet_scalar_length: 32, based on the RECOMMENDED approach of <code>ceil(log2(r)/8)</code>.<a href="#section-6.2.1-2.2.1" class="pilcrow">¶</a></p>
 </li>
             <li class="normal" id="section-6.2.1-2.3">
-              <p id="section-6.2.1-2.3.1">octet_scalar_length: 32, based on the RECOMMENDED approach of <code>ceil(log2(r)/8)</code>.<a href="#section-6.2.1-2.3.1" class="pilcrow">¶</a></p>
+              <p id="section-6.2.1-2.3.1">octet_point_length: 48, based on the RECOMMENDED approach of <code>ceil(log2(p)/8)</code>.<a href="#section-6.2.1-2.3.1" class="pilcrow">¶</a></p>
 </li>
             <li class="normal" id="section-6.2.1-2.4">
-              <p id="section-6.2.1-2.4.1">octet_point_length: 48, based on the RECOMMENDED approach of <code>ceil(log2(p)/8)</code>.<a href="#section-6.2.1-2.4.1" class="pilcrow">¶</a></p>
+              <p id="section-6.2.1-2.4.1">hash_to_curve_suite: "BLS12381G1_XOF:SHAKE-256_SSWU_RO_" as defined in <a href="#bls12-381-hash-to-curve-definition-using-shake-256">Appendix A.1</a> for the G1 subgroup.<a href="#section-6.2.1-2.4.1" class="pilcrow">¶</a></p>
 </li>
             <li class="normal" id="section-6.2.1-2.5">
-              <p id="section-6.2.1-2.5.1">hash_to_curve_suite: "BLS12381G1_XOF:SHAKE-256_SSWU_RO_" as defined in <a href="#bls12-381-hash-to-curve-definition-using-shake-256">Appendix A.1</a> for the G1 subgroup.<a href="#section-6.2.1-2.5.1" class="pilcrow">¶</a></p>
+              <p id="section-6.2.1-2.5.1">expand_len: 48 ( <code>= ceil((ceil(log2(r))+k)/8)</code>)<a href="#section-6.2.1-2.5.1" class="pilcrow">¶</a></p>
 </li>
             <li class="normal" id="section-6.2.1-2.6">
-              <p id="section-6.2.1-2.6.1">expand_len: 48 ( <code>= ceil((ceil(log2(r))+k)/8)</code>)<a href="#section-6.2.1-2.6.1" class="pilcrow">¶</a></p>
-</li>
-            <li class="normal" id="section-6.2.1-2.7">
-              <p id="section-6.2.1-2.7.1">P1: The G1 point returned from the <code>create_generators</code> procedure (<a href="#generators-calculation" class="auto internal xref">Section 4.1.1</a>), with <code>count = 1</code> and replacing the defined generator_seed with the value: ciphersuite_id || "H2G_HM2S_BP_MESSAGE_GENERATOR_SEED". More specifically,<a href="#section-6.2.1-2.7.1" class="pilcrow">¶</a></p>
-<div class="alignLeft art-text artwork" id="section-6.2.1-2.7.2">
+              <p id="section-6.2.1-2.6.1">P1: The G1 point returned from the <code>create_generators</code> procedure (<a href="#generators-calculation" class="auto internal xref">Section 4.1.1</a>), with <code>count = 1</code> and replacing the defined generator_seed with the value: ciphersuite_id || "H2G_HM2S_BP_MESSAGE_GENERATOR_SEED". More specifically,<a href="#section-6.2.1-2.6.1" class="pilcrow">¶</a></p>
+<div class="alignLeft art-text artwork" id="section-6.2.1-2.6.2">
 <pre>P1 = "8929dfbc7e6642c4ed9cba0856e493f8b9d7d5fcb0c31ef8fdcd34d50648a56c79
   5e106e9eada6e0bda386b414150755"
 
-</pre><a href="#section-6.2.1-2.7.2" class="pilcrow">¶</a>
+</pre><a href="#section-6.2.1-2.6.2" class="pilcrow">¶</a>
 </div>
 </li>
           </ul>
@@ -3566,30 +3563,27 @@ a function that returns the point P in the subgroup G2 corresponding to the cano
 <p id="section-6.2.2-1"><strong>Basic parameters</strong>:<a href="#section-6.2.2-1" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="section-6.2.2-2.1">
-              <p id="section-6.2.2-2.1.1">Ciphersuite_ID: "BBS_BLS12381G1_XMD:SHA-256_SSWU_RO_H2G_HM2S_"<a href="#section-6.2.2-2.1.1" class="pilcrow">¶</a></p>
+              <p id="section-6.2.2-2.1.1">Ciphersuite_ID: "BBS_BLS12381G1_XMD:SHA-256_SSWU_RO_"<a href="#section-6.2.2-2.1.1" class="pilcrow">¶</a></p>
 </li>
             <li class="normal" id="section-6.2.2-2.2">
-              <p id="section-6.2.2-2.2.1">hash: SHA-256 as defined in <span>[<a href="#SHA2" class="cite xref">SHA2</a>]</span>.<a href="#section-6.2.2-2.2.1" class="pilcrow">¶</a></p>
+              <p id="section-6.2.2-2.2.1">octet_scalar_length: 32, based on the RECOMMENDED approach of <code>ceil(log2(r)/8)</code>.<a href="#section-6.2.2-2.2.1" class="pilcrow">¶</a></p>
 </li>
             <li class="normal" id="section-6.2.2-2.3">
-              <p id="section-6.2.2-2.3.1">octet_scalar_length: 32, based on the RECOMMENDED approach of <code>ceil(log2(r)/8)</code>.<a href="#section-6.2.2-2.3.1" class="pilcrow">¶</a></p>
+              <p id="section-6.2.2-2.3.1">octet_point_length: 48, based on the RECOMMENDED approach of <code>ceil(log2(p)/8)</code>.<a href="#section-6.2.2-2.3.1" class="pilcrow">¶</a></p>
 </li>
             <li class="normal" id="section-6.2.2-2.4">
-              <p id="section-6.2.2-2.4.1">octet_point_length: 48, based on the RECOMMENDED approach of <code>ceil(log2(p)/8)</code>.<a href="#section-6.2.2-2.4.1" class="pilcrow">¶</a></p>
+              <p id="section-6.2.2-2.4.1">hash_to_curve_suite: "BLS12381G1_XMD:SHA-256_SSWU_RO_" as defined in Section 8.8.1 of the <span>[<a href="#I-D.irtf-cfrg-hash-to-curve" class="cite xref">I-D.irtf-cfrg-hash-to-curve</a>]</span> for the G1 subgroup.<a href="#section-6.2.2-2.4.1" class="pilcrow">¶</a></p>
 </li>
             <li class="normal" id="section-6.2.2-2.5">
-              <p id="section-6.2.2-2.5.1">hash_to_curve_suite: "BLS12381G1_XMD:SHA-256_SSWU_RO_" as defined in Section 8.8.1 of the <span>[<a href="#I-D.irtf-cfrg-hash-to-curve" class="cite xref">I-D.irtf-cfrg-hash-to-curve</a>]</span> for the G1 subgroup.<a href="#section-6.2.2-2.5.1" class="pilcrow">¶</a></p>
+              <p id="section-6.2.2-2.5.1">expand_len: 48 ( <code>= ceil((ceil(log2(r))+k)/8)</code>)<a href="#section-6.2.2-2.5.1" class="pilcrow">¶</a></p>
 </li>
             <li class="normal" id="section-6.2.2-2.6">
-              <p id="section-6.2.2-2.6.1">expand_len: 48 ( <code>= ceil((ceil(log2(r))+k)/8)</code>)<a href="#section-6.2.2-2.6.1" class="pilcrow">¶</a></p>
-</li>
-            <li class="normal" id="section-6.2.2-2.7">
-              <p id="section-6.2.2-2.7.1">P1: The G1 point returned from the <code>create_generators</code> procedure (<a href="#generators-calculation" class="auto internal xref">Section 4.1.1</a>), with <code>count = 1</code> and replacing the defined generator_seed with the value: ciphersuite_id || "H2G_HM2S_BP_MESSAGE_GENERATOR_SEED". More specifically,<a href="#section-6.2.2-2.7.1" class="pilcrow">¶</a></p>
-<div class="alignLeft art-text artwork" id="section-6.2.2-2.7.2">
+              <p id="section-6.2.2-2.6.1">P1: The G1 point returned from the <code>create_generators</code> procedure (<a href="#generators-calculation" class="auto internal xref">Section 4.1.1</a>), with <code>count = 1</code> and replacing the defined generator_seed with the value: ciphersuite_id || "H2G_HM2S_BP_MESSAGE_GENERATOR_SEED". More specifically,<a href="#section-6.2.2-2.6.1" class="pilcrow">¶</a></p>
+<div class="alignLeft art-text artwork" id="section-6.2.2-2.6.2">
 <pre>P1 = "a8ce256102840821a3e94ea9025e4662b205762f9776b3a766c872b948f1fd225e
   7c59698588e70d11406d161b4e28c9"
 
-</pre><a href="#section-6.2.2-2.7.2" class="pilcrow">¶</a>
+</pre><a href="#section-6.2.2-2.6.2" class="pilcrow">¶</a>
 </div>
 </li>
           </ul>
