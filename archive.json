@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2023-11-30T00:09:12.695397+00:00",
+  "timestamp": "2023-12-03T00:09:54.597868+00:00",
   "repo": "decentralized-identity/bbs-signature",
   "labels": [
     {
@@ -35032,13 +35032,13 @@
       "labels": [],
       "body": "Fixtures do not use the default `key_dst` defined by [KeyGen](https://identity.foundation/bbs-signature/draft-irtf-cfrg-bbs-signatures.html#name-secret-key).",
       "createdAt": "2023-11-29T22:48:03Z",
-      "updatedAt": "2023-11-29T23:51:52Z",
+      "updatedAt": "2023-11-30T08:36:04Z",
       "baseRepository": "decentralized-identity/bbs-signature",
       "baseRefName": "main",
       "baseRefOid": "3f5e64f62eb75ef2f094b712a3b6d5042c11b8ba",
       "headRepository": "decentralized-identity/bbs-signature",
       "headRefName": "vasilis/fix-keygen-fixtures",
-      "headRefOid": "8a9a63fe379c98f8264f86f49bd3de31f94d6376",
+      "headRefOid": "3adb137e4dd95f34042a4560b94fc23745ad6e44",
       "closedAt": null,
       "mergedAt": null,
       "mergedBy": null,
