@@ -1312,10 +1312,7 @@ svg :is([fill="white"], [fill^="#fff"]) {
                 <p id="section-toc.1-1.5.2.10.1"><a href="#section-5.10" class="auto internal xref">5.10</a>. <a href="#name-randomness-requirements" class="internal xref">Randomness Requirements</a></p>
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5.2.11">
-                <p id="section-toc.1-1.5.2.11.1"><a href="#section-5.11" class="auto internal xref">5.11</a>. <a href="#name-using-a-commitment" class="internal xref">Using a Commitment</a></p>
-</li>
-              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5.2.12">
-                <p id="section-toc.1-1.5.2.12.1"><a href="#section-5.12" class="auto internal xref">5.12</a>. <a href="#name-mapping-messages-to-scalars" class="internal xref">Mapping Messages to Scalars</a></p>
+                <p id="section-toc.1-1.5.2.11.1"><a href="#section-5.11" class="auto internal xref">5.11</a>. <a href="#name-mapping-messages-to-scalars" class="internal xref">Mapping Messages to Scalars</a></p>
 </li>
             </ul>
 </li>
@@ -1796,7 +1793,7 @@ document, are to be interpreted as described in <span>[<a href="#RFC2119" class=
           <h4 id="name-messages">
 <a href="#section-3.3.3" class="section-number selfRef">3.3.3. </a><a href="#name-messages" class="section-name selfRef">Messages</a>
           </h4>
-<p id="section-3.3.3-1">In this document, the messages to be signed are defined as octet-strings. Each message must be mapped to a scalar value before passed to one of the core BBS operations (<a href="#core-operations" class="auto internal xref">Section 3.6</a>). There are various ways to map a message to a scalar value. The BBS Signatures Interface defined in this document (see <a href="#bbs-signatures-interface" class="auto internal xref">Section 3.5</a>), makes use of a hash function (see <a href="#messages-to-scalars" class="auto internal xref">Section 4.1.2</a>). See <a href="#mapping-messages-to-scalars" class="auto internal xref">Section 5.12</a> for more details and guidance on using alternative mapping methods.<a href="#section-3.3.3-1" class="pilcrow">¶</a></p>
+<p id="section-3.3.3-1">In this document, the messages to be signed are defined as octet-strings. Each message must be mapped to a scalar value before passed to one of the core BBS operations (<a href="#core-operations" class="auto internal xref">Section 3.6</a>). There are various ways to map a message to a scalar value. The BBS Signatures Interface defined in this document (see <a href="#bbs-signatures-interface" class="auto internal xref">Section 3.5</a>), makes use of a hash function (see <a href="#messages-to-scalars" class="auto internal xref">Section 4.1.2</a>). See <a href="#mapping-messages-to-scalars" class="auto internal xref">Section 5.11</a> for more details and guidance on using alternative mapping methods.<a href="#section-3.3.3-1" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="indexing-of-arrays">
@@ -2150,11 +2147,8 @@ Procedure:
 <a href="#section-3.6.1" class="section-number selfRef">3.6.1. </a><a href="#name-coresign" class="section-name selfRef">CoreSign</a>
           </h4>
 <p id="section-3.6.1-1">This operation computes a deterministic signature from a secret key (SK), a set of generators (points of G1) and optionally a header and a vector of messages.<a href="#section-3.6.1-1" class="pilcrow">¶</a></p>
-<p id="section-3.6.1-2">This operation also accepts an optional commitment input (see <a href="#using-a-commitment" class="auto internal xref">Section 5.11</a>). The commitment is a point of G1 (other than the identity), that if used, it will be integrity protected by the signature. This value serves only as an extension point and it is not used by this document. Applications using the Interface defined in <a href="#bbs-signatures-interface" class="auto internal xref">Section 3.5</a> MUST ignore this value. Extensions that want to take advantage of this extension point MUST follow the requirements defined in <a href="#using-a-commitment" class="auto internal xref">Section 5.11</a>.<a href="#section-3.6.1-2" class="pilcrow">¶</a></p>
-<p id="section-3.6.1-3">Note that this operation requires the generators to be at least one more than the messages, but does not enforce an exact equality, in contrast to the CoreVerify (<a href="#coreverify" class="auto internal xref">Section 3.6.2</a>), CoreProofGen (<a href="#coreproofgen" class="auto internal xref">Section 3.6.3</a>) and CoreProofVerify (<a href="#coreproofverify" class="auto internal xref">Section 3.6.4</a>) operations. This is to accommodate extensions that use the commitment value. If the commitment input is not used, the generators MUST be exactly one more than the messages.<a href="#section-3.6.1-3" class="pilcrow">¶</a></p>
-<div class="alignLeft art-text artwork" id="section-3.6.1-4">
-<pre>signature = CoreSign(SK, PK, generators, header, messages,
-                                                    commitment, api_id)
+<div class="alignLeft art-text artwork" id="section-3.6.1-2">
+<pre>signature = CoreSign(SK, PK, generators, header, messages, api_id)
 
 Inputs:
 
@@ -2169,8 +2163,6 @@ Inputs:
 - messages (OPTIONAL), a vector of scalars representing the messages.
                        If not supplied, it defaults to the empty
                        array "()".
-- commitment (OPTIONAL), a point of G1. If not supplied, it defaults to
-                         the identity point of G1 ("Identity_G1").
 - api_id (OPTIONAL), an octet string. If not supplied it defaults to the
                      empty octet string ("").
 
@@ -2191,26 +2183,23 @@ Definitions:
 Deserialization:
 
 1. L = length(messages)
-2. if length(generators) &lt; L + 1, return INVALID
-2. (msg_1, ..., msg_L) = messages
-3. (Q_1, H_1, ..., H_L) = (generators[1], ..., generators[L+1])
+2. if length(generators) != L + 1, return INVALID
+3. (msg_1, ..., msg_L) = messages
+4. (Q_1, H_1, ..., H_L) = generators
 
 Procedure:
 
 1. domain = calculate_domain(PK, generators, header, api_id)
 
-2. let comm be an empty octet string ("")
-3. if commitment != Identity_G1, comm = serialize(commitment)
-
-4. e = hash_to_scalar(serialize((SK, domain, msg_1, ..., msg_L, comm)),
+2. e = hash_to_scalar(serialize((SK, domain, msg_1, ..., msg_L)),
                                                           signature_dst)
-5. B = P1 + Q_1 * domain + H_1 * msg_1 + ... + H_L * msg_L + commitment
-6. A = B * (1 / (SK + e))
-7. return signature_to_octets((A, e))
+3. B = P1 + Q_1 * domain + H_1 * msg_1 + ... + H_L * msg_L
+4. A = B * (1 / (SK + e))
+5. return signature_to_octets((A, e))
 
-</pre><a href="#section-3.6.1-4" class="pilcrow">¶</a>
+</pre><a href="#section-3.6.1-2" class="pilcrow">¶</a>
 </div>
-<p id="section-3.6.1-5"><strong>Note</strong> When computing step 12 of the above procedure there is an extremely small probability (around <code>2^(-r)</code>) that the condition <code>(SK + e) = 0 mod r</code> will be met. How implementations evaluate the inverse of the scalar value <code>0</code> may vary, with some returning an error and others returning <code>0</code> as a result. If the returned value from the inverse operation <code>1/(SK + e)</code> does evaluate to <code>0</code> the value of <code>A</code> will equal <code>Identity_G1</code> thus an invalid signature. Implementations MAY elect to check <code>(SK + e) = 0 mod r</code> prior to step 9, and or <code>A != Identity_G1</code> after step 9 to prevent the production of invalid signatures.<a href="#section-3.6.1-5" class="pilcrow">¶</a></p>
+<p id="section-3.6.1-3"><strong>Note</strong> When computing step 12 of the above procedure there is an extremely small probability (around <code>2^(-r)</code>) that the condition <code>(SK + e) = 0 mod r</code> will be met. How implementations evaluate the inverse of the scalar value <code>0</code> may vary, with some returning an error and others returning <code>0</code> as a result. If the returned value from the inverse operation <code>1/(SK + e)</code> does evaluate to <code>0</code> the value of <code>A</code> will equal <code>Identity_G1</code> thus an invalid signature. Implementations MAY elect to check <code>(SK + e) = 0 mod r</code> prior to step 9, and or <code>A != Identity_G1</code> after step 9 to prevent the production of invalid signatures.<a href="#section-3.6.1-3" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="coreverify">
@@ -3386,31 +3375,14 @@ Procedure:
 <p id="section-5.10-2">In any case, the randomness used in ProofGen MUST be unique in each call and MUST have a distribution that is indistinguishable from uniform. If the random scalars are re-used, are created from "bad randomness" (for example with a known relationship to each other) or are in any way predictable, an adversary will be able to unveil the undisclosed from the proof messages or the hidden signature value. Naturally, a cryptographically secure pseudorandom number generator or pseudo random function is REQUIRED to implement the <code>get_random</code> functionality. See also <span>[<a href="#RFC8937" class="cite xref">RFC8937</a>]</span>, for recommendations on generating good randomness in cases where the Prover has direct or in-direct access to a secret key.<a href="#section-5.10-2" class="pilcrow">¶</a></p>
 </section>
 </div>
-<div id="using-a-commitment">
-<section id="section-5.11">
-        <h3 id="name-using-a-commitment">
-<a href="#section-5.11" class="section-number selfRef">5.11. </a><a href="#name-using-a-commitment" class="section-name selfRef">Using a Commitment</a>
-        </h3>
-<p id="section-5.11-1">The CoreSign operation defined in <a href="#coresign" class="auto internal xref">Section 3.6.1</a>, specifies an optional commitment input value. The commitment is a point of G1, that can be used to extent the core BBS functionality, by allowing "signing points", meaning that the supplied commitment point will be integrity protected by the signature (see <span>[<a href="#TZ23" class="cite xref">TZ23</a>]</span>). An example use case, is allowing a third party (like the Prover for example), to create messages that will be included in the BBS signature, without those messages being revealed to the Signer, by setting the commitment to be a Pedersen commitment (<span>[<a href="#P91" class="cite xref">P91</a>]</span>) over a list of messages.<a href="#section-5.11-1" class="pilcrow">¶</a></p>
-<p id="section-5.11-2">In cases where the commitment must have a specific form (like in the above example that uses Pedersen commitments), the Signer MUST verify the correctness of the supplied value, prior to using it for signature generation. In the example of the Pedersen commitment, this may include validating a zero-knowledge proof (using a pre-defined set of generators) constructed by the party that supplied the commitment, showcasing that it knows the messages that where used to create it, that those messages are in the correct range etc.<a href="#section-5.11-2" class="pilcrow">¶</a></p>
-<p id="section-5.11-3">Documents extending the BBS core functionality, that use the commitment value are REQUIRED to,<a href="#section-5.11-3" class="pilcrow">¶</a></p>
-<ul class="compact">
-<li class="compact" id="section-5.11-4.1">Clearly specify the expected format of the commitment value, how it should be constructed and how it should be validated by the Signer.<a href="#section-5.11-4.1" class="pilcrow">¶</a>
-</li>
-          <li class="compact" id="section-5.11-4.2">Include a detailed and peer reviewed analyses, showcasing that, under reasonable cryptographic assumptions the documented scheme that uses the commitment value, results to a secure signature protocol, i.e., that the resulting signature is secure under adaptive chosen plaintext attacks.<a href="#section-5.11-4.2" class="pilcrow">¶</a>
-</li>
-        </ul>
-<p id="section-5.11-5">Applications using the Interface defined in <a href="#bbs-signatures-interface" class="auto internal xref">Section 3.5</a>, MUST ignore the commitment value.<a href="#section-5.11-5" class="pilcrow">¶</a></p>
-</section>
-</div>
 <div id="mapping-messages-to-scalars">
-<section id="section-5.12">
+<section id="section-5.11">
         <h3 id="name-mapping-messages-to-scalars">
-<a href="#section-5.12" class="section-number selfRef">5.12. </a><a href="#name-mapping-messages-to-scalars" class="section-name selfRef">Mapping Messages to Scalars</a>
+<a href="#section-5.11" class="section-number selfRef">5.11. </a><a href="#name-mapping-messages-to-scalars" class="section-name selfRef">Mapping Messages to Scalars</a>
         </h3>
-<p id="section-5.12-1">As mentioned in this document, messages are considered to be represented as octet strings that are mapped to scalar values. More advanced applications however, like the ones using range proofs (<span>[<a href="#BBB17" class="cite xref">BBB17</a>]</span>), will need to be able to use alternative mapping operations. At the BBS Signatures level, this means that an Interface may accept messages that are pre-mapped to a scalar, using some protocol specific operation. For example, an application could use <span>[<a href="#ISO8601" class="cite xref">ISO8601</a>]</span> to map dates into integers before passing them to the BBS Interface. In those cases, the application should ensure that all participants have a clear and consistent understating about which mapping method should be used, (examples include associating specific signature "types" with different mapping methods etc.).<a href="#section-5.12-1" class="pilcrow">¶</a></p>
-<p id="section-5.12-2">Additionally, the application must ensure that all the BBS Interface operations have a consistent view of which of the received messages are octet strings (in which case they should be mapped to scalars using an operation conforming to the rules in <a href="#define-a-new-map-to-scalar" class="auto internal xref">Section 4.1.2.1</a>) and which messages  are scalars (in which case, no extra operation is needed on those messages).<a href="#section-5.12-2" class="pilcrow">¶</a></p>
-<p id="section-5.12-3">An option is for the Issuer to publish this information as part of their public parameters, similar to TBD (U-Prove). Such configuration should detail the type of each message, based on that message's index on the signed messages list (i.e., the first message will be an octet string, the second an integer etc.). A BBS Interface should check the messages they receive against those configurations and map them to scalars accordingly. Another option is to sign such configurations as part of the header parameter of the BBS signature (see <a href="#signature-generation-sign" class="auto internal xref">Section 3.5.1</a>). In this case, the configuration does not need to be published by the Issuer. The Prover will be responsible to get that information from the issuer and later, to communicate it to the Verifier.<a href="#section-5.12-3" class="pilcrow">¶</a></p>
+<p id="section-5.11-1">As mentioned in this document, messages are considered to be represented as octet strings that are mapped to scalar values. More advanced applications however, like the ones using range proofs (<span>[<a href="#BBB17" class="cite xref">BBB17</a>]</span>), will need to be able to use alternative mapping operations. At the BBS Signatures level, this means that an Interface may accept messages that are pre-mapped to a scalar, using some protocol specific operation. For example, an application could use <span>[<a href="#ISO8601" class="cite xref">ISO8601</a>]</span> to map dates into integers before passing them to the BBS Interface. In those cases, the application should ensure that all participants have a clear and consistent understating about which mapping method should be used, (examples include associating specific signature "types" with different mapping methods etc.).<a href="#section-5.11-1" class="pilcrow">¶</a></p>
+<p id="section-5.11-2">Additionally, the application must ensure that all the BBS Interface operations have a consistent view of which of the received messages are octet strings (in which case they should be mapped to scalars using an operation conforming to the rules in <a href="#define-a-new-map-to-scalar" class="auto internal xref">Section 4.1.2.1</a>) and which messages  are scalars (in which case, no extra operation is needed on those messages).<a href="#section-5.11-2" class="pilcrow">¶</a></p>
+<p id="section-5.11-3">An option is for the Issuer to publish this information as part of their public parameters, similar to TBD (U-Prove). Such configuration should detail the type of each message, based on that message's index on the signed messages list (i.e., the first message will be an octet string, the second an integer etc.). A BBS Interface should check the messages they receive against those configurations and map them to scalars accordingly. Another option is to sign such configurations as part of the header parameter of the BBS signature (see <a href="#signature-generation-sign" class="auto internal xref">Section 3.5.1</a>). In this case, the configuration does not need to be published by the Issuer. The Prover will be responsible to get that information from the issuer and later, to communicate it to the Verifier.<a href="#section-5.11-3" class="pilcrow">¶</a></p>
 </section>
 </div>
 </section>
@@ -4527,14 +4499,6 @@ proof = "812a204f66c9084feed7383894d910f2c17399b3c4b4bed05660921de8539f5
 <dt id="ISO8601">[ISO8601]</dt>
         <dd>
 <span class="refAuthor">ISO</span>, <span class="refTitle">"Date and time — Representations for information interchange — Part 1: Basic rules"</span>, <span>&lt;<a href="https://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-90Ar1.pdf">https://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-90Ar1.pdf</a>&gt;</span>. </dd>
-<dd class="break"></dd>
-<dt id="P91">[P91]</dt>
-        <dd>
-<span class="refAuthor">Pedersen, T. P. P.</span>, <span class="refTitle">"Non-Interactive and Information-Theoretic Secure Verifiable Secret Sharing"</span>, <span class="seriesInfo">In CRYPTO</span>, <time datetime="1991" class="refDate">1991</time>, <span>&lt;<a href="https://link.springer.com/chapter/10.1007/3-540-46766-1_9">https://link.springer.com/chapter/10.1007/3-540-46766-1_9</a>&gt;</span>. </dd>
-<dd class="break"></dd>
-<dt id="TZ23">[TZ23]</dt>
-        <dd>
-<span class="refAuthor">Tessaro, S. T.</span> and <span class="refAuthor">C. Z. Zhu</span>, <span class="refTitle">"Revisiting BBS Signatures"</span>, <span class="seriesInfo">In EUROCRYPT</span>, <time datetime="2023" class="refDate">2023</time>, <span>&lt;<a href="https://ia.cr/2023/275">https://ia.cr/2023/275</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="ZCASH-REVIEW">[ZCASH-REVIEW]</dt>
       <dd>

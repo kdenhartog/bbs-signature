@@ -121,8 +121,7 @@ Table of Contents
      5.8.  Choice of Underlying Curve
      5.9.  ProofGen Security
      5.10. Randomness Requirements
-     5.11. Using a Commitment
-     5.12. Mapping Messages to Scalars
+     5.11. Mapping Messages to Scalars
    6.  Ciphersuites
      6.1.  Ciphersuite Format
        6.1.1.  Ciphersuite ID
@@ -468,7 +467,7 @@ Table of Contents
    to one of the core BBS operations (Section 3.6).  There are various
    ways to map a message to a scalar value.  The BBS Signatures
    Interface defined in this document (see Section 3.5), makes use of a
-   hash function (see Section 4.1.2).  See Section 5.12 for more details
+   hash function (see Section 4.1.2).  See Section 5.11 for more details
    and guidance on using alternative mapping methods.
 
 3.3.4.  Indexing of Arrays
@@ -819,25 +818,7 @@ Procedure:
    (SK), a set of generators (points of G1) and optionally a header and
    a vector of messages.
 
-   This operation also accepts an optional commitment input (see
-   Section 5.11).  The commitment is a point of G1 (other than the
-   identity), that if used, it will be integrity protected by the
-   signature.  This value serves only as an extension point and it is
-   not used by this document.  Applications using the Interface defined
-   in Section 3.5 MUST ignore this value.  Extensions that want to take
-   advantage of this extension point MUST follow the requirements
-   defined in Section 5.11.
-
-   Note that this operation requires the generators to be at least one
-   more than the messages, but does not enforce an exact equality, in
-   contrast to the CoreVerify (Section 3.6.2), CoreProofGen
-   (Section 3.6.3) and CoreProofVerify (Section 3.6.4) operations.  This
-   is to accommodate extensions that use the commitment value.  If the
-   commitment input is not used, the generators MUST be exactly one more
-   than the messages.
-
-signature = CoreSign(SK, PK, generators, header, messages,
-                                                    commitment, api_id)
+signature = CoreSign(SK, PK, generators, header, messages, api_id)
 
 Inputs:
 
@@ -852,8 +833,6 @@ Inputs:
 - messages (OPTIONAL), a vector of scalars representing the messages.
                        If not supplied, it defaults to the empty
                        array "()".
-- commitment (OPTIONAL), a point of G1. If not supplied, it defaults to
-                         the identity point of G1 ("Identity_G1").
 - api_id (OPTIONAL), an octet string. If not supplied it defaults to the
                      empty octet string ("").
 
@@ -874,22 +853,19 @@ Definitions:
 Deserialization:
 
 1. L = length(messages)
-2. if length(generators) < L + 1, return INVALID
-2. (msg_1, ..., msg_L) = messages
-3. (Q_1, H_1, ..., H_L) = (generators[1], ..., generators[L+1])
+2. if length(generators) != L + 1, return INVALID
+3. (msg_1, ..., msg_L) = messages
+4. (Q_1, H_1, ..., H_L) = generators
 
 Procedure:
 
 1. domain = calculate_domain(PK, generators, header, api_id)
 
-2. let comm be an empty octet string ("")
-3. if commitment != Identity_G1, comm = serialize(commitment)
-
-4. e = hash_to_scalar(serialize((SK, domain, msg_1, ..., msg_L, comm)),
+2. e = hash_to_scalar(serialize((SK, domain, msg_1, ..., msg_L)),
                                                           signature_dst)
-5. B = P1 + Q_1 * domain + H_1 * msg_1 + ... + H_L * msg_L + commitment
-6. A = B * (1 / (SK + e))
-7. return signature_to_octets((A, e))
+3. B = P1 + Q_1 * domain + H_1 * msg_1 + ... + H_L * msg_L
+4. A = B * (1 / (SK + e))
+5. return signature_to_octets((A, e))
 
    *Note* When computing step 12 of the above procedure there is an
    extremely small probability (around 2^(-r)) that the condition (SK +
@@ -2209,44 +2185,7 @@ Procedure:
    good randomness in cases where the Prover has direct or in-direct
    access to a secret key.
 
-5.11.  Using a Commitment
-
-   The CoreSign operation defined in Section 3.6.1, specifies an
-   optional commitment input value.  The commitment is a point of G1,
-   that can be used to extent the core BBS functionality, by allowing
-   "signing points", meaning that the supplied commitment point will be
-   integrity protected by the signature (see [TZ23]).  An example use
-   case, is allowing a third party (like the Prover for example), to
-   create messages that will be included in the BBS signature, without
-   those messages being revealed to the Signer, by setting the
-   commitment to be a Pedersen commitment ([P91]) over a list of
-   messages.
-
-   In cases where the commitment must have a specific form (like in the
-   above example that uses Pedersen commitments), the Signer MUST verify
-   the correctness of the supplied value, prior to using it for
-   signature generation.  In the example of the Pedersen commitment,
-   this may include validating a zero-knowledge proof (using a pre-
-   defined set of generators) constructed by the party that supplied the
-   commitment, showcasing that it knows the messages that where used to
-   create it, that those messages are in the correct range etc.
-
-   Documents extending the BBS core functionality, that use the
-   commitment value are REQUIRED to,
-
-   *  Clearly specify the expected format of the commitment value, how
-      it should be constructed and how it should be validated by the
-      Signer.
-   *  Include a detailed and peer reviewed analyses, showcasing that,
-      under reasonable cryptographic assumptions the documented scheme
-      that uses the commitment value, results to a secure signature
-      protocol, i.e., that the resulting signature is secure under
-      adaptive chosen plaintext attacks.
-
-   Applications using the Interface defined in Section 3.5, MUST ignore
-   the commitment value.
-
-5.12.  Mapping Messages to Scalars
+5.11.  Mapping Messages to Scalars
 
    As mentioned in this document, messages are considered to be
    represented as octet strings that are mapped to scalar values.  More
@@ -3286,14 +3225,6 @@ proof = "812a204f66c9084feed7383894d910f2c17399b3c4b4bed05660921de8539f5
               interchange — Part 1: Basic rules",
               <https://nvlpubs.nist.gov/nistpubs/SpecialPublications/
               NIST.SP.800-90Ar1.pdf>.
-
-   [P91]      Pedersen, T. P. P., "Non-Interactive and Information-
-              Theoretic Secure Verifiable Secret Sharing", In CRYPTO,
-              1991, <https://link.springer.com/
-              chapter/10.1007/3-540-46766-1_9>.
-
-   [TZ23]     Tessaro, S. T. and C. Z. Zhu, "Revisiting BBS Signatures",
-              In EUROCRYPT, 2023, <https://ia.cr/2023/275>.
 
    [ZCASH-REVIEW]
               NCC Group, "Zcash Overwinter Consensus and Sapling
