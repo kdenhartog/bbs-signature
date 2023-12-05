@@ -110,45 +110,49 @@ Table of Contents
        4.2.2.  Hash to Scalar
        4.2.3.  Domain Calculation
        4.2.4.  Serialization
-   5.  Security Considerations
-     5.1.  Validating Public Keys
-     5.2.  Point Deserialization
-     5.3.  Skipping Membership Checks
-     5.4.  Side Channel Attacks
-     5.5.  Randomness Considerations
-     5.6.  Presentation Header Selection
-     5.7.  Implementing hash_to_curve_g1
-     5.8.  Choice of Underlying Curve
-     5.9.  ProofGen Security
-     5.10. Randomness Requirements
-     5.11. Mapping Messages to Scalars
-   6.  Ciphersuites
-     6.1.  Ciphersuite Format
-       6.1.1.  Ciphersuite ID
-       6.1.2.  Additional Parameters
-     6.2.  BLS12-381 Ciphersuites
-       6.2.1.  BLS12-381-SHAKE-256
-       6.2.2.  BLS12-381-SHA-256
-   7.  Test Vectors
-     7.1.  Mocked Random Scalars
-     7.2.  Messages
-     7.3.  BLS12-381-SHAKE-256 Test Vectors
-       7.3.1.  Key Pair
-       7.3.2.  Map Messages to Scalars
-       7.3.3.  Message Generators
-       7.3.4.  Signature Fixtures
-       7.3.5.  Proof Fixtures
-     7.4.  BLS12381-SHA-256 Test Vectors
-       7.4.1.  Key Pair
-       7.4.2.  Map Messages to Scalars
-       7.4.3.  Message Generators
-       7.4.4.  Signature Fixtures
-       7.4.5.  Proof Fixtures
-   8.  IANA Considerations
-   9.  Acknowledgements
-   10. References
-     10.1.  Normative References
-     10.2.  Informative References
+   5.  Privacy Considerations
+     5.1.  Total Number and Index of Signed Messages
+     5.2.  Issuer's Public Keys
+     5.3.  Disclosed Messages
+   6.  Security Considerations
+     6.1.  Validating Public Keys
+     6.2.  Point Deserialization
+     6.3.  Skipping Membership Checks
+     6.4.  Side Channel Attacks
+     6.5.  Randomness Considerations
+     6.6.  Presentation Header Selection
+     6.7.  Implementing hash_to_curve_g1
+     6.8.  Choice of Underlying Curve
+     6.9.  ProofGen Security
+     6.10. Randomness Requirements
+     6.11. Mapping Messages to Scalars
+   7.  Ciphersuites
+     7.1.  Ciphersuite Format
+       7.1.1.  Ciphersuite ID
+       7.1.2.  Additional Parameters
+     7.2.  BLS12-381 Ciphersuites
+       7.2.1.  BLS12-381-SHAKE-256
+       7.2.2.  BLS12-381-SHA-256
+   8.  Test Vectors
+     8.1.  Mocked Random Scalars
+     8.2.  Messages
+     8.3.  BLS12-381-SHAKE-256 Test Vectors
+       8.3.1.  Key Pair
+       8.3.2.  Map Messages to Scalars
+       8.3.3.  Message Generators
+       8.3.4.  Signature Fixtures
+       8.3.5.  Proof Fixtures
+     8.4.  BLS12381-SHA-256 Test Vectors
+       8.4.1.  Key Pair
+       8.4.2.  Map Messages to Scalars
+       8.4.3.  Message Generators
+       8.4.4.  Signature Fixtures
+       8.4.5.  Proof Fixtures
+   9.  IANA Considerations
+   10. Acknowledgements
+   11. References
+     11.1.  Normative References
+     11.2.  Informative References
    Appendix A.  BLS12-381 hash_to_curve Definition Using SHAKE-256
      A.1.  BLS12-381 G1
    Appendix B.  Use Cases
@@ -467,7 +471,7 @@ Table of Contents
    to one of the core BBS operations (Section 3.6).  There are various
    ways to map a message to a scalar value.  The BBS Signatures
    Interface defined in this document (see Section 3.5), makes use of a
-   hash function (see Section 4.1.2).  See Section 5.11 for more details
+   hash function (see Section 4.1.2).  See Section 6.11 for more details
    and guidance on using alternative mapping methods.
 
 3.3.4.  Indexing of Arrays
@@ -682,7 +686,7 @@ Procedure:
    Other than the Signer's public key (PK), the BBS signature, the
    header and the messages, the operation also accepts a presentation
    header value, that will be bound the the resulting proof
-   (seeSection 5.6).  To indicate which of the messages should be
+   (seeSection 6.6).  To indicate which of the messages should be
    disclosed, the operation accepts a list of integers in ascending
    order, representing the indexes of those messages
 
@@ -965,7 +969,7 @@ Procedure:
 
    The operation calculates multiple random scalars using the
    calculate_random_scalars utility operation defined in Section 4.2.1.
-   See also Section 5.10 for considerations and requirements on random
+   See also Section 6.10 for considerations and requirements on random
    scalars generation.
 
    To allow for flexibility in implementations, although ProofGen
@@ -1434,7 +1438,7 @@ Procedure:
    cryptographic assumptions, the documented scheme is secure under the
    required security definitions and threat model of each protocol.  In
    other words, Interfaces must be treated like Ciphersuites
-   (Section 6), in the sense that applications should avoid creating
+   (Section 7), in the sense that applications should avoid creating
    their own, proprietary Interfaces.
 
 4.  Utility Operations
@@ -1464,7 +1468,7 @@ Procedure:
    expand_message) to hash a seed to a set of generators.  Those
    primitives are implicitly defined by the ciphersuite, through the
    choice of a hash-to-curve suite (see the hash_to_curve_suite
-   parameter in Section 6.1).
+   parameter in Section 7.1).
 
    Since create_generators generates constant points, as an
    optimization, implementations MAY cache its result for a specific
@@ -2054,9 +2058,95 @@ Procedure:
  4. If W == Identity_G2, return INVALID
  5. return W
 
-5.  Security Considerations
+5.  Privacy Considerations
 
-5.1.  Validating Public Keys
+   This section will go through threats to the Prover's privacy.  Note
+   that a BBS proof is unlinkable against both the Verifiers and the
+   Issuer, as well as multiple Verifiers colluding with each other and
+   Verifiers colluding with the Issuer.  The following sections will
+   describe possible threats, resulting from side chanel information or
+   identifying disclosed messages, that could compromise the
+   unlinkability property of the BBS proof.  Such threats, if exploited,
+   could lead to correlation of the Prover's interactions with different
+   Verifiers, resulting to fingerprinting attacks on the Prover's
+   activity.
+
+   Note that, the following sections describe ways to minimize possible
+   identifying information revealed during a BBS proof presentation.  To
+   minimize the privacy threats of an entire system, other protections
+   may also need to be employed, for example, using an IP hiding proxy
+   network like TOR ([DMS04]).
+
+5.1.  Total Number and Index of Signed Messages
+
+   When a Prover presents a BBS proof to a Verifier, other than the
+   messages they decide to disclose, there are two additional pieces of
+   information that will be revealed.  First, the total number of signed
+   messages, which can be inferred from the size of the BBS proof and
+   the length of the disclosed messages list.  Second, the index the
+   disclosed messages had in the list of signed messages (see
+   Section 3.5.3).  This information, if unique to each Prover, could be
+   employed to correlate multiple proof presentations together.  As a
+   result, the Issuer should not sign lists of messages with unique
+   lengths or unique indexing.  For this reason, it is RECOMMENDED that
+   signed lists of messages are padded to a common length (using either
+   random, or an unused by the application message, like 0 or 1).  It is
+   also RECOMMENDED that a constant ordering of messages will be
+   preserved when possible.  For example, if an application creates
+   signatures for the messages [<user_name>, <user_affiliation>,
+   <user_country>], then those messages should always be signed in the
+   same order, i.e., first message should always be the user's name
+   (<user_name>), second message should always be the user's affiliation
+   (<user_affiliation>) and the last message should always be the user's
+   country of origins (<user_country>).  Provers can employ consistency
+   validation mechanisms, like the ones described in
+   [I-D.ietf-privacypass-key-consistency], to validate that those values
+   are not used to correlate them.
+
+5.2.  Issuer's Public Keys
+
+   As with most systems based on public key cryptography, multiple BBS
+   signatures (and the subsequent BBS proofs) could be correlated with
+   each other, if the Issuer does not use the same key for a large set
+   of produced signatures.  For example, the Issuer could use a
+   different key to generate the signatures intended for a specific
+   user, or a small set of users.  Every proof generated by that set of
+   users would then be linked to that group (since it will be validated
+   by a different public key).  To avoid fragmentation of the user space
+   by different public keys, an application could use the same
+   mechanisms that where proposed to check the consistency of the total
+   number of messages and their indexes (i.e.,
+   [I-D.ietf-privacypass-key-consistency], see Section 5.1).
+
+5.3.  Disclosed Messages
+
+   Although multiple BBS proofs cannot be linked to each other, privacy
+   also depends on the uniqueness of the disclosed messages during proof
+   generation.  If a unique message (or unique combination of messages)
+   is revealed multiple times, it could be used to link the
+   corresponding proofs together.  Examples of such messages include
+   government IDs, email addresses, phone numbers etc.  If not required
+   by the use case, the Prover should avoid disclosing such information
+   when constructing a BBS proof.
+
+   For certain types of message values, set membership proofs (for
+   example, [VB22]) or range proofs (for example, [BBB17]) could be used
+   to further mitigate the above issue.  With a set membership proof,
+   the BBS proof Verifier will be able to validate that one of the
+   Prover's signed (and undisclosed) messages, belongs to a pre-defined
+   set (for example that the Prover's government ID belongs to a set of
+   valid government ID's).  The inverse is also possible, where the
+   Prover showcases that one of the undisclosed messages is not part of
+   a set (for example, that a signed unique revocation identifier is not
+   part of the set of revoked identifiers).  If a message is represented
+   by a numeric value (see Section 6.11), range proofs can be used to
+   prove that it is within a specific range.  As an example, a Prover,
+   instead of revealing their age, they could use a range proof to
+   showcase that they are over 18 years old.
+
+6.  Security Considerations
+
+6.1.  Validating Public Keys
 
    It is RECOMENDED for any operation in Core Operations (#core-
    operations) involving public keys, that they deserialize the public
@@ -2070,7 +2160,7 @@ Procedure:
    operation is already defined and therefore required is the Verify
    (#signature-verification-verify) operation.
 
-5.2.  Point Deserialization
+6.2.  Point Deserialization
 
    This document makes use of octet_to_point_g* to parse octet strings
    to elliptic curve points (either in G1 or G2).  It is assumed (even
@@ -2081,7 +2171,7 @@ Procedure:
    to be VALID implicitly is in the EncodingForHash (#encodingforhash)
    section.
 
-5.3.  Skipping Membership Checks
+6.3.  Skipping Membership Checks
 
    Some existing implementations skip the subgroup_check invocation in
    Verify (#signature-verification-verify), whose purpose is ensuring
@@ -2097,7 +2187,7 @@ Procedure:
        outside the correct subgroups, skipping the subgroup check breaks
        the strong unforgeability property [ADR02].
 
-5.4.  Side Channel Attacks
+6.4.  Side Channel Attacks
 
    Implementations of the signing algorithm SHOULD protect the secret
    key from side-channel attacks.  One method for protecting against
@@ -2107,7 +2197,7 @@ Procedure:
    In other words, implementations on the underlying pairing-friendly
    elliptic curve SHOULD run in constant time.
 
-5.5.  Randomness Considerations
+6.5.  Randomness Considerations
 
    The IKM input to KeyGen MUST be infeasible to guess and MUST be kept
    secret.  One possibility is to generate IKM from a trusted source of
@@ -2122,13 +2212,13 @@ Procedure:
    attacks arising from using bad randomness, for example, the nonce
    reuse attack on ECDSA [HDWH12].  It is RECOMMENDED that the
    presentation header used in this specification contain a nonce chosen
-   at random from a trusted source of randomness, see the Section 5.6
+   at random from a trusted source of randomness, see the Section 6.6
    for additional considerations.
 
    When a trusted source of randomness is used, signatures and proofs
    are much harder to forge or break due to the use of multiple nonces.
 
-5.6.  Presentation Header Selection
+6.6.  Presentation Header Selection
 
    The signature proofs of knowledge generated in this specification are
    created using a specified presentation header.  A verifier-specified
@@ -2139,7 +2229,7 @@ Procedure:
    verifiers MUST be able to verify the uniqueness of the presentation
    header values.
 
-5.7.  Implementing hash_to_curve_g1
+6.7.  Implementing hash_to_curve_g1
 
    The security analysis models hash_to_curve_g1 as random oracles.  It
    is crucial that these functions are implemented using a
@@ -2149,18 +2239,18 @@ Procedure:
 
    In addition, ciphersuites MUST specify unique domain separation tags
    for hash_to_curve.  Some guidance around defining this can be found
-   in Section 6.
+   in Section 7.
 
-5.8.  Choice of Underlying Curve
+6.8.  Choice of Underlying Curve
 
    BBS signatures can be implemented on any pairing-friendly curve.
    However care MUST be taken when selecting one that is appropriate,
    this specification defines a ciphersuite for using the BLS12-381
-   curve in Section 6 which as a curve achieves around 117 bits of
+   curve in Section 7 which as a curve achieves around 117 bits of
    security according to a recent NCC ZCash cryptography review
    [ZCASH-REVIEW].
 
-5.9.  ProofGen Security
+6.9.  ProofGen Security
 
    The proof, as returned by ProofGen, is a zero-knowledge proof-of-
    knowledge [CDL16].  This guarantees that no information will be
@@ -2169,7 +2259,7 @@ Procedure:
    work on type 3 pairing setting.  This means that G1 should be
    different from G2 and with no efficient isomorphism between them.
 
-5.10.  Randomness Requirements
+6.10.  Randomness Requirements
 
    ProofGen (#proof-generation-proofgen) is by its nature a randomized
    algorithm, requiring the generation of multiple uniformly
@@ -2199,50 +2289,77 @@ Procedure:
    good randomness in cases where the Prover has direct or in-direct
    access to a secret key.
 
-5.11.  Mapping Messages to Scalars
+6.11.  Mapping Messages to Scalars
 
-   As mentioned in this document, messages are considered to be
-   represented as octet strings that are mapped to scalar values.  More
-   advanced applications however, like the ones using range proofs
-   ([BBB17]), will need to be able to use alternative mapping
-   operations.  At the BBS Signatures level, this means that an
-   Interface may accept messages that are pre-mapped to a scalar, using
-   some protocol specific operation.  For example, an application could
-   use [ISO8601] to map dates into integers before passing them to the
-   BBS Interface.  In those cases, the application should ensure that
-   all participants have a clear and consistent understating about which
-   mapping method should be used, (examples include associating specific
-   signature "types" with different mapping methods etc.).
+   In an application using BBS Signatures, there are 2 places where
+   messages could be processed.  First, before the messages are passed
+   to the BBS Interface operations, and second, after they are passed to
+   the BBS Interface operations but before they are passed to the BBS
+   Core operations.
 
-   Additionally, the application must ensure that all the BBS Interface
-   operations have a consistent view of which of the received messages
-   are octet strings (in which case they should be mapped to scalars
-   using an operation conforming to the rules in Section 4.1.2.1) and
-   which messages are scalars (in which case, no extra operation is
-   needed on those messages).
+   To allow for re-usability of software, it is RECOMMENDED that
+   application specific processing (like UTF-8 encoding [RFC3629],
+   Base-64 decoding [RFC4648] etc.,) should happen before messages are
+   passed to the BBS Interface operations.  In those cases, the
+   application should ensure that all protocol participants have a clear
+   and consistent understating for which method should be used to
+   process a message.  This can be achieved by associating specific
+   Interfaces (with unique api_id values, see Section 3.8) or unique
+   header values (see Section 3.5.1) with different pre-processing
+   methodologies.
 
-   An option is for the Issuer to publish this information as part of
-   their public parameters, similar to TBD (U-Prove).  Such
-   configuration should detail the type of each message, based on that
-   message's index on the signed messages list (i.e., the first message
-   will be an octet string, the second an integer etc.).  A BBS
-   Interface should check the messages they receive against those
-   configurations and map them to scalars accordingly.  Another option
-   is to sign such configurations as part of the header parameter of the
-   BBS signature (see Section 3.5.1).  In this case, the configuration
-   does not need to be published by the Issuer.  The Prover will be
-   responsible to get that information from the issuer and later, to
-   communicate it to the Verifier.
+   Note that the BBS Interface defined in this document (see
+   Section 3.5) only accepts messages that are represented as octet
+   strings.  However, in some more advanced applications, like the ones
+   using range proofs ([BBB17]) to prove that a signed message is within
+   some range (without disclosing that message), the pre-processing of
+   messages may result to some of them being mapped to scalar values,
+   before they are passed to the BBS Interface (for example, an
+   application could use [ISO8601] to represent dates as integers etc.,)
+   that should directly be signed (e.g., to not be further processed by
+   hash_to_scalar).
 
-6.  Ciphersuites
+   If a BBS Interface accepts both octet strings and scalar values as
+   messages, where depending on the message's type different operations
+   will be used to map it to a scalar (e.g., hash_to_scalar for octet
+   strings and the identity operation for scalars), it must still ensure
+   that the properties described in Section 4.1.2.1 holds.  To that end,
+   the application MUST ensure that it is clear to all participants,
+   which message should be considered an octet string and which a
+   scalar.
+
+   As an example, if the type (i.e., octet string or scalar) of the
+   messages inputted to the BBS Interface, is uniquely determined by its
+   index in the messages list (for example, first message is an octet
+   string, second message a scalar etc.,), the map between message index
+   and message type (determined by the Issuer), could be made available
+   as part of the Issuer's public parameters (similar to [UPROVE]).
+   This map would then be passed to the BBS Interface, which will use it
+   to correctly map each message to a scalar.  Another option, is to
+   sign such configurations as part of the header parameter of the BBS
+   signature (see Section 3.5.1).  In this case, the map does not need
+   to be published by the Issuer.
+
+   If the application defines that the first (or last) n messages will
+   be scalars and everything else octet strings, it could just publish
+   the n value as part of the Issuer's public parameters or again sign
+   it as part of the header value.
+
+   In any case, the privacy considerations described in Section 5 MUST
+   not be violated, for example, by using unique pre-processing rules or
+   maps between message index and type.  To validate the consistency of
+   the message processing rules, the Prover could use mechanisms like
+   the ones described in [I-D.ietf-privacypass-key-consistency].
+
+7.  Ciphersuites
 
    This section defines the format for a BBS ciphersuite.  It also gives
    concrete ciphersuites based on the BLS12-381 pairing-friendly
    elliptic curve [I-D.irtf-cfrg-pairing-friendly-curves].
 
-6.1.  Ciphersuite Format
+7.1.  Ciphersuite Format
 
-6.1.1.  Ciphersuite ID
+7.1.1.  Ciphersuite ID
 
    The following section defines the format of the unique identifier for
    the ciphersuite denoted ciphersuite_id, which will be represented as
@@ -2261,7 +2378,7 @@ Procedure:
       underscore (ASCII code: 0x5f), other than the last character the
       string MUST not contain any other underscores (ASCII code: 0x5f).
 
-6.1.2.  Additional Parameters
+7.1.2.  Additional Parameters
 
    The parameters that each ciphersuite needs to define are generally
    divided into three main categories; the basic parameters (a hash
@@ -2316,7 +2433,7 @@ Procedure:
       subgroup G2 corresponding to the canonical representation ostr, or
       INVALID if ostr is not a valid output of point_to_octets_g2.
 
-6.2.  BLS12-381 Ciphersuites
+7.2.  BLS12-381 Ciphersuites
 
    The following two ciphersuites are based on the BLS12-381 elliptic
    curves defined in Section 4.2.1 of
@@ -2369,7 +2486,7 @@ Procedure:
    (#bls12-381-sha-256) makes use of expand_message_xmd with SHA-256.
    Curve parameters are common between the two ciphersuites.
 
-6.2.1.  BLS12-381-SHAKE-256
+7.2.1.  BLS12-381-SHAKE-256
 
    *Basic parameters*:
 
@@ -2412,7 +2529,7 @@ Procedure:
       section 2 of [I-D.irtf-cfrg-pairing-friendly-curves] for the G2
       subgroup.
 
-6.2.2.  BLS12-381-SHA-256
+7.2.2.  BLS12-381-SHA-256
 
    *Basic parameters*:
 
@@ -2455,7 +2572,7 @@ Procedure:
       section 2 of [I-D.irtf-cfrg-pairing-friendly-curves] for the G2
       subgroup.
 
-7.  Test Vectors
+8.  Test Vectors
 
    The following section details a basic set of test vectors that can be
    used to confirm an implementations correctness
@@ -2465,7 +2582,7 @@ Procedure:
 
    *NOTE* These fixtures are a work in progress and subject to change.
 
-7.1.  Mocked Random Scalars
+8.1.  Mocked Random Scalars
 
    For the purpose of presenting fixtures for the ProofGen (#proof-
    generation-proofgen) operation we describe here a way to mock the
@@ -2530,7 +2647,7 @@ Procedure:
    7.     r_i = OS2IP(v[start_idx..end_idx]) mod r
    8. return (r_1, ...., r_count)
 
-7.2.  Messages
+8.2.  Messages
 
    The following messages are used by the test vectors of both
    ciphersuites (unless otherwise stated).  All the listed messages
@@ -2547,14 +2664,14 @@ m_8 = "ac55fb33a75909ed"
 m_9 = "96012096"
 m_10 = ""
 
-7.3.  BLS12-381-SHAKE-256 Test Vectors
+8.3.  BLS12-381-SHAKE-256 Test Vectors
 
    Test vectors of the BLS12-381-SHAKE-256 (#bls12-381-shake-
    256-ciphersuite) ciphersuite.  Further fixtures are available in
    additional BLS12-381-SHAKE-256 test vectors (#additional-bls12-381-
    shake-256-ciphersuite-test-vectors).
 
-7.3.1.  Key Pair
+8.3.1.  Key Pair
 
    Following the procedure defined in Section 3.4.1 with an input
    key_material value as follows
@@ -2578,7 +2695,7 @@ PK = "92d37d1d6cd38fea3a873953333eab23a4c0377e3e049974eb62bd45949cdeb18f
       b0490edcd4429adff56e65cbce42cf188b31bddbd619e419b99c2c41b38179eb00
       1963bc3decaae0d9f702c7a8c004f207f46c734a5eae2e8e82833f3e7ea5"
 
-7.3.2.  Map Messages to Scalars
+8.3.2.  Map Messages to Scalars
 
    The messages in Section 3.3.3 are mapped to scalars during the Sign,
    Verify, ProofGen and ProofVerify operations.  Presented below, are
@@ -2608,7 +2725,7 @@ msg_scalar_9 = "1db51bedc825b85efe1dab3e3ab0274fa82bbd39732be3459525faf7
 msg_scalar_10 = "27878da72f7775e709bb693d81b819dc4e9fa60711f4ea927740e40
                  073489e78"
 
-7.3.3.  Message Generators
+8.3.3.  Message Generators
 
    Following the procedure defined in Section 4.1.1 with an input count
    value of 11, for the BLS12-381-SHAKE-256 (#bls12-381-shake-256)
@@ -2639,9 +2756,9 @@ H_9 = "ac00b493f92d17837a28d1f5b07991ca5ab9f370ae40d4f9b9f2711749ca20011
 H_10 = "965a6c62451d4be6cb175dec39727dc665762673ee42bf0ac13a37a74784fbd6
         1e84e0915277a6f59863b2bb4f5f6005"
 
-7.3.4.  Signature Fixtures
+8.3.4.  Signature Fixtures
 
-7.3.4.1.  Valid Single Message Signature
+8.3.4.1.  Valid Single Message Signature
 
 m_1 = "9872ad089e452c7b6e283dfac2a80d58e8d0ff71cc4d5e310a1debdda4a45f02"
 
@@ -2660,7 +2777,7 @@ signature = "98eb37fceb31115bf647f2983aef578ad895e55f7451b1add02fa738224
              cb89a31b148eace4d20d001be31d162c58d12574f30e68665b6403956a8
              3b23a16f1daceacce8c5fde25d3defd52d6d5ff2e1"
 
-7.3.4.2.  Valid Multi-Message Signature
+8.3.4.2.  Valid Multi-Message Signature
 
 m_1 = "9872ad089e452c7b6e283dfac2a80d58e8d0ff71cc4d5e310a1debdda4a45f02"
 m_2 = "c344136d9ab02da4dd5908bbba913ae6f58c2cc844b802a6f811f5fb075f9b80"
@@ -2688,7 +2805,7 @@ signature = "97a296c83ed3626fe254d26021c5e9a087b580f1e8bc91bb51efb04420b
              fdaca215fe376a0bc12440bcc52224fb33c696cca9239b9f28dcddb7bd8
              50aae9cd1a9c3e9f3639953fe789dbba53b8f0dd6f"
 
-7.3.5.  Proof Fixtures
+8.3.5.  Proof Fixtures
 
    For the generation of the following fixtures the
    mocked_calculate_random_scalars defined in Mocked Random Scalars
@@ -2722,7 +2839,7 @@ random_scalar_9 = "513325acdcdec7ea572360587b350a8b095ca19bdd8258c5c69d3
 random_scalar_10 = "6474fceba35e7e17365dde1a0284170180e446ae96c82943290d
                     7baa3a6ed429"
 
-7.3.5.1.  Valid Single Message Proof
+8.3.5.1.  Valid Single Message Proof
 
 m_0 = "9872ad089e452c7b6e283dfac2a80d58e8d0ff71cc4d5e310a1debdda4a45f02"
 
@@ -2768,7 +2885,7 @@ proof = "89b485c2c7a0cd258a5d265a6e80aae416c52e8d9beaf0e38313d6e5fe31e7f
          512f7b124f031b0b8329a8625715c9245033ae13dfadd6bdb0b4364952647db
          3d7b91faa4c24cbb65344c03473c5065bb414ff7"
 
-7.3.5.2.  Valid Multi-Message, All Messages Disclosed Proof
+8.3.5.2.  Valid Multi-Message, All Messages Disclosed Proof
 
 m_1 = "9872ad089e452c7b6e283dfac2a80d58e8d0ff71cc4d5e310a1debdda4a45f02"
 m_2 = "c344136d9ab02da4dd5908bbba913ae6f58c2cc844b802a6f811f5fb075f9b80"
@@ -2823,7 +2940,7 @@ proof = "80ff9367fda28896618e8ede02481d660fe80bfce51a46bebe7e1d6a4c751d6
          944ab7f9b6f9d9069de4a132e4feebb6d70a87b0856635e1b8b8ca49e2992f8
          c80221398e08935824f959a821b4120cdfb5e6be"
 
-7.3.5.3.  Valid Multi-Message, Some Messages Disclosed Proof
+8.3.5.3.  Valid Multi-Message, Some Messages Disclosed Proof
 
 m_1 = "9872ad089e452c7b6e283dfac2a80d58e8d0ff71cc4d5e310a1debdda4a45f02"
 m_2 = "c344136d9ab02da4dd5908bbba913ae6f58c2cc844b802a6f811f5fb075f9b80"
@@ -2896,14 +3013,14 @@ proof = "853f4927bd7e4998af27df65566c0a071a33a5207d1af33ef7c3be04004ac5d
          1fc3d133550d7ff570a4bc6555cd0bf23ee1b2a994b2434ea222bc221ba1615
          adc53b47ba99fc5a66495585d4c86f1f0aecb18df802b8"
 
-7.4.  BLS12381-SHA-256 Test Vectors
+8.4.  BLS12381-SHA-256 Test Vectors
 
    Test vectors of the BLS12-381-SHA-256 (#bls12-381-sha-
    256-ciphersuite) ciphersuite.  Further fixtures are available in
    additional BLS12-381-SHA-256 test vectors (#additional-bls12-381-sha-
    256-ciphersuite-test-vectors).
 
-7.4.1.  Key Pair
+8.4.1.  Key Pair
 
    Following the procedure defined in Section 3.4.1 with an input
    key_material value as follows
@@ -2927,7 +3044,7 @@ PK = "a820f230f6ae38503b86c70dc50b61c58a77e45c39ab25c0652bbaa8fa136f2851
       bd4781c9dcde39fc9d1d52c9e60268061e7d7632171d91aa8d460acee0e96f1e7c
       4cfb12d3ff9ab5d5dc91c277db75c845d649ef3c4f63aebc364cd55ded0c"
 
-7.4.2.  Map Messages to Scalars
+8.4.2.  Map Messages to Scalars
 
    The messages in Section 3.3.3 are mapped to scalars during the Sign,
    Verify, ProofGen and ProofVerify operations.  Presented below, are
@@ -2963,7 +3080,7 @@ msg_scalar_9 = "57eb93f417c43200e9784fa5ea5a59168d3dbc38df707a13bb597c87
 msg_scalar_10 = "08e3afeb2b4f2b5f907924ef42856616e6f2d5f1fb373736db1cca3
                  2707a7d16"
 
-7.4.3.  Message Generators
+8.4.3.  Message Generators
 
    Following the procedure defined in Section 4.1.1 with an input count
    value of 11, for the BLS12-381-SHA-256 (#bls12-381-sha-256) suite,
@@ -2993,9 +3110,9 @@ H_9 = "82701eb98070728e1769525e73abff1783cedc364adb20c05c897a62f2ab2927f
 H_10 = "a1f229540474f4d6f1134761b92b788128c7ac8dc9b0c52d5949313267967303
         2ac7db3fb3d79b46b13c1c41ee495bca"
 
-7.4.4.  Signature Fixtures
+8.4.4.  Signature Fixtures
 
-7.4.4.1.  Valid Single Message Signature
+8.4.4.1.  Valid Single Message Signature
 
 m_1 = "9872ad089e452c7b6e283dfac2a80d58e8d0ff71cc4d5e310a1debdda4a45f02"
 
@@ -3014,7 +3131,7 @@ signature = "88c0eb3bc1d97610c3a66d8a3a73f260f95a3028bccf7fff7d9851e2acd
              9f3f32fdf58a5b34d12df8177adf37aa318a20f72be7d37a8e8d8441d1b
              c0bc75543c681bf061ce7e7f6091fe78c1cb8af103"
 
-7.4.4.2.  Valid Multi-Message Signature
+8.4.4.2.  Valid Multi-Message Signature
 
 m_1 = "9872ad089e452c7b6e283dfac2a80d58e8d0ff71cc4d5e310a1debdda4a45f02"
 m_2 = "c344136d9ab02da4dd5908bbba913ae6f58c2cc844b802a6f811f5fb075f9b80"
@@ -3042,7 +3159,7 @@ signature = "895cd9c0ccb9aca4de913218655346d718711472f2bf1f3e68916de106a
              0d93cf2f47200819b45920bbda541db2d91480665df253fedab2843055b
              dc02535d83baddbbb2803ec3808e074f71f199751e"
 
-7.4.5.  Proof Fixtures
+8.4.5.  Proof Fixtures
 
    Similarly to the proof fixtures for the BLS12381-SHA-256 ciphersuite,
    the generation of the following fixtures uses the
@@ -3080,7 +3197,7 @@ random_scalar_10 = "485e2adab17b76f5334c95bf36c03ccf91cef77dcfcdc6b8a69e
    Note that the returned scalars will be unique for different count
    values, i.e., for different output lengths.
 
-7.4.5.1.  Valid Single Message Proof
+8.4.5.1.  Valid Single Message Proof
 
 m_0 = "9872ad089e452c7b6e283dfac2a80d58e8d0ff71cc4d5e310a1debdda4a45f02"
 
@@ -3126,7 +3243,7 @@ proof = "a7c217109e29ecab846691eaad757beb8cc93356daf889856d310af5fc5587e
          3183f832021dd97439f324fa3ad90ec45417070067fb8c56b2af454562358b1
          509632f92f2116c020fe7de1ba242effdb36e980"
 
-7.4.5.2.  Valid Multi-Message, All Messages Disclosed Proof
+8.4.5.2.  Valid Multi-Message, All Messages Disclosed Proof
 
 m_1 = "9872ad089e452c7b6e283dfac2a80d58e8d0ff71cc4d5e310a1debdda4a45f02"
 m_2 = "c344136d9ab02da4dd5908bbba913ae6f58c2cc844b802a6f811f5fb075f9b80"
@@ -3181,7 +3298,7 @@ proof = "a6faacf33f935d1910f21b1bbe380adcd2de006773896a5bd2afce31a138742
          9615279719c64048ea9cdb74104b27757c2d01035507d39667d77d990ec5bda
          22c866fcc9fe70bb5b7826a2b4e861b6b8124fbd"
 
-7.4.5.3.  Valid Multi-Message, Some Messages Disclosed Proof
+8.4.5.3.  Valid Multi-Message, Some Messages Disclosed Proof
 
 m_1 = "9872ad089e452c7b6e283dfac2a80d58e8d0ff71cc4d5e310a1debdda4a45f02"
 m_2 = "c344136d9ab02da4dd5908bbba913ae6f58c2cc844b802a6f811f5fb075f9b80"
@@ -3254,11 +3371,11 @@ proof = "a8da259a5ae7a9a8e5e4e809b8e7718b4d7ab913ed5781ebbff4814c762033e
          194cca3ae0d45cbd2f5e5afd1f9b8a3dd903adfa17ae43a191bf3119df57214
          f19e662c7e01e8cc2eb6b038bc7d707f2f3e13545909e0"
 
-8.  IANA Considerations
+9.  IANA Considerations
 
    This document does not make any requests of IANA.
 
-9.  Acknowledgements
+10.  Acknowledgements
 
    The authors would like to acknowledge the significant amount of
    academic work that preceeded the development of this document.  In
@@ -3275,9 +3392,9 @@ proof = "a8da259a5ae7a9a8e5e4e809b8e7718b4d7ab913ed5781ebbff4814c762033e
    Orie Steele, Christian Paquin, Alessandro Guggino, Tomislav Markovski
    and Greg Bernstein.
 
-10.  References
+11.  References
 
-10.1.  Normative References
+11.1.  Normative References
 
    [DRBG]     NIST, "Recommendation for Random Number Generation Using
               Deterministic Random Bit Generators",
@@ -3327,7 +3444,7 @@ proof = "a8da259a5ae7a9a8e5e4e809b8e7718b4d7ab913ed5781ebbff4814c762033e
               <https://nvlpubs.nist.gov/nistpubs/FIPS/
               NIST.FIPS.202.pdf>.
 
-10.2.  Informative References
+11.2.  Informative References
 
    [ADR02]    An, J. H., Dodis, Y., and T. Rabin, "On the Security of
               Joint Signature and Encryption", In EUROCRYPT,
@@ -3340,10 +3457,10 @@ proof = "a8da259a5ae7a9a8e5e4e809b8e7718b4d7ab913ed5781ebbff4814c762033e
               Springer, Berlin, Heidelberg, 2006,
               <https://link.springer.com/chapter/10.1007/11832072_8>.
 
-   [BBB17]    Bünz, B. B., Bootle, J. B., Boneh, D. B., Poelstra, A. P.,
-              Wuille, P. W., and G. W. Maxwell, "Bulletproofs: Short
-              Proofs for Confidential Transactions and More", In 2018
-              IEEE Symposium on Security and Privacy, 2017,
+   [BBB17]    Bünz, B., Bootle, J., Boneh, D., Poelstra, A., Wuille, P.,
+              and G. Maxwell, "Bulletproofs: Short Proofs for
+              Confidential Transactions and More", In 2018 IEEE
+              Symposium on Security and Privacy, 2017,
               <https://ia.cr/2017/1066>.
 
    [BBS04]    Boneh, D., Boyen, X., and H. Shacham, "Short Group
@@ -3360,12 +3477,24 @@ proof = "a8da259a5ae7a9a8e5e4e809b8e7718b4d7ab913ed5781ebbff4814c762033e
               Trustworthy Computing, pages 1-20, Springer, Cham, 2016,
               <https://eprint.iacr.org/2016/663.pdf>.
 
-   [HDWH12]   Heninger, N., Durumeric, Z., Wustrow, E., and J.A.
+   [DMS04]    Dingledine, R., Mathewson, N., and P. Syverson, "Tor: The
+              Second-Generation Onion Router", 2004, <https://svn-
+              archive.torproject.org/svn/projects/design-paper/tor-
+              design.html>.
+
+   [HDWH12]   Heninger, N., Durumeric, Z., Wustrow, E., and J. A.
               Halderman, "Mining your Ps and Qs: Detection of widespread
               weak keys in network devices", In USENIX Security,
               pages 205-220, August 2012,
               <https://www.usenix.org/system/files/conference/
               usenixsecurity12/sec12-final228.pdf>.
+
+   [I-D.ietf-privacypass-key-consistency]
+              Davidson, A., Finkel, M., Thomson, M., and C. A. Wood,
+              "Key Consistency and Discovery", Work in Progress,
+              Internet-Draft, draft-ietf-privacypass-key-consistency-01,
+              10 July 2023, <https://datatracker.ietf.org/doc/html/
+              draft-ietf-privacypass-key-consistency-01>.
 
    [I-D.irtf-cfrg-bls-signature]
               Boneh, D., Gorbunov, S., Wahby, R. S., Wee, H., Wood, C.
@@ -3378,6 +3507,25 @@ proof = "a8da259a5ae7a9a8e5e4e809b8e7718b4d7ab913ed5781ebbff4814c762033e
               interchange — Part 1: Basic rules",
               <https://nvlpubs.nist.gov/nistpubs/SpecialPublications/
               NIST.SP.800-90Ar1.pdf>.
+
+   [RFC3629]  Yergeau, F., "UTF-8, a transformation format of ISO
+              10646", STD 63, RFC 3629, DOI 10.17487/RFC3629, November
+              2003, <https://www.rfc-editor.org/info/rfc3629>.
+
+   [RFC4648]  Josefsson, S., "The Base16, Base32, and Base64 Data
+              Encodings", RFC 4648, DOI 10.17487/RFC4648, October 2006,
+              <https://www.rfc-editor.org/info/rfc4648>.
+
+   [UPROVE]   Microsoft Research, "U-Prove Cryptographic Specification
+              V1.1 Revision 5", <https://github.com/microsoft/uprove-
+              node-reference/blob/main/doc/U-
+              Prove%20Cryptographic%20Specification%20V1.1%20Revision%20
+              5.pdf>.
+
+   [VB22]     Giuseppe, V. and A. Biryukov, "Dynamic universal
+              accumulator with batch update over bilinear groups", 2022,
+              <https://link.springer.com/
+              chapter/10.1007/978-3-030-95312-6_17>.
 
    [ZCASH-REVIEW]
               NCC Group, "Zcash Overwinter Consensus and Sapling
