@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2023-12-03T00:09:54.597868+00:00",
+  "timestamp": "2023-12-05T00:09:16.738239+00:00",
   "repo": "decentralized-identity/bbs-signature",
   "labels": [
     {
@@ -6795,9 +6795,17 @@
       "labels": [],
       "body": "The serialize() algorithm in Section 4.2.4.1 does not include the case where an element of the input array is a string.\r\nHowever, exactly this happens in Lines 4 of coreSign(), where the string comm passed as input value to serialize(). Therefore, currently serialize() would return the value INVALID. Besides, the commitment is missing in Line 2 of CoreVerify().\r\n",
       "createdAt": "2023-11-09T11:36:43Z",
-      "updatedAt": "2023-11-09T11:36:43Z",
+      "updatedAt": "2023-12-04T20:34:27Z",
       "closedAt": null,
-      "comments": []
+      "comments": [
+        {
+          "author": "BasileiosKal",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "This is absolutely correct! Resolved by [PR 297](https://github.com/decentralized-identity/bbs-signature/pull/297). The `commitment` value is removed since it did not seem to serve much its original purpose, which was to support Blind BBS Signatures, now [its own document](https://github.com/decentralized-identity/bbs-signature/issues/292).\r\n\r\nThank you for raising the issue! Will mark it as resolved and close it if there are no objections.",
+          "createdAt": "2023-12-04T20:34:26Z",
+          "updatedAt": "2023-12-04T20:34:26Z"
+        }
+      ]
     }
   ],
   "pulls": [
@@ -34314,13 +34322,13 @@
       "labels": [],
       "body": "Based on the WG discussions, update the BBS Proof based on [CDL16].\r\n\r\n(Uses  #287)",
       "createdAt": "2023-10-14T19:38:32Z",
-      "updatedAt": "2023-11-27T16:58:15Z",
+      "updatedAt": "2023-12-04T19:15:20Z",
       "baseRepository": "decentralized-identity/bbs-signature",
       "baseRefName": "main",
-      "baseRefOid": "3f5e64f62eb75ef2f094b712a3b6d5042c11b8ba",
+      "baseRefOid": "b38e65a87445ba3c3c744561e6800a4bd3fb7522",
       "headRepository": "decentralized-identity/bbs-signature",
       "headRefName": "vasilis/cdl-proof",
-      "headRefOid": "fdb89f9ea9d5409e347b34f85c7760ac86efed19",
+      "headRefOid": "475eb32e46e7d99aad8a40c11763d33a87ea17c4",
       "closedAt": null,
       "mergedAt": null,
       "mergedBy": null,
@@ -34393,6 +34401,19 @@
           "body": "All test vectors confirmed against proof generation/verification update to specification via my independent JavaScript based implementation. Enhanced information (PNG scalars) in test vectors are a great help to implementers!",
           "createdAt": "2023-11-20T18:06:45Z",
           "updatedAt": "2023-11-20T18:06:45Z",
+          "comments": []
+        },
+        {
+          "id": "PRR_kwDOF8lax85pGEdt",
+          "commit": {
+            "abbreviatedOid": "475eb32"
+          },
+          "author": "andrewwhitehead",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2023-12-04T19:15:20Z",
+          "updatedAt": "2023-12-04T19:15:20Z",
           "comments": []
         }
       ]
@@ -34595,13 +34616,13 @@
       "labels": [],
       "body": "Closes #256.",
       "createdAt": "2023-10-29T18:36:44Z",
-      "updatedAt": "2023-11-27T16:37:19Z",
+      "updatedAt": "2023-12-04T19:19:25Z",
       "baseRepository": "decentralized-identity/bbs-signature",
       "baseRefName": "main",
-      "baseRefOid": "76936111f906325bc0518a48744b5d4ea62a1086",
+      "baseRefOid": "b38e65a87445ba3c3c744561e6800a4bd3fb7522",
       "headRepository": "decentralized-identity/bbs-signature",
       "headRefName": "vasilis/privacy-considerations",
-      "headRefOid": "bbfccce780460dc4e4ca3c30965e474a8bdd4e05",
+      "headRefOid": "54a765cbcc07caf65ab34f3df620636b212ffc94",
       "closedAt": null,
       "mergedAt": null,
       "mergedBy": null,
@@ -34699,6 +34720,19 @@
           "body": "",
           "createdAt": "2023-11-20T18:10:19Z",
           "updatedAt": "2023-11-20T18:10:19Z",
+          "comments": []
+        },
+        {
+          "id": "PRR_kwDOF8lax85pGF89",
+          "commit": {
+            "abbreviatedOid": "54a765c"
+          },
+          "author": "andrewwhitehead",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2023-12-04T19:19:25Z",
+          "updatedAt": "2023-12-04T19:19:25Z",
           "comments": []
         }
       ]
@@ -34867,25 +34901,35 @@
       "id": "PR_kwDOF8lax85gds9X",
       "title": "Update ciphersuites",
       "url": "https://github.com/decentralized-identity/bbs-signature/pull/296",
-      "state": "OPEN",
+      "state": "MERGED",
       "author": "BasileiosKal",
       "authorAssociation": "CONTRIBUTOR",
       "assignees": [],
       "labels": [],
       "body": "- Removes the hash variable from the ciphersuites.\r\n- Fixes the ciphersuite IDs",
       "createdAt": "2023-11-27T17:23:32Z",
-      "updatedAt": "2023-11-27T20:30:16Z",
+      "updatedAt": "2023-12-03T12:25:30Z",
       "baseRepository": "decentralized-identity/bbs-signature",
       "baseRefName": "main",
       "baseRefOid": "3f5e64f62eb75ef2f094b712a3b6d5042c11b8ba",
       "headRepository": "decentralized-identity/bbs-signature",
       "headRefName": "vasilis/update-suites",
       "headRefOid": "46fbd496ec02cc559cef7ec559127ed758739306",
-      "closedAt": null,
-      "mergedAt": null,
-      "mergedBy": null,
-      "mergeCommit": null,
-      "comments": [],
+      "closedAt": "2023-12-03T12:25:30Z",
+      "mergedAt": "2023-12-03T12:25:30Z",
+      "mergedBy": "BasileiosKal",
+      "mergeCommit": {
+        "oid": "d65db142143c13f92f2c87a74cb1304faffbe9e5"
+      },
+      "comments": [
+        {
+          "author": "BasileiosKal",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "Multiple approvals. Editorial update. Merging. ",
+          "createdAt": "2023-12-03T12:25:20Z",
+          "updatedAt": "2023-12-03T12:25:20Z"
+        }
+      ],
       "reviews": [
         {
           "id": "PRR_kwDOF8lax85oYozn",
@@ -34920,25 +34964,35 @@
       "id": "PR_kwDOF8lax85gdxoV",
       "title": "Rm the optional commitment from CoreSign",
       "url": "https://github.com/decentralized-identity/bbs-signature/pull/297",
-      "state": "OPEN",
+      "state": "MERGED",
       "author": "BasileiosKal",
       "authorAssociation": "CONTRIBUTOR",
       "assignees": [],
       "labels": [],
       "body": "",
       "createdAt": "2023-11-27T17:37:04Z",
-      "updatedAt": "2023-11-27T20:29:29Z",
+      "updatedAt": "2023-12-03T12:25:58Z",
       "baseRepository": "decentralized-identity/bbs-signature",
       "baseRefName": "main",
       "baseRefOid": "3f5e64f62eb75ef2f094b712a3b6d5042c11b8ba",
       "headRepository": "decentralized-identity/bbs-signature",
       "headRefName": "vassilis/signature-commit",
       "headRefOid": "55170d3eaad37ed187cbd62cea806e4c3c1a5464",
-      "closedAt": null,
-      "mergedAt": null,
-      "mergedBy": null,
-      "mergeCommit": null,
-      "comments": [],
+      "closedAt": "2023-12-03T12:25:58Z",
+      "mergedAt": "2023-12-03T12:25:58Z",
+      "mergedBy": "BasileiosKal",
+      "mergeCommit": {
+        "oid": "b38e65a87445ba3c3c744561e6800a4bd3fb7522"
+      },
+      "comments": [
+        {
+          "author": "BasileiosKal",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "Multiple approvals. Editorial update. Merging.",
+          "createdAt": "2023-12-03T12:25:54Z",
+          "updatedAt": "2023-12-03T12:25:54Z"
+        }
+      ],
       "reviews": [
         {
           "id": "PRR_kwDOF8lax85oYpUo",
@@ -34980,7 +35034,7 @@
       "labels": [],
       "body": "Couple of editorial updates\r\n- Updated abstract and some security considerations\r\n- Added academic works overview\r\n- Added header and presentation header usage section\r\n- Added section on post-quantum security",
       "createdAt": "2023-11-28T15:58:29Z",
-      "updatedAt": "2023-11-28T15:58:29Z",
+      "updatedAt": "2023-12-04T19:28:57Z",
       "baseRepository": "decentralized-identity/bbs-signature",
       "baseRefName": "main",
       "baseRefOid": "3f5e64f62eb75ef2f094b712a3b6d5042c11b8ba",
@@ -34992,7 +35046,41 @@
       "mergedBy": null,
       "mergeCommit": null,
       "comments": [],
-      "reviews": []
+      "reviews": [
+        {
+          "id": "PRR_kwDOF8lax85pGIlC",
+          "commit": {
+            "abbreviatedOid": "909fdb4"
+          },
+          "author": "OR13",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2023-12-04T19:22:35Z",
+          "updatedAt": "2023-12-04T19:22:35Z",
+          "comments": [
+            {
+              "originalPosition": 168,
+              "body": "you probably want to use terminology from PQUIP here.\r\n\r\nhttps://datatracker.ietf.org/wg/pquip/documents/\r\n\r\nhttps://datatracker.ietf.org/doc/draft-ietf-pquip-pqc-engineers/\r\n\r\nCRQCs, etc.",
+              "createdAt": "2023-12-04T19:22:35Z",
+              "updatedAt": "2023-12-04T19:24:30Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOF8lax85pGNbL",
+          "commit": {
+            "abbreviatedOid": "909fdb4"
+          },
+          "author": "OR13",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2023-12-04T19:28:57Z",
+          "updatedAt": "2023-12-04T19:28:57Z",
+          "comments": []
+        }
+      ]
     },
     {
       "number": 299,
@@ -35006,7 +35094,7 @@
       "labels": [],
       "body": "The [point to octets we used](https://www.ietf.org/archive/id/draft-irtf-cfrg-pairing-friendly-curves-11.html#name-zcash-serialization-format-) returns points to the curve but not in G1 necessarily.\r\n\r\n- Updated notation from `point_to_octets_g1 -> point_to_octets_E1` etc..\r\n- Added `subgroup_check_G*` where necessary. ",
       "createdAt": "2023-11-29T22:22:45Z",
-      "updatedAt": "2023-11-29T22:22:45Z",
+      "updatedAt": "2023-12-04T19:29:57Z",
       "baseRepository": "decentralized-identity/bbs-signature",
       "baseRefName": "main",
       "baseRefOid": "3f5e64f62eb75ef2f094b712a3b6d5042c11b8ba",
@@ -35018,7 +35106,21 @@
       "mergedBy": null,
       "mergeCommit": null,
       "comments": [],
-      "reviews": []
+      "reviews": [
+        {
+          "id": "PRR_kwDOF8lax85pGOUk",
+          "commit": {
+            "abbreviatedOid": "7df589d"
+          },
+          "author": "OR13",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2023-12-04T19:29:57Z",
+          "updatedAt": "2023-12-04T19:29:57Z",
+          "comments": []
+        }
+      ]
     },
     {
       "number": 300,
@@ -35056,6 +35158,66 @@
           "body": "",
           "createdAt": "2023-11-29T23:51:52Z",
           "updatedAt": "2023-11-29T23:51:52Z",
+          "comments": []
+        }
+      ]
+    },
+    {
+      "number": 301,
+      "id": "PR_kwDOF8lax85g_wIE",
+      "title": "More editorial updates",
+      "url": "https://github.com/decentralized-identity/bbs-signature/pull/301",
+      "state": "OPEN",
+      "author": "BasileiosKal",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "Consistency corrections.",
+      "createdAt": "2023-12-03T23:40:43Z",
+      "updatedAt": "2023-12-04T19:32:54Z",
+      "baseRepository": "decentralized-identity/bbs-signature",
+      "baseRefName": "main",
+      "baseRefOid": "b38e65a87445ba3c3c744561e6800a4bd3fb7522",
+      "headRepository": "decentralized-identity/bbs-signature",
+      "headRefName": "vasilis/edits",
+      "headRefOid": "a500f8b93e298e3ee792a1b7ec5c761b40fe6744",
+      "closedAt": null,
+      "mergedAt": null,
+      "mergedBy": null,
+      "mergeCommit": null,
+      "comments": [],
+      "reviews": [
+        {
+          "id": "PRR_kwDOF8lax85pGO6I",
+          "commit": {
+            "abbreviatedOid": "a500f8b"
+          },
+          "author": "OR13",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2023-12-04T19:31:05Z",
+          "updatedAt": "2023-12-04T19:31:06Z",
+          "comments": [
+            {
+              "originalPosition": 5,
+              "body": "Holder should also be capitalized here, no?",
+              "createdAt": "2023-12-04T19:31:05Z",
+              "updatedAt": "2023-12-04T19:31:06Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOF8lax85pGPln",
+          "commit": {
+            "abbreviatedOid": "a500f8b"
+          },
+          "author": "OR13",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2023-12-04T19:32:54Z",
+          "updatedAt": "2023-12-04T19:32:54Z",
           "comments": []
         }
       ]
