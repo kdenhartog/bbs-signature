@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2023-12-05T00:09:16.738239+00:00",
+  "timestamp": "2023-12-07T00:09:08.163901+00:00",
   "repo": "decentralized-identity/bbs-signature",
   "labels": [
     {
@@ -6398,7 +6398,7 @@
       "id": "I_kwDOF8lax85jBvxD",
       "title": "Add a privacy consideration around revealed message indicies",
       "url": "https://github.com/decentralized-identity/bbs-signature/issues/256",
-      "state": "OPEN",
+      "state": "CLOSED",
       "author": "tplooker",
       "authorAssociation": "MEMBER",
       "assignees": [],
@@ -6408,8 +6408,8 @@
       ],
       "body": "Each message that is signed when producing a signature is associated to a specific generator. This relationship has to persist for revealed messages in any derived proofs, which means the following pieces of information are known to a verifier when verifying a proof.\r\n\r\n1) The total number of messages that were originally signed (even if only a subset are actually revealed).\r\n2) What index each of the revealed messages in a generated proof occupied in the originally signed set.\r\n3) By process of elimination the indicies for all the messages that were not revealed in a derived proof.\r\n\r\nWe should add a privacy consideration that describes this so that implementations can be aware in case it leads to revealing information unintentionally to a verifier.",
       "createdAt": "2023-04-10T21:35:29Z",
-      "updatedAt": "2023-05-08T18:11:26Z",
-      "closedAt": null,
+      "updatedAt": "2023-12-05T15:47:06Z",
+      "closedAt": "2023-12-05T15:47:05Z",
       "comments": [
         {
           "author": "Wind4Greg",
@@ -34315,24 +34315,26 @@
       "id": "PR_kwDOF8lax85cz6Tm",
       "title": "Update Proof Gen",
       "url": "https://github.com/decentralized-identity/bbs-signature/pull/288",
-      "state": "OPEN",
+      "state": "MERGED",
       "author": "BasileiosKal",
       "authorAssociation": "CONTRIBUTOR",
       "assignees": [],
       "labels": [],
       "body": "Based on the WG discussions, update the BBS Proof based on [CDL16].\r\n\r\n(Uses  #287)",
       "createdAt": "2023-10-14T19:38:32Z",
-      "updatedAt": "2023-12-04T19:15:20Z",
+      "updatedAt": "2023-12-05T15:22:18Z",
       "baseRepository": "decentralized-identity/bbs-signature",
       "baseRefName": "main",
       "baseRefOid": "b38e65a87445ba3c3c744561e6800a4bd3fb7522",
       "headRepository": "decentralized-identity/bbs-signature",
       "headRefName": "vasilis/cdl-proof",
       "headRefOid": "475eb32e46e7d99aad8a40c11763d33a87ea17c4",
-      "closedAt": null,
-      "mergedAt": null,
-      "mergedBy": null,
-      "mergeCommit": null,
+      "closedAt": "2023-12-05T15:22:17Z",
+      "mergedAt": "2023-12-05T15:22:17Z",
+      "mergedBy": "BasileiosKal",
+      "mergeCommit": {
+        "oid": "122456a833c7f20fe2b78fb6187fb7e6f21bb9c6"
+      },
       "comments": [
         {
           "author": "BasileiosKal",
@@ -34347,6 +34349,13 @@
           "body": "> @christianpaquin, @Wind4Greg ^these are breaking changes for the proof gen.\r\n> \r\n> Have included test vectors with additional traces to hopefully help with updating \ud83d\ude4f\r\n\r\n@BasileiosKal, I updated my implementation ([here](https://github.com/microsoft/bbs-node-reference/pull/30)); test vectors pass.",
           "createdAt": "2023-11-08T16:03:16Z",
           "updatedAt": "2023-11-08T16:03:16Z"
+        },
+        {
+          "author": "BasileiosKal",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "Multiple approvals! Discussed on WG call at the 4th of December. Test Vectors cross validated. Merging.\r\n\r\nThank you everyone for your help!",
+          "createdAt": "2023-12-05T15:22:12Z",
+          "updatedAt": "2023-12-05T15:22:12Z"
         }
       ],
       "reviews": [
@@ -34609,24 +34618,26 @@
       "id": "PR_kwDOF8lax85eDblJ",
       "title": "Add privacy considerations",
       "url": "https://github.com/decentralized-identity/bbs-signature/pull/291",
-      "state": "OPEN",
+      "state": "MERGED",
       "author": "BasileiosKal",
       "authorAssociation": "CONTRIBUTOR",
       "assignees": [],
       "labels": [],
       "body": "Closes #256.",
       "createdAt": "2023-10-29T18:36:44Z",
-      "updatedAt": "2023-12-04T19:19:25Z",
+      "updatedAt": "2023-12-05T15:47:04Z",
       "baseRepository": "decentralized-identity/bbs-signature",
       "baseRefName": "main",
       "baseRefOid": "b38e65a87445ba3c3c744561e6800a4bd3fb7522",
       "headRepository": "decentralized-identity/bbs-signature",
       "headRefName": "vasilis/privacy-considerations",
       "headRefOid": "54a765cbcc07caf65ab34f3df620636b212ffc94",
-      "closedAt": null,
-      "mergedAt": null,
-      "mergedBy": null,
-      "mergeCommit": null,
+      "closedAt": "2023-12-05T15:47:04Z",
+      "mergedAt": "2023-12-05T15:47:04Z",
+      "mergedBy": "BasileiosKal",
+      "mergeCommit": {
+        "oid": "2a6973750033de1e05010af490d37c4a328adc76"
+      },
       "comments": [
         {
           "author": "BasileiosKal",
@@ -34634,6 +34645,13 @@
           "body": "Discussed on the WG 20th of Nov. Will update wording to use \"collusion\" instead of \"coalition\".",
           "createdAt": "2023-11-20T19:18:20Z",
           "updatedAt": "2023-11-20T19:18:20Z"
+        },
+        {
+          "author": "BasileiosKal",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "Discussed on the WG at the 4th of December. Multiple approvals. Editorial updates. Merging! Thank you!",
+          "createdAt": "2023-12-05T15:47:00Z",
+          "updatedAt": "2023-12-05T15:47:00Z"
         }
       ],
       "reviews": [
@@ -35034,13 +35052,13 @@
       "labels": [],
       "body": "Couple of editorial updates\r\n- Updated abstract and some security considerations\r\n- Added academic works overview\r\n- Added header and presentation header usage section\r\n- Added section on post-quantum security",
       "createdAt": "2023-11-28T15:58:29Z",
-      "updatedAt": "2023-12-04T19:28:57Z",
+      "updatedAt": "2023-12-05T17:20:32Z",
       "baseRepository": "decentralized-identity/bbs-signature",
       "baseRefName": "main",
-      "baseRefOid": "3f5e64f62eb75ef2f094b712a3b6d5042c11b8ba",
+      "baseRefOid": "2a6973750033de1e05010af490d37c4a328adc76",
       "headRepository": "decentralized-identity/bbs-signature",
       "headRefName": "vasilis/editorial-changes",
-      "headRefOid": "909fdb490fd19039a131873b28d0bc401745cb99",
+      "headRefOid": "8de7cd60ad716f7def9744fe009edc3faf5d8af7",
       "closedAt": null,
       "mergedAt": null,
       "mergedBy": null,
@@ -35094,13 +35112,13 @@
       "labels": [],
       "body": "The [point to octets we used](https://www.ietf.org/archive/id/draft-irtf-cfrg-pairing-friendly-curves-11.html#name-zcash-serialization-format-) returns points to the curve but not in G1 necessarily.\r\n\r\n- Updated notation from `point_to_octets_g1 -> point_to_octets_E1` etc..\r\n- Added `subgroup_check_G*` where necessary. ",
       "createdAt": "2023-11-29T22:22:45Z",
-      "updatedAt": "2023-12-04T19:29:57Z",
+      "updatedAt": "2023-12-06T19:45:19Z",
       "baseRepository": "decentralized-identity/bbs-signature",
       "baseRefName": "main",
-      "baseRefOid": "3f5e64f62eb75ef2f094b712a3b6d5042c11b8ba",
+      "baseRefOid": "2a6973750033de1e05010af490d37c4a328adc76",
       "headRepository": "decentralized-identity/bbs-signature",
       "headRefName": "vasilis/point-encode",
-      "headRefOid": "7df589d332ee08cec5bb89334d1507829bbfe911",
+      "headRefOid": "f7ce2baf4e95579b68fa4f4170a68fec644e3bb2",
       "closedAt": null,
       "mergedAt": null,
       "mergedBy": null,
@@ -35174,13 +35192,13 @@
       "labels": [],
       "body": "Consistency corrections.",
       "createdAt": "2023-12-03T23:40:43Z",
-      "updatedAt": "2023-12-04T19:32:54Z",
+      "updatedAt": "2023-12-06T19:49:04Z",
       "baseRepository": "decentralized-identity/bbs-signature",
       "baseRefName": "main",
-      "baseRefOid": "b38e65a87445ba3c3c744561e6800a4bd3fb7522",
+      "baseRefOid": "2a6973750033de1e05010af490d37c4a328adc76",
       "headRepository": "decentralized-identity/bbs-signature",
       "headRefName": "vasilis/edits",
-      "headRefOid": "a500f8b93e298e3ee792a1b7ec5c761b40fe6744",
+      "headRefOid": "2f0925884994e38866cbd328ee382427bac4f6a8",
       "closedAt": null,
       "mergedAt": null,
       "mergedBy": null,
@@ -35218,6 +35236,46 @@
           "body": "",
           "createdAt": "2023-12-04T19:32:54Z",
           "updatedAt": "2023-12-04T19:32:54Z",
+          "comments": []
+        }
+      ]
+    },
+    {
+      "number": 302,
+      "id": "PR_kwDOF8lax85hMu7G",
+      "title": "Add Acknowledgement",
+      "url": "https://github.com/decentralized-identity/bbs-signature/pull/302",
+      "state": "OPEN",
+      "author": "BasileiosKal",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "Acknowledge two people that significantly contributed to the document through reviews and discussions.",
+      "createdAt": "2023-12-05T16:15:24Z",
+      "updatedAt": "2023-12-06T01:30:53Z",
+      "baseRepository": "decentralized-identity/bbs-signature",
+      "baseRefName": "main",
+      "baseRefOid": "2a6973750033de1e05010af490d37c4a328adc76",
+      "headRepository": "decentralized-identity/bbs-signature",
+      "headRefName": "vasilis/add-acknowledgement",
+      "headRefOid": "d36f18ddbb5eb6ce31ac86c64708ccb6ea1ac35f",
+      "closedAt": null,
+      "mergedAt": null,
+      "mergedBy": null,
+      "mergeCommit": null,
+      "comments": [],
+      "reviews": [
+        {
+          "id": "PRR_kwDOF8lax85pSeWz",
+          "commit": {
+            "abbreviatedOid": "d36f18d"
+          },
+          "author": "Wind4Greg",
+          "authorAssociation": "NONE",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2023-12-06T01:30:53Z",
+          "updatedAt": "2023-12-06T01:30:53Z",
           "comments": []
         }
       ]
