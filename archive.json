@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2023-12-07T00:09:08.163901+00:00",
+  "timestamp": "2023-12-10T00:10:24.678351+00:00",
   "repo": "decentralized-identity/bbs-signature",
   "labels": [
     {
@@ -35052,13 +35052,13 @@
       "labels": [],
       "body": "Couple of editorial updates\r\n- Updated abstract and some security considerations\r\n- Added academic works overview\r\n- Added header and presentation header usage section\r\n- Added section on post-quantum security",
       "createdAt": "2023-11-28T15:58:29Z",
-      "updatedAt": "2023-12-05T17:20:32Z",
+      "updatedAt": "2023-12-08T11:44:11Z",
       "baseRepository": "decentralized-identity/bbs-signature",
       "baseRefName": "main",
       "baseRefOid": "2a6973750033de1e05010af490d37c4a328adc76",
       "headRepository": "decentralized-identity/bbs-signature",
       "headRefName": "vasilis/editorial-changes",
-      "headRefOid": "8de7cd60ad716f7def9744fe009edc3faf5d8af7",
+      "headRefOid": "2af1209620d6bc1928f01e5d80f86f59a5c14e17",
       "closedAt": null,
       "mergedAt": null,
       "mergedBy": null,
@@ -35097,6 +35097,26 @@
           "createdAt": "2023-12-04T19:28:57Z",
           "updatedAt": "2023-12-04T19:28:57Z",
           "comments": []
+        },
+        {
+          "id": "PRR_kwDOF8lax85poVH3",
+          "commit": {
+            "abbreviatedOid": "909fdb4"
+          },
+          "author": "BasileiosKal",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2023-12-08T11:44:11Z",
+          "updatedAt": "2023-12-08T11:44:11Z",
+          "comments": [
+            {
+              "originalPosition": 168,
+              "body": "Than you for the suggestion! Updated.",
+              "createdAt": "2023-12-08T11:44:11Z",
+              "updatedAt": "2023-12-08T11:44:11Z"
+            }
+          ]
         }
       ]
     },
@@ -35112,13 +35132,13 @@
       "labels": [],
       "body": "The [point to octets we used](https://www.ietf.org/archive/id/draft-irtf-cfrg-pairing-friendly-curves-11.html#name-zcash-serialization-format-) returns points to the curve but not in G1 necessarily.\r\n\r\n- Updated notation from `point_to_octets_g1 -> point_to_octets_E1` etc..\r\n- Added `subgroup_check_G*` where necessary. ",
       "createdAt": "2023-11-29T22:22:45Z",
-      "updatedAt": "2023-12-06T19:45:19Z",
+      "updatedAt": "2023-12-08T20:12:21Z",
       "baseRepository": "decentralized-identity/bbs-signature",
       "baseRefName": "main",
       "baseRefOid": "2a6973750033de1e05010af490d37c4a328adc76",
       "headRepository": "decentralized-identity/bbs-signature",
       "headRefName": "vasilis/point-encode",
-      "headRefOid": "f7ce2baf4e95579b68fa4f4170a68fec644e3bb2",
+      "headRefOid": "f8ecc026f1a081546075c60879f297389eccb7b6",
       "closedAt": null,
       "mergedAt": null,
       "mergedBy": null,
@@ -35192,13 +35212,13 @@
       "labels": [],
       "body": "Consistency corrections.",
       "createdAt": "2023-12-03T23:40:43Z",
-      "updatedAt": "2023-12-06T19:49:04Z",
+      "updatedAt": "2023-12-08T20:33:12Z",
       "baseRepository": "decentralized-identity/bbs-signature",
       "baseRefName": "main",
       "baseRefOid": "2a6973750033de1e05010af490d37c4a328adc76",
       "headRepository": "decentralized-identity/bbs-signature",
       "headRefName": "vasilis/edits",
-      "headRefOid": "2f0925884994e38866cbd328ee382427bac4f6a8",
+      "headRefOid": "facc4442d71581ff96b37846e6d793d489f79ce9",
       "closedAt": null,
       "mergedAt": null,
       "mergedBy": null,
@@ -35276,6 +35296,99 @@
           "body": "",
           "createdAt": "2023-12-06T01:30:53Z",
           "updatedAt": "2023-12-06T01:30:53Z",
+          "comments": []
+        }
+      ]
+    },
+    {
+      "number": 303,
+      "id": "PR_kwDOF8lax85hgxCP",
+      "title": "Fix mockrng dst",
+      "url": "https://github.com/decentralized-identity/bbs-signature/pull/303",
+      "state": "OPEN",
+      "author": "BasileiosKal",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "Set `dst = api_id || \"MOCK_RANDOM_SCALARS_DST_\"` from  `ciphersuite_id || \"MOCK_RANDOM_SCALARS_DST_\"`.",
+      "createdAt": "2023-12-08T10:54:39Z",
+      "updatedAt": "2023-12-08T17:55:44Z",
+      "baseRepository": "decentralized-identity/bbs-signature",
+      "baseRefName": "main",
+      "baseRefOid": "2a6973750033de1e05010af490d37c4a328adc76",
+      "headRepository": "decentralized-identity/bbs-signature",
+      "headRefName": "vasilis/mockrng-dst-fix",
+      "headRefOid": "28e027b3febe6d246d0367eb5374ced80cf1c922",
+      "closedAt": null,
+      "mergedAt": null,
+      "mergedBy": null,
+      "mergeCommit": null,
+      "comments": [],
+      "reviews": [
+        {
+          "id": "PRR_kwDOF8lax85po6Rc",
+          "commit": {
+            "abbreviatedOid": "28e027b"
+          },
+          "author": "OR13",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2023-12-08T13:22:49Z",
+          "updatedAt": "2023-12-08T13:22:49Z",
+          "comments": []
+        },
+        {
+          "id": "PRR_kwDOF8lax85prCoB",
+          "commit": {
+            "abbreviatedOid": "28e027b"
+          },
+          "author": "andrewwhitehead",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2023-12-08T17:48:40Z",
+          "updatedAt": "2023-12-08T17:48:41Z",
+          "comments": [
+            {
+              "originalPosition": 5,
+              "body": "```suggestion\r\nThe following section details a basic set of test vectors that can be used to confirm an implementation's correctness.\r\n```",
+              "createdAt": "2023-12-08T17:48:40Z",
+              "updatedAt": "2023-12-08T17:48:41Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOF8lax85prE58",
+          "commit": {
+            "abbreviatedOid": "28e027b"
+          },
+          "author": "andrewwhitehead",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2023-12-08T17:55:29Z",
+          "updatedAt": "2023-12-08T17:55:29Z",
+          "comments": [
+            {
+              "originalPosition": 142,
+              "body": "```suggestion\r\nand the domain separation tag `DST = api_id || \"MOCK_RANDOM_SCALARS_DST_\"`, where `api_id` is the identifier of the BBS Interface defined in (#bbs-signatures-interface), i.e., `api_id = ciphersuite_id || H2G_HM2S_`, where `ciphersuite_id` is the unique identifier of the `BLS12-381-SHA-256` ciphersuite as defined in (#bls12-381-sha-256) and `\"MOCK_RANDOM_SCALARS_DST_\"` is an ASCII string composed of 24 bytes. More specifically,\r\n```",
+              "createdAt": "2023-12-08T17:55:29Z",
+              "updatedAt": "2023-12-08T17:55:29Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOF8lax85prE-w",
+          "commit": {
+            "abbreviatedOid": "28e027b"
+          },
+          "author": "andrewwhitehead",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2023-12-08T17:55:44Z",
+          "updatedAt": "2023-12-08T17:55:44Z",
           "comments": []
         }
       ]
