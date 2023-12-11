@@ -3473,6 +3473,9 @@ proof = "a8da259a5ae7a9a8e5e4e809b8e7718b4d7ab913ed5781ebbff4814c762033e
    Orie Steele, Christian Paquin, Alessandro Guggino, Tomislav Markovski
    and Greg Bernstein.
 
+   Additionally, the authors would like to acknoledge Jacques Traore and
+   Antoine Dumanois, for their crucial contributions to this document.
+
 11.  References
 
 11.1.  Normative References
