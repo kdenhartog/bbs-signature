@@ -2706,10 +2706,18 @@ m_10 = ""
 key_material = "746869732d49532d6a7573742d616e2d546573742d494b4d2d746f2d
                 67656e65726174652d246528724074232d6b6579"
 
-   and the following key_info value
+   the following key_info value
 
 key_info = "746869732d49532d736f6d652d6b65792d6d657461646174612d746f2d62
             652d757365642d696e2d746573742d6b65792d67656e"
+
+   and the following key_dst value, defined by api_id || KEYGEN_DST_,
+   where api_id the identifier of the BBS Interface defined in
+   Section 3.5, using the BLS12-381-SHAKE-256 ciphersuite defined in
+   Section 7.2.1,
+
+key_dst = "4242535f424c53313233383147315f584f463a5348414b452d3235365f535
+           357555f524f5f4832475f484d32535f4b455947454e5f4453545f"
 
    Outputs the following SK value
 
@@ -3074,10 +3082,18 @@ proof = "853f4927bd7e4998af27df65566c0a071a33a5207d1af33ef7c3be04004ac5d
 key_material = "746869732d49532d6a7573742d616e2d546573742d494b4d2d746f2d
                 67656e65726174652d246528724074232d6b6579"
 
-   and the following key_info value
+   the following key_info value
 
 key_info = "746869732d49532d736f6d652d6b65792d6d657461646174612d746f2d62
             652d757365642d696e2d746573742d6b65792d67656e"
+
+   and the following key_dst value, defined by api_id || KEYGEN_DST_,
+   where api_id the identifier of the BBS Interface defined in
+   Section 3.5, using the BLS12-381-SHA-256 ciphersuite defined in
+   Section 7.2.2,
+
+key_dst = "4242535f424c53313233383147315f584d443a5348412d3235365f5353575
+           55f524f5f4832475f484d32535f4b455947454e5f4453545f"
 
    Outputs the following SK value
 
