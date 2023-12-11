@@ -5,11 +5,11 @@
 CFRG                                                           T. Looker
 Internet-Draft                                                  V. Kalos
 Intended status: Informational                                     MATTR
-Expires: 7 June 2024                                        A. Whitehead
+Expires: 13 June 2024                                       A. Whitehead
                                                                  Portage
                                                                M. Lodder
                                                                  CryptID
-                                                         5 December 2023
+                                                        11 December 2023
 
 
                         The BBS Signature Scheme
@@ -50,7 +50,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 7 June 2024.
+   This Internet-Draft will expire on 13 June 2024.
 
 Copyright Notice
 
@@ -2575,7 +2575,7 @@ Procedure:
 8.  Test Vectors
 
    The following section details a basic set of test vectors that can be
-   used to confirm an implementations correctness
+   used to confirm an implementation's correctness.
 
    *NOTE* All binary data below is represented as octet strings in big
    endian order, encoded in hexadecimal format.
@@ -2586,46 +2586,45 @@ Procedure:
 
    For the purpose of presenting fixtures for the ProofGen (#proof-
    generation-proofgen) operation we describe here a way to mock the
-   calculate_random_scalars operation (Random scalars computation
-   (#random-scalars)), used by ProofGen to create all the necessary
-   random scalars.
+   calculate_random_scalars operation (Section 4.2.1), used by
+   CoreProofGen (Section 3.6.3) to create all the necessary random
+   scalars.
 
-   To that end, the seeded_random_scalars(SEED) operation is defined,
-   which will deterministically calculate count random-looking scalars
-   from a single SEED.  The proof test vector will then define a SEED
-   (as a nothing-up-my-sleeve value) and set
+   To that end, the seeded_random_scalars operation is defined, which
+   will deterministically calculate count random-looking scalars from a
+   single SEED, given a domain separation tag (DST).  The proof test
+   vector will then define a SEED (as a nothing-up-my-sleeve value) and
+   a DST and then set
 
    mocked_calculate_random_scalars(count) :=
-                                seeded_random_scalars(SEED, count)
+                                seeded_random_scalars(SEED, DST, count)
 
-   The mocked_calculate_random_scalars operation will then be used in
-   place of calculate_random_scalars during the ProofGen (#proof-
-   generation-proofgen) operation's procedure.
+   The mocked_calculate_random_scalars operation will be used in place
+   of calculate_random_scalars during the CoreProofGen operation.
 
-   *Note* For the BLS12-381-SHA-256 (#bls12-381-sha-256) ciphersuite if
-   more than 170 mocked random scalars are required, the operation will
-   return INVALID.  Similarly, for the BLS12-381-SHAKE-256 (#bls12-381-
-   shake-256) ciphersuite, if more than 1365 mocked random scalars are
+   *Note* For the BLS12-381-SHA-256 ciphersuite (Section 7.2.2), if more
+   than 170 mocked random scalars are required, the operation will
+   return INVALID.  Similarly, for the BLS12-381-SHAKE-256 ciphersuite
+   (Section 7.2.1), if more than 1365 mocked random scalars are
    required, the operation will return INVALID.  For the purpose of
-   describing ProofGen (#proof-generation-proofgen) test vectors, those
-   limits are inconsequential.
+   describing ProofGen (Section 3.5.3) test vectors, those limits are
+   inconsequential.
 
-   seeded_scalars = seeded_random_scalars(SEED, count)
+   seeded_scalars = seeded_random_scalars(SEED, DST, count)
 
    Inputs:
 
-   - count (REQUIRED), non negative integer. The number of scalars to
-                       return.
    - SEED (REQUIRED), an octet string. The random seed from which to
                       generate the scalars.
+   - DST (REQUIRED), octet string representing a domain separation tag.
+   - count (REQUIRED), non negative integer. The number of scalars to
+                       return.
 
    Parameters:
 
    - expand_message, the expand_message operation defined by the
                      ciphersuite.
    - expand_len, defined by the ciphersuite.
-   - dst = ciphersuite_id || "MOCK_RANDOM_SCALARS_DST_", where
-           ciphersuite_id is defined by the ciphersuite.
 
    Outputs:
 
@@ -2666,10 +2665,9 @@ m_10 = ""
 
 8.3.  BLS12-381-SHAKE-256 Test Vectors
 
-   Test vectors of the BLS12-381-SHAKE-256 (#bls12-381-shake-
-   256-ciphersuite) ciphersuite.  Further fixtures are available in
-   additional BLS12-381-SHAKE-256 test vectors (#additional-bls12-381-
-   shake-256-ciphersuite-test-vectors).
+   Test vectors of the BLS12-381-SHAKE-256 ciphersuite defined in
+   Appendix C.1 ciphersuite.  Further fixtures are available in
+   Appendix C.1.
 
 8.3.1.  Key Pair
 
@@ -2758,6 +2756,10 @@ H_10 = "965a6c62451d4be6cb175dec39727dc665762673ee42bf0ac13a37a74784fbd6
 
 8.3.4.  Signature Fixtures
 
+   This section presents test vectors for the Sign operation, as defined
+   in Section 3.5.1, for the BLS12-381-SHAKE-256 ciphersuite
+   (Section 7.2.1).
+
 8.3.4.1.  Valid Single Message Signature
 
 m_1 = "9872ad089e452c7b6e283dfac2a80d58e8d0ff71cc4d5e310a1debdda4a45f02"
@@ -2807,16 +2809,32 @@ signature = "97a296c83ed3626fe254d26021c5e9a087b580f1e8bc91bb51efb04420b
 
 8.3.5.  Proof Fixtures
 
-   For the generation of the following fixtures the
-   mocked_calculate_random_scalars defined in Mocked Random Scalars
-   (#mocked-random-scalars) is used, in place of the
-   calculate_random_scalars operation, with the following seed value
-   (hex encoding of the ASCII-encoded 30 first digits of pi)
+   This section presents test vectors for the ProofGen operation, as
+   defined in Section 3.5.3, for the BLS12-381-SHAKE-256 ciphersuite
+   (Section 7.2.1).
 
-SEED = "332e313431353932363533353839373933323338343632363433333833323739"
+   For the generation of the following test vectors, the
+   mocked_calculate_random_scalars defined in Section 8.1 is used, in
+   place of the calculate_random_scalars operation, with the following
+   SEED value (hex encoding of the ASCII-encoded 30 first digits of pi)
 
-   Given the above seed the first 10 scalars returned by the
-   mocked_calculate_random_scalars operation will be,
+SEED =
+      "332e313431353932363533353839373933323338343632363433333833323739"
+
+   and the domain separation tag DST = api_id ||
+   "MOCK_RANDOM_SCALARS_DST_", where api_id is the identifier of the BBS
+   Interface defined in Section 3.5, i.e., api_id = ciphersuite_id ||
+   H2G_HM2S_, where ciphersuite_id is the unique identifier of the
+   BLS12-381-SHAKE-256 ciphersuite as defined in Section 7.2.1 and
+   "MOCK_RANDOM_SCALARS_DST_" is an ASCII string composed of 24 bytes.
+   More specifically,
+
+DST =
+"BBS_BLS12381G1_XOF:SHAKE-256_SSWU_RO_H2G_HM2S_MOCK_RANDOM_SCALARS_DST_"
+
+   Given the above SEED and DST values, the first 10 scalars (i.e., with
+   count = 10) returned by the mocked_calculate_random_scalars operation
+   will be,
 
 random_scalar_1 = "1004262112c3eaa95941b2b0d1311c09c845db0099a50e67eda62
                    8ad26b43083"
@@ -2856,8 +2874,8 @@ presentation_header = "bed231d880675ed101ead304512e043ade9958dd0241ea70b
 revealed_indexes = "[ 0 ]"
 
 random scalars:
-  r1 = "1308e6f945f663b96de1c76461cf7d7f88b92eb99a9034685150db443d733881
-        "
+    r1 = "1308e6f945f663b96de1c76461cf7d7f88b92eb99a9034685150db443d7338
+          81"
     r2 = "25f81cb69a8fac6fb55d44a084557258575d1003be2bd94f1922dad2c3e447
           fd"
     e_tilde = "5e8041a7ab02976ee50226c4b062b47d38829bbf42ee7eb899b297203
@@ -3017,8 +3035,7 @@ proof = "853f4927bd7e4998af27df65566c0a071a33a5207d1af33ef7c3be04004ac5d
 
    Test vectors of the BLS12-381-SHA-256 (#bls12-381-sha-
    256-ciphersuite) ciphersuite.  Further fixtures are available in
-   additional BLS12-381-SHA-256 test vectors (#additional-bls12-381-sha-
-   256-ciphersuite-test-vectors).
+   Appendix C.2.
 
 8.4.1.  Key Pair
 
@@ -3112,6 +3129,10 @@ H_10 = "a1f229540474f4d6f1134761b92b788128c7ac8dc9b0c52d5949313267967303
 
 8.4.4.  Signature Fixtures
 
+   This section presents test vectors for the Sign operation, as defined
+   in Section 3.5.1, for the BLS12-381-SHA-256 ciphersuite
+   (Section 7.2.2).
+
 8.4.4.1.  Valid Single Message Signature
 
 m_1 = "9872ad089e452c7b6e283dfac2a80d58e8d0ff71cc4d5e310a1debdda4a45f02"
@@ -3161,17 +3182,32 @@ signature = "895cd9c0ccb9aca4de913218655346d718711472f2bf1f3e68916de106a
 
 8.4.5.  Proof Fixtures
 
-   Similarly to the proof fixtures for the BLS12381-SHA-256 ciphersuite,
-   the generation of the following fixtures uses the
-   mocked_calculate_random_scalars defined in Mocked Random Scalars
-   (#mocked-random-scalars), in place of the calculate_random_scalars
-   operation, with the following seed value (hex encoding of the ASCII-
-   encoded 30 first digits of pi).
+   This section presents test vectors for the ProofGen operation, as
+   defined in Section 3.5.3, for the BLS12-381-SHA-256 ciphersuite
+   (Section 7.2.1).
 
-SEED = "332e313431353932363533353839373933323338343632363433333833323739"
+   For the generation of the following test vectors, the
+   mocked_calculate_random_scalars defined in Section 8.1 is used, in
+   place of the calculate_random_scalars operation, with the following
+   SEED value (hex encoding of the ASCII-encoded 30 first digits of pi)
 
-   Given the above seed the first 10 scalars returned by the
-   mocked_calculate_random_scalars operation will be,
+SEED =
+      "332e313431353932363533353839373933323338343632363433333833323739"
+
+   and the domain separation tag DST = api_id ||
+   "MOCK_RANDOM_SCALARS_DST_", where api_id is the identifier of the BBS
+   Interface defined in Section 3.5, i.e., api_id = ciphersuite_id ||
+   H2G_HM2S_, where ciphersuite_id is the unique identifier of the
+   BLS12-381-SHA-256 ciphersuite as defined in Section 7.2.2 and
+   "MOCK_RANDOM_SCALARS_DST_" is an ASCII string composed of 24 bytes.
+   More specifically,
+
+DST =
+  "BBS_BLS12381G1_XMD:SHA-256_SSWU_RO_H2G_HM2S_MOCK_RANDOM_SCALARS_DST_"
+
+   Given the above SEED and DST values, the first 10 scalars (i.e., with
+   count = 10) returned by the mocked_calculate_random_scalars operation
+   will be,
 
 random_scalar_1 = "04f8e2518993c4383957ad14eb13a023c4ad0c67d01ec86eeb902
                    e732ed6df3f"

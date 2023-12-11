@@ -22,7 +22,7 @@
     intervaltree 3.1.0
     Jinja2 3.1.2
     lxml 4.9.3
-    platformdirs 4.0.0
+    platformdirs 4.1.0
     pycountry 22.3.5
     PyYAML 6.0
     requests 2.31.0
@@ -1031,7 +1031,7 @@ svg :is([fill="white"], [fill^="#fff"]) {
 </tr></thead>
 <tfoot><tr>
 <td class="left">Looker, et al.</td>
-<td class="center">Expires 7 June 2024</td>
+<td class="center">Expires 13 June 2024</td>
 <td class="right">[Page]</td>
 </tr></tfoot>
 </table>
@@ -1044,12 +1044,12 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <dd class="internet-draft">draft-irtf-cfrg-bbs-signatures-latest</dd>
 <dt class="label-published">Published:</dt>
 <dd class="published">
-<time datetime="2023-12-05" class="published">5 December 2023</time>
+<time datetime="2023-12-11" class="published">11 December 2023</time>
     </dd>
 <dt class="label-intended-status">Intended Status:</dt>
 <dd class="intended-status">Informational</dd>
 <dt class="label-expires">Expires:</dt>
-<dd class="expires"><time datetime="2024-06-07">7 June 2024</time></dd>
+<dd class="expires"><time datetime="2024-06-13">13 June 2024</time></dd>
 <dt class="label-authors">Authors:</dt>
 <dd class="authors">
 <div class="author">
@@ -1103,7 +1103,7 @@ svg :is([fill="white"], [fill^="#fff"]) {
         time. It is inappropriate to use Internet-Drafts as reference
         material or to cite them other than as "work in progress."<a href="#section-boilerplate.1-3" class="pilcrow">¶</a></p>
 <p id="section-boilerplate.1-4">
-        This Internet-Draft will expire on 7 June 2024.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
+        This Internet-Draft will expire on 13 June 2024.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="copyright">
@@ -3666,7 +3666,7 @@ a function that returns the point P in the subgroup G2 corresponding to the cano
       <h2 id="name-test-vectors">
 <a href="#section-8" class="section-number selfRef">8. </a><a href="#name-test-vectors" class="section-name selfRef">Test Vectors</a>
       </h2>
-<p id="section-8-1">The following section details a basic set of test vectors that can be used to confirm an implementations correctness<a href="#section-8-1" class="pilcrow">¶</a></p>
+<p id="section-8-1">The following section details a basic set of test vectors that can be used to confirm an implementation's correctness.<a href="#section-8-1" class="pilcrow">¶</a></p>
 <p id="section-8-2"><strong>NOTE</strong> All binary data below is represented as octet strings in big endian order, encoded in hexadecimal format.<a href="#section-8-2" class="pilcrow">¶</a></p>
 <p id="section-8-3"><strong>NOTE</strong> These fixtures are a work in progress and subject to change.<a href="#section-8-3" class="pilcrow">¶</a></p>
 <div id="mocked-random-scalars">
@@ -3674,33 +3674,32 @@ a function that returns the point P in the subgroup G2 corresponding to the cano
         <h3 id="name-mocked-random-scalars">
 <a href="#section-8.1" class="section-number selfRef">8.1. </a><a href="#name-mocked-random-scalars" class="section-name selfRef">Mocked Random Scalars</a>
         </h3>
-<p id="section-8.1-1">For the purpose of presenting fixtures for the <a href="#proof-generation-proofgen">ProofGen</a> operation we describe here a way to mock the <code>calculate_random_scalars</code> operation (<a href="#random-scalars">Random scalars computation</a>), used by <code>ProofGen</code> to create all the necessary random scalars.<a href="#section-8.1-1" class="pilcrow">¶</a></p>
-<p id="section-8.1-2">To that end, the <code>seeded_random_scalars(SEED)</code> operation is defined, which will deterministically calculate <code>count</code> random-looking scalars from a single <code>SEED</code>. The proof test vector will then define a <code>SEED</code> (as a nothing-up-my-sleeve value) and set<a href="#section-8.1-2" class="pilcrow">¶</a></p>
+<p id="section-8.1-1">For the purpose of presenting fixtures for the <a href="#proof-generation-proofgen">ProofGen</a> operation we describe here a way to mock the <code>calculate_random_scalars</code> operation (<a href="#random-scalars" class="auto internal xref">Section 4.2.1</a>), used by <code>CoreProofGen</code> (<a href="#coreproofgen" class="auto internal xref">Section 3.6.3</a>) to create all the necessary random scalars.<a href="#section-8.1-1" class="pilcrow">¶</a></p>
+<p id="section-8.1-2">To that end, the <code>seeded_random_scalars</code> operation is defined, which will deterministically calculate <code>count</code> random-looking scalars from a single <code>SEED</code>, given a domain separation tag (<code>DST</code>). The proof test vector will then define a <code>SEED</code> (as a nothing-up-my-sleeve value) and a <code>DST</code> and then set<a href="#section-8.1-2" class="pilcrow">¶</a></p>
 <div class="alignLeft art-text artwork" id="section-8.1-3">
 <pre>mocked_calculate_random_scalars(count) :=
-                             seeded_random_scalars(SEED, count)
+                             seeded_random_scalars(SEED, DST, count)
 
 </pre><a href="#section-8.1-3" class="pilcrow">¶</a>
 </div>
-<p id="section-8.1-4">The <code>mocked_calculate_random_scalars</code> operation will then be used in place of <code>calculate_random_scalars</code> during the <a href="#proof-generation-proofgen">ProofGen</a> operation's procedure.<a href="#section-8.1-4" class="pilcrow">¶</a></p>
-<p id="section-8.1-5"><strong>Note</strong> For the <a href="#bls12-381-sha-256">BLS12-381-SHA-256</a> ciphersuite if more than 170 mocked random scalars are required, the operation will return INVALID. Similarly, for the <a href="#bls12-381-shake-256">BLS12-381-SHAKE-256</a> ciphersuite, if more than 1365 mocked random scalars are required, the operation will return INVALID. For the purpose of describing <a href="#proof-generation-proofgen">ProofGen</a> test vectors, those limits are inconsequential.<a href="#section-8.1-5" class="pilcrow">¶</a></p>
+<p id="section-8.1-4">The <code>mocked_calculate_random_scalars</code> operation will be used in place of <code>calculate_random_scalars</code> during the <code>CoreProofGen</code> operation.<a href="#section-8.1-4" class="pilcrow">¶</a></p>
+<p id="section-8.1-5"><strong>Note</strong> For the <code>BLS12-381-SHA-256</code> ciphersuite (<a href="#bls12-381-sha-256" class="auto internal xref">Section 7.2.2</a>), if more than 170 mocked random scalars are required, the operation will return INVALID. Similarly, for the <code>BLS12-381-SHAKE-256</code> ciphersuite (<a href="#bls12-381-shake-256" class="auto internal xref">Section 7.2.1</a>), if more than 1365 mocked random scalars are required, the operation will return INVALID. For the purpose of describing <code>ProofGen</code> (<a href="#proof-generation-proofgen" class="auto internal xref">Section 3.5.3</a>) test vectors, those limits are inconsequential.<a href="#section-8.1-5" class="pilcrow">¶</a></p>
 <div class="alignLeft art-text artwork" id="section-8.1-6">
-<pre>seeded_scalars = seeded_random_scalars(SEED, count)
+<pre>seeded_scalars = seeded_random_scalars(SEED, DST, count)
 
 Inputs:
 
-- count (REQUIRED), non negative integer. The number of scalars to
-                    return.
 - SEED (REQUIRED), an octet string. The random seed from which to
                    generate the scalars.
+- DST (REQUIRED), octet string representing a domain separation tag.
+- count (REQUIRED), non negative integer. The number of scalars to
+                    return.
 
 Parameters:
 
 - expand_message, the expand_message operation defined by the
                   ciphersuite.
 - expand_len, defined by the ciphersuite.
-- dst = ciphersuite_id || "MOCK_RANDOM_SCALARS_DST_", where
-        ciphersuite_id is defined by the ciphersuite.
 
 Outputs:
 
@@ -3753,7 +3752,7 @@ m_10 = ""
         <h3 id="name-bls12-381-shake-256-test-ve">
 <a href="#section-8.3" class="section-number selfRef">8.3. </a><a href="#name-bls12-381-shake-256-test-ve" class="section-name selfRef">BLS12-381-SHAKE-256 Test Vectors</a>
         </h3>
-<p id="section-8.3-1">Test vectors of the <a href="#bls12-381-shake-256-ciphersuite">BLS12-381-SHAKE-256</a> ciphersuite. Further fixtures are available in <a href="#additional-bls12-381-shake-256-ciphersuite-test-vectors">additional BLS12-381-SHAKE-256 test vectors</a>.<a href="#section-8.3-1" class="pilcrow">¶</a></p>
+<p id="section-8.3-1">Test vectors of the <code>BLS12-381-SHAKE-256</code> ciphersuite defined in <a href="#bls12-381-shake-256-ciphersuite" class="auto internal xref">Appendix C.1</a> ciphersuite. Further fixtures are available in <a href="#bls12-381-shake-256-ciphersuite" class="auto internal xref">Appendix C.1</a>.<a href="#section-8.3-1" class="pilcrow">¶</a></p>
 <div id="key-pair">
 <section id="section-8.3.1">
           <h4 id="name-key-pair">
@@ -3860,6 +3859,7 @@ H_10 = "965a6c62451d4be6cb175dec39727dc665762673ee42bf0ac13a37a74784fbd6
           <h4 id="name-signature-fixtures">
 <a href="#section-8.3.4" class="section-number selfRef">8.3.4. </a><a href="#name-signature-fixtures" class="section-name selfRef">Signature Fixtures</a>
           </h4>
+<p id="section-8.3.4-1">This section presents test vectors for the <code>Sign</code> operation, as defined in <a href="#signature-generation-sign" class="auto internal xref">Section 3.5.1</a>, for the <code>BLS12-381-SHAKE-256</code> ciphersuite (<a href="#bls12-381-shake-256" class="auto internal xref">Section 7.2.1</a>).<a href="#section-8.3.4-1" class="pilcrow">¶</a></p>
 <div id="valid-single-message-signature">
 <section id="section-8.3.4.1">
             <h5 id="name-valid-single-message-signat">
@@ -3930,14 +3930,23 @@ signature = "97a296c83ed3626fe254d26021c5e9a087b580f1e8bc91bb51efb04420b
           <h4 id="name-proof-fixtures">
 <a href="#section-8.3.5" class="section-number selfRef">8.3.5. </a><a href="#name-proof-fixtures" class="section-name selfRef">Proof Fixtures</a>
           </h4>
-<p id="section-8.3.5-1">For the generation of the following fixtures the <code>mocked_calculate_random_scalars</code> defined in <a href="#mocked-random-scalars">Mocked Random Scalars</a> is used, in place of the <code>calculate_random_scalars</code> operation, with the following seed value (hex encoding of the ASCII-encoded 30 first digits of pi)<a href="#section-8.3.5-1" class="pilcrow">¶</a></p>
-<div class="alignLeft art-text artwork" id="section-8.3.5-2">
-<pre>SEED = "332e313431353932363533353839373933323338343632363433333833323739"
+<p id="section-8.3.5-1">This section presents test vectors for the <code>ProofGen</code> operation, as defined in <a href="#proof-generation-proofgen" class="auto internal xref">Section 3.5.3</a>, for the <code>BLS12-381-SHAKE-256</code> ciphersuite (<a href="#bls12-381-shake-256" class="auto internal xref">Section 7.2.1</a>).<a href="#section-8.3.5-1" class="pilcrow">¶</a></p>
+<p id="section-8.3.5-2">For the generation of the following test vectors, the <code>mocked_calculate_random_scalars</code> defined in <a href="#mocked-random-scalars" class="auto internal xref">Section 8.1</a> is used, in place of the <code>calculate_random_scalars</code> operation, with the following <code>SEED</code> value (hex encoding of the ASCII-encoded 30 first digits of pi)<a href="#section-8.3.5-2" class="pilcrow">¶</a></p>
+<div class="alignLeft art-text artwork" id="section-8.3.5-3">
+<pre>SEED =
+      "332e313431353932363533353839373933323338343632363433333833323739"
 
-</pre><a href="#section-8.3.5-2" class="pilcrow">¶</a>
+</pre><a href="#section-8.3.5-3" class="pilcrow">¶</a>
 </div>
-<p id="section-8.3.5-3">Given the above seed the first 10 scalars returned by the <code>mocked_calculate_random_scalars</code> operation will be,<a href="#section-8.3.5-3" class="pilcrow">¶</a></p>
-<div class="alignLeft art-text artwork" id="section-8.3.5-4">
+<p id="section-8.3.5-4">and the domain separation tag <code>DST = api_id || "MOCK_RANDOM_SCALARS_DST_"</code>, where <code>api_id</code> is the identifier of the BBS Interface defined in <a href="#bbs-signatures-interface" class="auto internal xref">Section 3.5</a>, i.e., <code>api_id = ciphersuite_id || H2G_HM2S_</code>, where <code>ciphersuite_id</code> is the unique identifier of the <code>BLS12-381-SHAKE-256</code> ciphersuite as defined in <a href="#bls12-381-shake-256" class="auto internal xref">Section 7.2.1</a> and <code>"MOCK_RANDOM_SCALARS_DST_"</code> is an ASCII string composed of 24 bytes. More specifically,<a href="#section-8.3.5-4" class="pilcrow">¶</a></p>
+<div class="alignLeft art-text artwork" id="section-8.3.5-5">
+<pre>DST =
+"BBS_BLS12381G1_XOF:SHAKE-256_SSWU_RO_H2G_HM2S_MOCK_RANDOM_SCALARS_DST_"
+
+</pre><a href="#section-8.3.5-5" class="pilcrow">¶</a>
+</div>
+<p id="section-8.3.5-6">Given the above <code>SEED</code> and <code>DST</code> values, the first 10 scalars (i.e., with <code>count = 10</code>) returned by the <code>mocked_calculate_random_scalars</code> operation will be,<a href="#section-8.3.5-6" class="pilcrow">¶</a></p>
+<div class="alignLeft art-text artwork" id="section-8.3.5-7">
 <pre>random_scalar_1 = "1004262112c3eaa95941b2b0d1311c09c845db0099a50e67eda62
                    8ad26b43083"
 random_scalar_2 = "6da7f145a94c1fa7f116b2482d59e4d466fe49c955ae8726e7945
@@ -3959,7 +3968,7 @@ random_scalar_9 = "513325acdcdec7ea572360587b350a8b095ca19bdd8258c5c69d3
 random_scalar_10 = "6474fceba35e7e17365dde1a0284170180e446ae96c82943290d
                     7baa3a6ed429"
 
-</pre><a href="#section-8.3.5-4" class="pilcrow">¶</a>
+</pre><a href="#section-8.3.5-7" class="pilcrow">¶</a>
 </div>
 <div id="valid-single-message-proof">
 <section id="section-8.3.5.1">
@@ -3982,8 +3991,8 @@ presentation_header = "bed231d880675ed101ead304512e043ade9958dd0241ea70b
 revealed_indexes = "[ 0 ]"
 
 random scalars:
-  r1 = "1308e6f945f663b96de1c76461cf7d7f88b92eb99a9034685150db443d733881
-        "
+    r1 = "1308e6f945f663b96de1c76461cf7d7f88b92eb99a9034685150db443d7338
+          81"
     r2 = "25f81cb69a8fac6fb55d44a084557258575d1003be2bd94f1922dad2c3e447
           fd"
     e_tilde = "5e8041a7ab02976ee50226c4b062b47d38829bbf42ee7eb899b297203
@@ -4168,7 +4177,7 @@ proof = "853f4927bd7e4998af27df65566c0a071a33a5207d1af33ef7c3be04004ac5d
         <h3 id="name-bls12381-sha-256-test-vecto">
 <a href="#section-8.4" class="section-number selfRef">8.4. </a><a href="#name-bls12381-sha-256-test-vecto" class="section-name selfRef">BLS12381-SHA-256 Test Vectors</a>
         </h3>
-<p id="section-8.4-1">Test vectors of the <a href="#bls12-381-sha-256-ciphersuite">BLS12-381-SHA-256</a> ciphersuite. Further fixtures are available in <a href="#additional-bls12-381-sha-256-ciphersuite-test-vectors">additional BLS12-381-SHA-256 test vectors</a>.<a href="#section-8.4-1" class="pilcrow">¶</a></p>
+<p id="section-8.4-1">Test vectors of the <a href="#bls12-381-sha-256-ciphersuite">BLS12-381-SHA-256</a> ciphersuite. Further fixtures are available in <a href="#bls12-381-sha-256-ciphersuite" class="auto internal xref">Appendix C.2</a>.<a href="#section-8.4-1" class="pilcrow">¶</a></p>
 <div id="key-pair-1">
 <section id="section-8.4.1">
           <h4 id="name-key-pair-2">
@@ -4283,6 +4292,7 @@ H_10 = "a1f229540474f4d6f1134761b92b788128c7ac8dc9b0c52d5949313267967303
           <h4 id="name-signature-fixtures-2">
 <a href="#section-8.4.4" class="section-number selfRef">8.4.4. </a><a href="#name-signature-fixtures-2" class="section-name selfRef">Signature Fixtures</a>
           </h4>
+<p id="section-8.4.4-1">This section presents test vectors for the <code>Sign</code> operation, as defined in <a href="#signature-generation-sign" class="auto internal xref">Section 3.5.1</a>, for the <code>BLS12-381-SHA-256</code> ciphersuite (<a href="#bls12-381-sha-256" class="auto internal xref">Section 7.2.2</a>).<a href="#section-8.4.4-1" class="pilcrow">¶</a></p>
 <div id="valid-single-message-signature-1">
 <section id="section-8.4.4.1">
             <h5 id="name-valid-single-message-signatu">
@@ -4353,15 +4363,23 @@ signature = "895cd9c0ccb9aca4de913218655346d718711472f2bf1f3e68916de106a
           <h4 id="name-proof-fixtures-2">
 <a href="#section-8.4.5" class="section-number selfRef">8.4.5. </a><a href="#name-proof-fixtures-2" class="section-name selfRef">Proof Fixtures</a>
           </h4>
-<p id="section-8.4.5-1">Similarly to the proof fixtures for the BLS12381-SHA-256 ciphersuite, the generation of the following fixtures uses the <code>mocked_calculate_random_scalars</code> defined in <a href="#mocked-random-scalars">Mocked Random Scalars</a>, in place of the <code>calculate_random_scalars</code> operation, with the following seed value (hex encoding of the ASCII-encoded 30 first digits of pi).<a href="#section-8.4.5-1" class="pilcrow">¶</a></p>
-<div class="alignLeft art-text artwork" id="section-8.4.5-2">
-<pre>SEED = "332e313431353932363533353839373933323338343632363433333833323739"
+<p id="section-8.4.5-1">This section presents test vectors for the <code>ProofGen</code> operation, as defined in <a href="#proof-generation-proofgen" class="auto internal xref">Section 3.5.3</a>, for the <code>BLS12-381-SHA-256</code> ciphersuite (<a href="#bls12-381-shake-256" class="auto internal xref">Section 7.2.1</a>).<a href="#section-8.4.5-1" class="pilcrow">¶</a></p>
+<p id="section-8.4.5-2">For the generation of the following test vectors, the <code>mocked_calculate_random_scalars</code> defined in <a href="#mocked-random-scalars" class="auto internal xref">Section 8.1</a> is used, in place of the <code>calculate_random_scalars</code> operation, with the following <code>SEED</code> value (hex encoding of the ASCII-encoded 30 first digits of pi)<a href="#section-8.4.5-2" class="pilcrow">¶</a></p>
+<div class="alignLeft art-text artwork" id="section-8.4.5-3">
+<pre>SEED =
+      "332e313431353932363533353839373933323338343632363433333833323739"
 
-
-</pre><a href="#section-8.4.5-2" class="pilcrow">¶</a>
+</pre><a href="#section-8.4.5-3" class="pilcrow">¶</a>
 </div>
-<p id="section-8.4.5-3">Given the above seed the first 10 scalars returned by the <code>mocked_calculate_random_scalars</code> operation will be,<a href="#section-8.4.5-3" class="pilcrow">¶</a></p>
-<div class="alignLeft art-text artwork" id="section-8.4.5-4">
+<p id="section-8.4.5-4">and the domain separation tag <code>DST = api_id || "MOCK_RANDOM_SCALARS_DST_"</code>, where <code>api_id</code> is the identifier of the BBS Interface defined in <a href="#bbs-signatures-interface" class="auto internal xref">Section 3.5</a>, i.e., <code>api_id = ciphersuite_id || H2G_HM2S_</code>, where <code>ciphersuite_id</code> is the unique identifier of the <code>BLS12-381-SHA-256</code> ciphersuite as defined in <a href="#bls12-381-sha-256" class="auto internal xref">Section 7.2.2</a> and <code>"MOCK_RANDOM_SCALARS_DST_"</code> is an ASCII string composed of 24 bytes. More specifically,<a href="#section-8.4.5-4" class="pilcrow">¶</a></p>
+<div class="alignLeft art-text artwork" id="section-8.4.5-5">
+<pre>DST =
+  "BBS_BLS12381G1_XMD:SHA-256_SSWU_RO_H2G_HM2S_MOCK_RANDOM_SCALARS_DST_"
+
+</pre><a href="#section-8.4.5-5" class="pilcrow">¶</a>
+</div>
+<p id="section-8.4.5-6">Given the above <code>SEED</code> and <code>DST</code> values, the first 10 scalars (i.e., with <code>count = 10</code>) returned by the <code>mocked_calculate_random_scalars</code> operation will be,<a href="#section-8.4.5-6" class="pilcrow">¶</a></p>
+<div class="alignLeft art-text artwork" id="section-8.4.5-7">
 <pre>random_scalar_1 = "04f8e2518993c4383957ad14eb13a023c4ad0c67d01ec86eeb902
                    e732ed6df3f"
 random_scalar_2 = "5d87c1ba64c320ad601d227a1b74188a41a100325cecf00223729
@@ -4383,9 +4401,9 @@ random_scalar_9 = "05c2a0af016df58e844db8944082dcaf434de1b1e2e7136ec8a99
 random_scalar_10 = "485e2adab17b76f5334c95bf36c03ccf91cef77dcfcdc6b8a69e
                     2090b3156663"
 
-</pre><a href="#section-8.4.5-4" class="pilcrow">¶</a>
+</pre><a href="#section-8.4.5-7" class="pilcrow">¶</a>
 </div>
-<p id="section-8.4.5-5">Note that the returned scalars will be unique for different <code>count</code> values, i.e., for different output lengths.<a href="#section-8.4.5-5" class="pilcrow">¶</a></p>
+<p id="section-8.4.5-8">Note that the returned scalars will be unique for different <code>count</code> values, i.e., for different output lengths.<a href="#section-8.4.5-8" class="pilcrow">¶</a></p>
 <div id="valid-single-message-proof-1">
 <section id="section-8.4.5.1">
             <h5 id="name-valid-single-message-proof-2">
