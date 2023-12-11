@@ -1684,16 +1684,16 @@ svg :is([fill="white"], [fill^="#fff"]) {
           <dd style="margin-left: 1.5em" id="section-1.2-4.16">A cryptographic hash function that takes an arbitrary octet string as input and returns a point in G1, using the hash_to_curve operation defined in <span>[<a href="#I-D.irtf-cfrg-hash-to-curve" class="cite xref">I-D.irtf-cfrg-hash-to-curve</a>]</span> and the inputted dst as the domain separation tag for that operation (more specifically, the inputted dst will become the DST parameter for the hash_to_field operation, called by hash_to_curve).<a href="#section-1.2-4.16" class="pilcrow">¶</a>
 </dd>
           <dd class="break"></dd>
-<dt id="section-1.2-4.17">point_to_octets_g1(P) -&gt; ostr, point_to_octets_g2(P) -&gt; ostr</dt>
-          <dd style="margin-left: 1.5em" id="section-1.2-4.18">returns the canonical representation of the point P for the respective subgroup as an octet string. This operation is also known as serialization.<a href="#section-1.2-4.18" class="pilcrow">¶</a>
+<dt id="section-1.2-4.17">point_to_octets_E1(P) -&gt; ostr, point_to_octets_E2(P) -&gt; ostr</dt>
+          <dd style="margin-left: 1.5em" id="section-1.2-4.18">returns the canonical representation of the point P of the elliptic curve E1 or E2 as an octet string. This operation is also known as serialization. Note that we assume that when the point is valid, all the serialization operations will always succeed to return the octet string representation of the point.<a href="#section-1.2-4.18" class="pilcrow">¶</a>
 </dd>
           <dd class="break"></dd>
-<dt id="section-1.2-4.19">octets_to_point_g1(ostr) -&gt; P, octets_to_point_g2(ostr) -&gt; P</dt>
-          <dd style="margin-left: 1.5em" id="section-1.2-4.20">returns the point P for the respective subgroup corresponding to the canonical representation ostr, or INVALID if ostr is not a valid output of the respective point_to_octets_g* function. This operation is also known as deserialization.<a href="#section-1.2-4.20" class="pilcrow">¶</a>
+<dt id="section-1.2-4.19">octets_to_point_E1(ostr) -&gt; P, octets_to_point_E2(ostr) -&gt; P</dt>
+          <dd style="margin-left: 1.5em" id="section-1.2-4.20">returns the point P for the respective elliptic curve corresponding to the canonical representation ostr, or INVALID if ostr is not a valid output of the respective point_to_octets_E* function. This operation is also known as deserialization.<a href="#section-1.2-4.20" class="pilcrow">¶</a>
 </dd>
           <dd class="break"></dd>
-<dt id="section-1.2-4.21">subgroup_check(P) -&gt; VALID or INVALID</dt>
-          <dd style="margin-left: 1.5em" id="section-1.2-4.22">returns VALID when the point P is an element of the subgroup of order r, and INVALID otherwise. This function can always be implemented by checking that r * P is equal to the identity element. In some cases, faster checks may also exist, e.g., <span>[<a href="#Bowe19" class="cite xref">Bowe19</a>]</span>.<a href="#section-1.2-4.22" class="pilcrow">¶</a>
+<dt id="section-1.2-4.21">subgroup_check_G1(P), subgroup_check_G2(P) -&gt; VALID or INVALID</dt>
+          <dd style="margin-left: 1.5em" id="section-1.2-4.22">returns VALID when the point P is an element of the subgroup G1 or G2 correspondingly, and INVALID otherwise. This function can always be implemented by checking that r * P is equal to the identity element. In some cases, faster checks may also exist, e.g., <span>[<a href="#Bowe19" class="cite xref">Bowe19</a>]</span>. Note that these functions should always return VALID, on input the Identity point of the corresponding subgroup.<a href="#section-1.2-4.22" class="pilcrow">¶</a>
 </dd>
         <dd class="break"></dd>
 </dl>
@@ -1754,6 +1754,9 @@ document, are to be interpreted as described in <span>[<a href="#RFC2119" class=
 </li>
           <li class="normal" id="section-3.1-2.3">
             <p id="section-3.1-2.3.1">get_random(n): returns a random octet string with a length of n bytes, sampled uniformly at random using a cryptographically secure pseudo-random number generator (CSPRNG) or a pseudo random function. See <span>[<a href="#RFC4086" class="cite xref">RFC4086</a>]</span> for recommendations and requirements on the generation of random numbers.<a href="#section-3.1-2.3.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="section-3.1-2.4">
+            <p id="section-3.1-2.4.1">subgroup_check_G1(P) and subgroup_check_G2(P): operations that return VALID if the point P is in the subgroup G1 or G2 correspondingly, and INVALID otherwise, as defined in <a href="#notation" class="auto internal xref">Section 1.2</a>.<a href="#section-3.1-2.4.1" class="pilcrow">¶</a></p>
 </li>
         </ul>
 </section>
@@ -1840,7 +1843,7 @@ X[n-1] = a_n
           </h4>
 <p id="section-3.3.5-1">When serializing one or more values to produce an octet string, each element will be encoded using a specific operation determined by its type. More concretely,<a href="#section-3.3.5-1" class="pilcrow">¶</a></p>
 <ul class="compact">
-<li class="compact" id="section-3.3.5-2.1">Points in <code>G*</code> will be serialized using the <code>point_to_octets_g*</code> implementation for a particular ciphersuite.<a href="#section-3.3.5-2.1" class="pilcrow">¶</a>
+<li class="compact" id="section-3.3.5-2.1">Points in <code>E*</code> will be serialized using the <code>point_to_octets_E*</code> implementation for a particular ciphersuite.<a href="#section-3.3.5-2.1" class="pilcrow">¶</a>
 </li>
             <li class="compact" id="section-3.3.5-2.2">Non-negative integers will be serialized using <code>I2OSP</code> with an output length of 8 bytes.<a href="#section-3.3.5-2.2" class="pilcrow">¶</a>
 </li>
@@ -1917,7 +1920,7 @@ Outputs:
 Procedure:
 
 1. W = SK * BP2
-2. return point_to_octets_g2(W)
+2. return point_to_octets_E2(W)
 
 </pre><a href="#section-3.4.2-2" class="pilcrow">¶</a>
 </div>
@@ -3061,7 +3064,7 @@ Parameters:
                        octet representation, defined by the ciphersuite.
 - r, the prime order of the subgroups G1 and G2, defined by the
      ciphersuite.
-- point_to_octets_g*, operations that serialize a point of G1 or G2 to
+- point_to_octets_E*, operations that serialize a point of E1 or E2 to
                       an octet string of fixed length, defined by the
                       ciphersuite.
 
@@ -3073,8 +3076,8 @@ Procedure:
 
 1.  let octets_result be an empty octet string.
 2.  for el in input_array:
-3.      if el is a point of G1: el_octs = point_to_octets_g1(el)
-4.      else if el is a point of G2: el_octs = point_to_octets_g2(el)
+3.      if el is a point of G1: el_octs = point_to_octets_E1(el)
+4.      else if el is a point of G2: el_octs = point_to_octets_E2(el)
 5.      else if el is a scalar: el_octs = I2OSP(el, octet_scalar_length)
 6.      else if el is an integer between 0 and 2^64 - 1:
 7.          el_octs = I2OSP(el, 8)
@@ -3130,6 +3133,15 @@ Inputs:
 - signature_octets (REQUIRED), an octet string of the form output from
                                signature_to_octets operation.
 
+Parameters:
+
+- octets_to_point_E1, operations that deserializes an octet string to a
+                      a point of the elliptic curve E1, or INVALID,
+                      defined by the ciphersuite.
+- subgroup_check_G1, operation that on input a point P returns VALID if
+                     P is a valid point of the G1 subgroup, otherwise it
+                     returns INVALID (see (#notation)).
+
 Outputs:
 
 signature, a signature in the form (A, e), where A is a point in G1
@@ -3140,14 +3152,16 @@ Procedure:
 1.  expected_len = octet_point_length + octet_scalar_length
 2.  if length(signature_octets) != expected_len, return INVALID
 3.  A_octets = signature_octets[0..(octet_point_length - 1)]
-4.  A = octets_to_point_g1(A_octets)
+4.  A = octets_to_point_E1(A_octets)
 5.  if A is INVALID, return INVALID
 6.  if A == Identity_G1, return INVALID
-7.  index = octet_point_length
-8.  end_index = index + octet_scalar_length - 1
-9.  e = OS2IP(signature_octets[index..end_index])
-10. if e = 0 OR e &gt;= r, return INVALID
-11. return (A, e)
+7.  if subgroup_check_G1(A) returns INVALID, return INVALID
+
+8.  index = octet_point_length
+9.  end_index = index + octet_scalar_length - 1
+10. e = OS2IP(signature_octets[index..end_index])
+11. if e = 0 OR e &gt;= r, return INVALID
+12. return (A, e)
 
 </pre><a href="#section-4.2.4.3-2" class="pilcrow">¶</a>
 </div>
@@ -3177,12 +3191,6 @@ Inputs:
 
 - proof (REQUIRED), a BBS proof in the form calculated by ProofGen in
                     step 27 (see above).
-
-Parameters:
-
-- octet_scalar_length (REQUIRED), non-negative integer. The length of
-                                  a scalar octet representation, defined
-                                  by the ciphersuite.
 
 Outputs:
 
@@ -3224,14 +3232,15 @@ Inputs:
 
 Parameters:
 
-- r (REQUIRED), non-negative integer. The prime order of the G1 and
-                G2 groups, defined by the ciphersuite.
-- octet_scalar_length (REQUIRED), non-negative integer. The length of
-                                  a scalar octet representation, defined
-                                  by the ciphersuite.
-- octet_point_length (REQUIRED), non-negative integer. The length of
-                                 a point in G1 octet representation,
-                                 defined by the ciphersuite.
+- r, non-negative integer. The prime order of the G1 and G2 groups,
+      defined by the ciphersuite.
+- octet_scalar_length, non-negative integer. The length of a scalar
+                       octet representation, defined by the ciphersuite.
+- octet_point_length, non-negative integer. The length of a point in G1
+                      octet representation, defined by the ciphersuite.
+- subgroup_check_G1, operation that on input a point P returns VALID if
+                     P is a valid point of the G1 subgroup, otherwise it
+                     returns INVALID (see (#notation)).
 
 Outputs:
 
@@ -3246,24 +3255,25 @@ Procedure:
 3.  index = 0
 4.  for i in (0, 1):
 5.      end_index = index + octet_point_length - 1
-6.      A_i = octets_to_point_g1(proof_octets[index..end_index])
+6.      A_i = octets_to_point_E1(proof_octets[index..end_index])
 7.      if A_i is INVALID or Identity_G1, return INVALID
-8.      index += octet_point_length
+8.      if subgroup_check_G1(A_i) returns INVALID, return INVALID
+9.      index += octet_point_length
 
 // Scalars (i.e., (e^, r1^, r3^, m^_j1, ..., m^_jU, c) in
 // ProofGen) de-serialization.
-9.  j = 0
-10. while index &lt; length(proof_octets):
-11.     end_index = index + octet_scalar_length - 1
-12.     s_j = OS2IP(proof_octets[index..end_index])
-13.     if s_j = 0 or if s_j &gt;= r, return INVALID
-14.     index += octet_scalar_length
-15.     j += 1
+10. j = 0
+11. while index &lt; length(proof_octets):
+12.     end_index = index + octet_scalar_length - 1
+13.     s_j = OS2IP(proof_octets[index..end_index])
+14.     if s_j = 0 or if s_j &gt;= r, return INVALID
+15.     index += octet_scalar_length
+16.     j += 1
 
-16. if index != length(proof_octets), return INVALID
-17. msg_commitments = ()
-18. If j &gt; 4, set msg_commitments = (s_3, ..., s_(j-2))
-19. return (A_0, A_1, A_2, s_0, s_1, s_2, msg_commitments, s_(j-1))
+17. if index != length(proof_octets), return INVALID
+18. msg_commitments = ()
+19. if j &gt; 4, set msg_commitments = (s_3, ..., s_(j-2))
+20. return (A_0, A_1, A_2, s_0, s_1, s_2, msg_commitments, s_(j-1))
 
 </pre><a href="#section-4.2.4.5-4" class="pilcrow">¶</a>
 </div>
@@ -3283,6 +3293,12 @@ Inputs:
 - PK, an octet string. A public key in the form outputted by the SkToPK
       operation
 
+Parameters:
+
+- subgroup_check_G2, operation that on input a point P returns VALID if
+                     P is a valid point of the G2 subgroup, otherwise it
+                     returns INVALID (see (#notation)).
+
 Outputs:
 
 - W, a valid point in G2 or INVALID
@@ -3291,7 +3307,7 @@ Procedure:
 
 1. W = octets_to_point_g2(PK)
 2. If W is INVALID, return INVALID
-3. if subgroup_check(W) is INVALID, return INVALID
+3. if subgroup_check_G2(W) is INVALID, return INVALID
 4. If W == Identity_G2, return INVALID
 5. return W
 
@@ -3365,15 +3381,8 @@ Procedure:
         <h3 id="name-skipping-membership-checks">
 <a href="#section-6.3" class="section-number selfRef">6.3. </a><a href="#name-skipping-membership-checks" class="section-name selfRef">Skipping Membership Checks</a>
         </h3>
-<p id="section-6.3-1">Some existing implementations skip the subgroup_check invocation in <a href="#signature-verification-verify">Verify</a>, whose purpose is ensuring that the signature is an element of a prime-order subgroup.  This check is REQUIRED of conforming implementations, for two reasons.<a href="#section-6.3-1" class="pilcrow">¶</a></p>
-<ol start="1" type="1" class="normal type-1" id="section-6.3-2">
-<li id="section-6.3-2.1">
-            <p id="section-6.3-2.1.1">For most pairing-friendly elliptic curves used in practice, the pairing operation e <a href="#notation" class="auto internal xref">Section 1.2</a> is undefined when its input points are not in the prime-order subgroups of E1 and E2. The resulting behavior is unpredictable, and may enable forgeries.<a href="#section-6.3-2.1.1" class="pilcrow">¶</a></p>
-</li>
-          <li id="section-6.3-2.2">
-            <p id="section-6.3-2.2.1">Even if the pairing operation behaves properly on inputs that are outside the correct subgroups, skipping the subgroup check breaks the strong unforgeability property <span>[<a href="#ADR02" class="cite xref">ADR02</a>]</span>.<a href="#section-6.3-2.2.1" class="pilcrow">¶</a></p>
-</li>
-        </ol>
+<p id="section-6.3-1">The subgroup check <code>subgroup_check_G*</code> invocation during either signature deserialization (<code>octets_to_signature</code>, defined in <a href="#octets-to-signature" class="auto internal xref">Section 4.2.4.3</a>), proof deserialization (<code>octets_to_proof</code>, defined in <a href="#octets-to-proof" class="auto internal xref">Section 4.2.4.5</a>) or public key deserialization (<code>octets_to_pubkey</code>, define in <a href="#octets-to-public-key" class="auto internal xref">Section 4.2.4.6</a>) is REQUIRED by all implementations. Failure to comply would lead to unpredicted behavior and vulnerabilities. Note that some libraries implementing the pairing-friendly curves functionality, may incorporate that check as part of a <code>octets_to_point_G1</code> or <code>octet_to_point_G2</code> operation (i.e., operations that both deserialize an octet string to get an elliptic curve point and then check if the resulting point is part of the <code>G1</code> or <code>G2</code> group accordingly). In those cases, the implementer must make sure that those checks are executed correctly.<a href="#section-6.3-1" class="pilcrow">¶</a></p>
+<p id="section-6.3-2">Note that checking that the points are in the correct subgroup is essential to avoid possible forgeries of a BBS signature or proof (<span>[<a href="#ADR02" class="cite xref">ADR02</a>]</span>). Furthermore, the pairing operation <a href="#notation" class="auto internal xref">Section 1.2</a> is undefined when its input points are not in <code>G1</code> and <code>G2</code>. As a result, applications MUST execute all the subgroup checks defined by this document.<a href="#section-6.3-2" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="side-channel-attacks">
@@ -3490,7 +3499,7 @@ Procedure:
           <h4 id="name-additional-parameters">
 <a href="#section-7.1.2" class="section-number selfRef">7.1.2. </a><a href="#name-additional-parameters" class="section-name selfRef">Additional Parameters</a>
           </h4>
-<p id="section-7.1.2-1">The parameters that each ciphersuite needs to define are generally divided into three main categories; the basic parameters (a hash function etc.,), the serialization operations (point_to_octets_g1 etc.,) and the generator parameters. See below for more details.<a href="#section-7.1.2-1" class="pilcrow">¶</a></p>
+<p id="section-7.1.2-1">The parameters that each ciphersuite needs to define are generally divided into three main categories; the basic parameters (a hash function etc.,), the serialization operations (point_to_octets_E1 etc.,) and the generator parameters. See below for more details.<a href="#section-7.1.2-1" class="pilcrow">¶</a></p>
 <p id="section-7.1.2-2"><strong>Basic parameters</strong>:<a href="#section-7.1.2-2" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="section-7.1.2-3.1">
@@ -3500,7 +3509,7 @@ Procedure:
               <p id="section-7.1.2-3.2.1">octet_scalar_length: Number of bytes to represent a scalar value, in the multiplicative group of integers mod r, encoded as an octet string. It is RECOMMENDED this value be set to <code>ceil(log2(r)/8)</code>.<a href="#section-7.1.2-3.2.1" class="pilcrow">¶</a></p>
 </li>
             <li class="normal" id="section-7.1.2-3.3">
-              <p id="section-7.1.2-3.3.1">octet_point_length: Number of bytes to represent a point encoded as an octet string outputted by the <code>point_to_octets_g*</code> function. It is RECOMMENDED that this value is set to <code>ceil(log2(p)/8)</code>.<a href="#section-7.1.2-3.3.1" class="pilcrow">¶</a></p>
+              <p id="section-7.1.2-3.3.1">octet_point_length: Number of bytes to represent a point encoded as an octet string outputted by the <code>point_to_octets_E*</code> function.<a href="#section-7.1.2-3.3.1" class="pilcrow">¶</a></p>
 </li>
             <li class="normal" id="section-7.1.2-3.4">
               <p id="section-7.1.2-3.4.1">hash_to_curve_suite: The hash-to-curve ciphersuite id, in the form defined in <span>[<a href="#I-D.irtf-cfrg-hash-to-curve" class="cite xref">I-D.irtf-cfrg-hash-to-curve</a>]</span>. This defines the hash_to_curve_g1 (the hash_to_curve operation for the G1 subgroup, see the <a href="#notation">Notation</a> section) and the expand_message (either expand_message_xmd or expand_message_xof) operations used in this document.<a href="#section-7.1.2-3.4.1" class="pilcrow">¶</a></p>
@@ -3515,20 +3524,20 @@ Procedure:
 <p id="section-7.1.2-4"><strong>Serialization functions</strong>:<a href="#section-7.1.2-4" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="section-7.1.2-5.1">
-              <p id="section-7.1.2-5.1.1">point_to_octets_g1:
-a function that returns the canonical representation of the point P for the G1 subgroup as an octet string.<a href="#section-7.1.2-5.1.1" class="pilcrow">¶</a></p>
+              <p id="section-7.1.2-5.1.1">point_to_octets_E1:
+a function that returns the canonical representation of the point P of the E1 elliptic curve as an octet string.<a href="#section-7.1.2-5.1.1" class="pilcrow">¶</a></p>
 </li>
             <li class="normal" id="section-7.1.2-5.2">
-              <p id="section-7.1.2-5.2.1">point_to_octets_g2:
-a function that returns the canonical representation of the point P for the G2 subgroup as an octet string.<a href="#section-7.1.2-5.2.1" class="pilcrow">¶</a></p>
+              <p id="section-7.1.2-5.2.1">point_to_octets_E2:
+a function that returns the canonical representation of the point P of the E2 elliptic curve as an octet string.<a href="#section-7.1.2-5.2.1" class="pilcrow">¶</a></p>
 </li>
             <li class="normal" id="section-7.1.2-5.3">
-              <p id="section-7.1.2-5.3.1">octets_to_point_g1:
-a function that returns the point P in the subgroup G1 corresponding to the canonical representation ostr, or INVALID if ostr is not a valid output of <code>point_to_octets_g1</code>.<a href="#section-7.1.2-5.3.1" class="pilcrow">¶</a></p>
+              <p id="section-7.1.2-5.3.1">octets_to_point_E1:
+a function that returns the point P in the elliptic curve E1 corresponding to the canonical representation ostr, or INVALID if ostr is not a valid output of <code>point_to_octets_E1</code>.<a href="#section-7.1.2-5.3.1" class="pilcrow">¶</a></p>
 </li>
             <li class="normal" id="section-7.1.2-5.4">
-              <p id="section-7.1.2-5.4.1">octets_to_point_g2:
-a function that returns the point P in the subgroup G2 corresponding to the canonical representation ostr, or INVALID if ostr is not a valid output of <code>point_to_octets_g2</code>.<a href="#section-7.1.2-5.4.1" class="pilcrow">¶</a></p>
+              <p id="section-7.1.2-5.4.1">octets_to_point_E2:
+a function that returns the point P in the elliptic curve E2 corresponding to the canonical representation ostr, or INVALID if ostr is not a valid output of <code>point_to_octets_E2</code>.<a href="#section-7.1.2-5.4.1" class="pilcrow">¶</a></p>
 </li>
           </ul>
 </section>
@@ -3594,16 +3603,16 @@ a function that returns the point P in the subgroup G2 corresponding to the cano
 <p id="section-7.2.1-3"><strong>Serialization functions</strong>:<a href="#section-7.2.1-3" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="section-7.2.1-4.1">
-              <p id="section-7.2.1-4.1.1">point_to_octets_g1: follows the format documented in Appendix C section 1 of <span>[<a href="#I-D.irtf-cfrg-pairing-friendly-curves" class="cite xref">I-D.irtf-cfrg-pairing-friendly-curves</a>]</span> for the G1 subgroup, using compression (i.e., setting C_bit = 1).<a href="#section-7.2.1-4.1.1" class="pilcrow">¶</a></p>
+              <p id="section-7.2.1-4.1.1">point_to_octets_E1: follows the format documented in Appendix C section 1 of <span>[<a href="#I-D.irtf-cfrg-pairing-friendly-curves" class="cite xref">I-D.irtf-cfrg-pairing-friendly-curves</a>]</span> for the E1 elliptic curve, using compression (i.e., setting C_bit = 1).<a href="#section-7.2.1-4.1.1" class="pilcrow">¶</a></p>
 </li>
             <li class="normal" id="section-7.2.1-4.2">
-              <p id="section-7.2.1-4.2.1">point_to_octets_g2: follows the format documented in Appendix C section 1 of <span>[<a href="#I-D.irtf-cfrg-pairing-friendly-curves" class="cite xref">I-D.irtf-cfrg-pairing-friendly-curves</a>]</span> for the G2 subgroup, using compression (i.e., setting C_bit = 1).<a href="#section-7.2.1-4.2.1" class="pilcrow">¶</a></p>
+              <p id="section-7.2.1-4.2.1">point_to_octets_E2: follows the format documented in Appendix C section 1 of <span>[<a href="#I-D.irtf-cfrg-pairing-friendly-curves" class="cite xref">I-D.irtf-cfrg-pairing-friendly-curves</a>]</span> for the E2 elliptic curve, using compression (i.e., setting C_bit = 1).<a href="#section-7.2.1-4.2.1" class="pilcrow">¶</a></p>
 </li>
             <li class="normal" id="section-7.2.1-4.3">
-              <p id="section-7.2.1-4.3.1">octets_to_point_g1: follows the format documented in Appendix C section 2 of <span>[<a href="#I-D.irtf-cfrg-pairing-friendly-curves" class="cite xref">I-D.irtf-cfrg-pairing-friendly-curves</a>]</span> for the G1 subgroup.<a href="#section-7.2.1-4.3.1" class="pilcrow">¶</a></p>
+              <p id="section-7.2.1-4.3.1">octets_to_point_E1: follows the format documented in Appendix C section 2 of <span>[<a href="#I-D.irtf-cfrg-pairing-friendly-curves" class="cite xref">I-D.irtf-cfrg-pairing-friendly-curves</a>]</span> for the E1 elliptic curve.<a href="#section-7.2.1-4.3.1" class="pilcrow">¶</a></p>
 </li>
             <li class="normal" id="section-7.2.1-4.4">
-              <p id="section-7.2.1-4.4.1">octets_to_point_g2: follows the format documented in Appendix C section 2 of <span>[<a href="#I-D.irtf-cfrg-pairing-friendly-curves" class="cite xref">I-D.irtf-cfrg-pairing-friendly-curves</a>]</span> for the G2 subgroup.<a href="#section-7.2.1-4.4.1" class="pilcrow">¶</a></p>
+              <p id="section-7.2.1-4.4.1">octets_to_point_E2: follows the format documented in Appendix C section 2 of <span>[<a href="#I-D.irtf-cfrg-pairing-friendly-curves" class="cite xref">I-D.irtf-cfrg-pairing-friendly-curves</a>]</span> for the E2 elliptic curve.<a href="#section-7.2.1-4.4.1" class="pilcrow">¶</a></p>
 </li>
           </ul>
 </section>
@@ -3643,16 +3652,16 @@ a function that returns the point P in the subgroup G2 corresponding to the cano
 <p id="section-7.2.2-3"><strong>Serialization functions</strong>:<a href="#section-7.2.2-3" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="section-7.2.2-4.1">
-              <p id="section-7.2.2-4.1.1">point_to_octets_g1: follows the format documented in Appendix C section 1 of <span>[<a href="#I-D.irtf-cfrg-pairing-friendly-curves" class="cite xref">I-D.irtf-cfrg-pairing-friendly-curves</a>]</span> for the G1 subgroup, using compression (i.e., setting C_bit = 1).<a href="#section-7.2.2-4.1.1" class="pilcrow">¶</a></p>
+              <p id="section-7.2.2-4.1.1">point_to_octets_E1: follows the format documented in Appendix C section 1 of <span>[<a href="#I-D.irtf-cfrg-pairing-friendly-curves" class="cite xref">I-D.irtf-cfrg-pairing-friendly-curves</a>]</span> for the E1 elliptic curve, using compression (i.e., setting C_bit = 1).<a href="#section-7.2.2-4.1.1" class="pilcrow">¶</a></p>
 </li>
             <li class="normal" id="section-7.2.2-4.2">
-              <p id="section-7.2.2-4.2.1">point_to_octets_g2: follows the format documented in Appendix C section 1 of <span>[<a href="#I-D.irtf-cfrg-pairing-friendly-curves" class="cite xref">I-D.irtf-cfrg-pairing-friendly-curves</a>]</span> for the G2 subgroup, using compression (i.e., setting C_bit = 1).<a href="#section-7.2.2-4.2.1" class="pilcrow">¶</a></p>
+              <p id="section-7.2.2-4.2.1">point_to_octets_E2: follows the format documented in Appendix C section 1 of <span>[<a href="#I-D.irtf-cfrg-pairing-friendly-curves" class="cite xref">I-D.irtf-cfrg-pairing-friendly-curves</a>]</span> for the E2 elliptic curve, using compression (i.e., setting C_bit = 1).<a href="#section-7.2.2-4.2.1" class="pilcrow">¶</a></p>
 </li>
             <li class="normal" id="section-7.2.2-4.3">
-              <p id="section-7.2.2-4.3.1">octets_to_point_g1: follows the format documented in Appendix C section 2 of <span>[<a href="#I-D.irtf-cfrg-pairing-friendly-curves" class="cite xref">I-D.irtf-cfrg-pairing-friendly-curves</a>]</span> for the G1 subgroup.<a href="#section-7.2.2-4.3.1" class="pilcrow">¶</a></p>
+              <p id="section-7.2.2-4.3.1">octets_to_point_E1: follows the format documented in Appendix C section 2 of <span>[<a href="#I-D.irtf-cfrg-pairing-friendly-curves" class="cite xref">I-D.irtf-cfrg-pairing-friendly-curves</a>]</span> for the E1 elliptic curve.<a href="#section-7.2.2-4.3.1" class="pilcrow">¶</a></p>
 </li>
             <li class="normal" id="section-7.2.2-4.4">
-              <p id="section-7.2.2-4.4.1">octets_to_point_g2: follows the format documented in Appendix C section 2 of <span>[<a href="#I-D.irtf-cfrg-pairing-friendly-curves" class="cite xref">I-D.irtf-cfrg-pairing-friendly-curves</a>]</span> for the G2 subgroup.<a href="#section-7.2.2-4.4.1" class="pilcrow">¶</a></p>
+              <p id="section-7.2.2-4.4.1">octets_to_point_E2: follows the format documented in Appendix C section 2 of <span>[<a href="#I-D.irtf-cfrg-pairing-friendly-curves" class="cite xref">I-D.irtf-cfrg-pairing-friendly-curves</a>]</span> for the E2 elliptic curve.<a href="#section-7.2.2-4.4.1" class="pilcrow">¶</a></p>
 </li>
           </ul>
 </section>
