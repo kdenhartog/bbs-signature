@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2023-12-10T00:10:24.678351+00:00",
+  "timestamp": "2023-12-12T00:09:19.863368+00:00",
   "repo": "decentralized-identity/bbs-signature",
   "labels": [
     {
@@ -35052,13 +35052,13 @@
       "labels": [],
       "body": "Couple of editorial updates\r\n- Updated abstract and some security considerations\r\n- Added academic works overview\r\n- Added header and presentation header usage section\r\n- Added section on post-quantum security",
       "createdAt": "2023-11-28T15:58:29Z",
-      "updatedAt": "2023-12-08T11:44:11Z",
+      "updatedAt": "2023-12-11T19:13:40Z",
       "baseRepository": "decentralized-identity/bbs-signature",
       "baseRefName": "main",
       "baseRefOid": "2a6973750033de1e05010af490d37c4a328adc76",
       "headRepository": "decentralized-identity/bbs-signature",
       "headRefName": "vasilis/editorial-changes",
-      "headRefOid": "2af1209620d6bc1928f01e5d80f86f59a5c14e17",
+      "headRefOid": "6c4626952fbbc7fab467c50b2aa7ac8ce53405da",
       "closedAt": null,
       "mergedAt": null,
       "mergedBy": null,
@@ -35117,6 +35117,19 @@
               "updatedAt": "2023-12-08T11:44:11Z"
             }
           ]
+        },
+        {
+          "id": "PRR_kwDOF8lax85p23ZK",
+          "commit": {
+            "abbreviatedOid": "6c46269"
+          },
+          "author": "andrewwhitehead",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2023-12-11T19:13:40Z",
+          "updatedAt": "2023-12-11T19:13:40Z",
+          "comments": []
         }
       ]
     },
@@ -35125,25 +35138,35 @@
       "id": "PR_kwDOF8lax85guEYb",
       "title": "Update point to octets notation",
       "url": "https://github.com/decentralized-identity/bbs-signature/pull/299",
-      "state": "OPEN",
+      "state": "MERGED",
       "author": "BasileiosKal",
       "authorAssociation": "CONTRIBUTOR",
       "assignees": [],
       "labels": [],
       "body": "The [point to octets we used](https://www.ietf.org/archive/id/draft-irtf-cfrg-pairing-friendly-curves-11.html#name-zcash-serialization-format-) returns points to the curve but not in G1 necessarily.\r\n\r\n- Updated notation from `point_to_octets_g1 -> point_to_octets_E1` etc..\r\n- Added `subgroup_check_G*` where necessary. ",
       "createdAt": "2023-11-29T22:22:45Z",
-      "updatedAt": "2023-12-08T20:12:21Z",
+      "updatedAt": "2023-12-11T19:27:14Z",
       "baseRepository": "decentralized-identity/bbs-signature",
       "baseRefName": "main",
       "baseRefOid": "2a6973750033de1e05010af490d37c4a328adc76",
       "headRepository": "decentralized-identity/bbs-signature",
       "headRefName": "vasilis/point-encode",
-      "headRefOid": "f8ecc026f1a081546075c60879f297389eccb7b6",
-      "closedAt": null,
-      "mergedAt": null,
-      "mergedBy": null,
-      "mergeCommit": null,
-      "comments": [],
+      "headRefOid": "6d7c53379eab24399db1ac9fcab5cc7f9c242eea",
+      "closedAt": "2023-12-11T19:27:13Z",
+      "mergedAt": "2023-12-11T19:27:13Z",
+      "mergedBy": "BasileiosKal",
+      "mergeCommit": {
+        "oid": "7eeec18a17f30211604e43019ec62fa92df60cb8"
+      },
+      "comments": [
+        {
+          "author": "BasileiosKal",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "Discussed WG call at the 11th of Dec. Multiple approvals. Merging. Thank you!",
+          "createdAt": "2023-12-11T19:27:10Z",
+          "updatedAt": "2023-12-11T19:27:10Z"
+        }
+      ],
       "reviews": [
         {
           "id": "PRR_kwDOF8lax85pGOUk",
@@ -35157,6 +35180,39 @@
           "createdAt": "2023-12-04T19:29:57Z",
           "updatedAt": "2023-12-04T19:29:57Z",
           "comments": []
+        },
+        {
+          "id": "PRR_kwDOF8lax85p219M",
+          "commit": {
+            "abbreviatedOid": "f8ecc02"
+          },
+          "author": "andrewwhitehead",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2023-12-11T19:09:40Z",
+          "updatedAt": "2023-12-11T19:09:41Z",
+          "comments": [
+            {
+              "originalPosition": 132,
+              "body": "```suggestion\r\n- r, non-negative integer. The prime order of the G1 and G2 groups,\r\n```",
+              "createdAt": "2023-12-11T19:09:40Z",
+              "updatedAt": "2023-12-11T19:09:41Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOF8lax85p22e1",
+          "commit": {
+            "abbreviatedOid": "f8ecc02"
+          },
+          "author": "andrewwhitehead",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2023-12-11T19:11:08Z",
+          "updatedAt": "2023-12-11T19:11:08Z",
+          "comments": []
         }
       ]
     },
@@ -35165,25 +35221,35 @@
       "id": "PR_kwDOF8lax85guNBp",
       "title": "Specify correct key_dst for fixtures",
       "url": "https://github.com/decentralized-identity/bbs-signature/pull/300",
-      "state": "OPEN",
+      "state": "MERGED",
       "author": "BasileiosKal",
       "authorAssociation": "CONTRIBUTOR",
       "assignees": [],
       "labels": [],
       "body": "Fixtures do not use the default `key_dst` defined by [KeyGen](https://identity.foundation/bbs-signature/draft-irtf-cfrg-bbs-signatures.html#name-secret-key).",
       "createdAt": "2023-11-29T22:48:03Z",
-      "updatedAt": "2023-11-30T08:36:04Z",
+      "updatedAt": "2023-12-11T19:29:35Z",
       "baseRepository": "decentralized-identity/bbs-signature",
       "baseRefName": "main",
       "baseRefOid": "3f5e64f62eb75ef2f094b712a3b6d5042c11b8ba",
       "headRepository": "decentralized-identity/bbs-signature",
       "headRefName": "vasilis/fix-keygen-fixtures",
       "headRefOid": "3adb137e4dd95f34042a4560b94fc23745ad6e44",
-      "closedAt": null,
-      "mergedAt": null,
-      "mergedBy": null,
-      "mergeCommit": null,
-      "comments": [],
+      "closedAt": "2023-12-11T19:29:35Z",
+      "mergedAt": "2023-12-11T19:29:35Z",
+      "mergedBy": "BasileiosKal",
+      "mergeCommit": {
+        "oid": "c010a9b1b30cb1727c34cef3676d118dd1f9849e"
+      },
+      "comments": [
+        {
+          "author": "BasileiosKal",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "Discussed on the WG call on the 11th of Dec. Multiple approvals. Merging. Thank you!",
+          "createdAt": "2023-12-11T19:29:32Z",
+          "updatedAt": "2023-12-11T19:29:32Z"
+        }
+      ],
       "reviews": [
         {
           "id": "PRR_kwDOF8lax85osLfy",
@@ -35196,6 +35262,32 @@
           "body": "",
           "createdAt": "2023-11-29T23:51:52Z",
           "updatedAt": "2023-11-29T23:51:52Z",
+          "comments": []
+        },
+        {
+          "id": "PRR_kwDOF8lax85p2uBO",
+          "commit": {
+            "abbreviatedOid": "3adb137"
+          },
+          "author": "andrewwhitehead",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2023-12-11T18:52:03Z",
+          "updatedAt": "2023-12-11T18:52:03Z",
+          "comments": []
+        },
+        {
+          "id": "PRR_kwDOF8lax85p28oL",
+          "commit": {
+            "abbreviatedOid": "3adb137"
+          },
+          "author": "Wind4Greg",
+          "authorAssociation": "NONE",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2023-12-11T19:28:17Z",
+          "updatedAt": "2023-12-11T19:28:17Z",
           "comments": []
         }
       ]
@@ -35212,13 +35304,13 @@
       "labels": [],
       "body": "Consistency corrections.",
       "createdAt": "2023-12-03T23:40:43Z",
-      "updatedAt": "2023-12-08T20:33:12Z",
+      "updatedAt": "2023-12-11T21:37:04Z",
       "baseRepository": "decentralized-identity/bbs-signature",
       "baseRefName": "main",
-      "baseRefOid": "2a6973750033de1e05010af490d37c4a328adc76",
+      "baseRefOid": "20c42d566583c3aed4b99b3386a4c19cfc42c3c4",
       "headRepository": "decentralized-identity/bbs-signature",
       "headRefName": "vasilis/edits",
-      "headRefOid": "facc4442d71581ff96b37846e6d793d489f79ce9",
+      "headRefOid": "aefaa3b23c6160a2002a172c7a0c4ce4956297b0",
       "closedAt": null,
       "mergedAt": null,
       "mergedBy": null,
@@ -35265,25 +35357,35 @@
       "id": "PR_kwDOF8lax85hMu7G",
       "title": "Add Acknowledgement",
       "url": "https://github.com/decentralized-identity/bbs-signature/pull/302",
-      "state": "OPEN",
+      "state": "MERGED",
       "author": "BasileiosKal",
       "authorAssociation": "CONTRIBUTOR",
       "assignees": [],
       "labels": [],
       "body": "Acknowledge two people that significantly contributed to the document through reviews and discussions.",
       "createdAt": "2023-12-05T16:15:24Z",
-      "updatedAt": "2023-12-06T01:30:53Z",
+      "updatedAt": "2023-12-11T19:37:13Z",
       "baseRepository": "decentralized-identity/bbs-signature",
       "baseRefName": "main",
       "baseRefOid": "2a6973750033de1e05010af490d37c4a328adc76",
       "headRepository": "decentralized-identity/bbs-signature",
       "headRefName": "vasilis/add-acknowledgement",
       "headRefOid": "d36f18ddbb5eb6ce31ac86c64708ccb6ea1ac35f",
-      "closedAt": null,
-      "mergedAt": null,
-      "mergedBy": null,
-      "mergeCommit": null,
-      "comments": [],
+      "closedAt": "2023-12-11T19:37:13Z",
+      "mergedAt": "2023-12-11T19:37:13Z",
+      "mergedBy": "BasileiosKal",
+      "mergeCommit": {
+        "oid": "20c42d566583c3aed4b99b3386a4c19cfc42c3c4"
+      },
+      "comments": [
+        {
+          "author": "BasileiosKal",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "Discussed on the WG call at the 11th of Dec. Multiple approvals. Merging. Thank you!",
+          "createdAt": "2023-12-11T19:37:08Z",
+          "updatedAt": "2023-12-11T19:37:08Z"
+        }
+      ],
       "reviews": [
         {
           "id": "PRR_kwDOF8lax85pSeWz",
@@ -35297,6 +35399,19 @@
           "createdAt": "2023-12-06T01:30:53Z",
           "updatedAt": "2023-12-06T01:30:53Z",
           "comments": []
+        },
+        {
+          "id": "PRR_kwDOF8lax85p2_zj",
+          "commit": {
+            "abbreviatedOid": "d36f18d"
+          },
+          "author": "andrewwhitehead",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2023-12-11T19:36:42Z",
+          "updatedAt": "2023-12-11T19:36:42Z",
+          "comments": []
         }
       ]
     },
@@ -35305,25 +35420,35 @@
       "id": "PR_kwDOF8lax85hgxCP",
       "title": "Fix mockrng dst",
       "url": "https://github.com/decentralized-identity/bbs-signature/pull/303",
-      "state": "OPEN",
+      "state": "MERGED",
       "author": "BasileiosKal",
       "authorAssociation": "CONTRIBUTOR",
       "assignees": [],
       "labels": [],
       "body": "Set `dst = api_id || \"MOCK_RANDOM_SCALARS_DST_\"` from  `ciphersuite_id || \"MOCK_RANDOM_SCALARS_DST_\"`.",
       "createdAt": "2023-12-08T10:54:39Z",
-      "updatedAt": "2023-12-08T17:55:44Z",
+      "updatedAt": "2023-12-11T11:05:35Z",
       "baseRepository": "decentralized-identity/bbs-signature",
       "baseRefName": "main",
       "baseRefOid": "2a6973750033de1e05010af490d37c4a328adc76",
       "headRepository": "decentralized-identity/bbs-signature",
       "headRefName": "vasilis/mockrng-dst-fix",
-      "headRefOid": "28e027b3febe6d246d0367eb5374ced80cf1c922",
-      "closedAt": null,
-      "mergedAt": null,
-      "mergedBy": null,
-      "mergeCommit": null,
-      "comments": [],
+      "headRefOid": "6a06e40ba68e60e1386a3dbeb575bad1ee9c9f97",
+      "closedAt": "2023-12-11T11:05:35Z",
+      "mergedAt": "2023-12-11T11:05:35Z",
+      "mergedBy": "BasileiosKal",
+      "mergeCommit": {
+        "oid": "141951c5f3aab83a707998e19e1a9cab5ec0153b"
+      },
+      "comments": [
+        {
+          "author": "BasileiosKal",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "Multiple approvals, editorial change. Merging! Thank you all!",
+          "createdAt": "2023-12-11T11:05:27Z",
+          "updatedAt": "2023-12-11T11:05:27Z"
+        }
+      ],
       "reviews": [
         {
           "id": "PRR_kwDOF8lax85po6Rc",
@@ -35390,6 +35515,73 @@
           "createdAt": "2023-12-08T17:55:44Z",
           "updatedAt": "2023-12-08T17:55:44Z",
           "comments": []
+        }
+      ]
+    },
+    {
+      "number": 304,
+      "id": "PR_kwDOF8lax85hquld",
+      "title": "Update proofgen algorithm explanation",
+      "url": "https://github.com/decentralized-identity/bbs-signature/pull/304",
+      "state": "OPEN",
+      "author": "BasileiosKal",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "Based on the new proof from #288",
+      "createdAt": "2023-12-11T10:59:49Z",
+      "updatedAt": "2023-12-11T21:57:35Z",
+      "baseRepository": "decentralized-identity/bbs-signature",
+      "baseRefName": "main",
+      "baseRefOid": "2a6973750033de1e05010af490d37c4a328adc76",
+      "headRepository": "decentralized-identity/bbs-signature",
+      "headRefName": "vasilis/appendix-d",
+      "headRefOid": "947970059dde19803b9532adb2585b47f200b381",
+      "closedAt": null,
+      "mergedAt": null,
+      "mergedBy": null,
+      "mergeCommit": null,
+      "comments": [],
+      "reviews": [
+        {
+          "id": "PRR_kwDOF8lax85p2ulV",
+          "commit": {
+            "abbreviatedOid": "efe87a6"
+          },
+          "author": "andrewwhitehead",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2023-12-11T18:53:26Z",
+          "updatedAt": "2023-12-11T18:53:27Z",
+          "comments": [
+            {
+              "originalPosition": 23,
+              "body": "```suggestion\r\nThe following section provides a high-level explanation of how the `CoreProofGen` and `CoreProofVerify` operations work, as presented in Appendix B of [@TZ23] and used by this document. The `CoreProofGen` procedure can be categorized as a generic non-interactive zero-knowledge proof-of-knowledge (`nizk`). A `nizk` works as follows; Assume the group points `J_0`, `J_1`, ..., `J_n` and the exponents `e_0`, `e_1`, ..., `e_n`. Assume also that all the group points are publicly known, while only the exponent `e_0` is known to the Verifier of the `nizk` and the exponents `e_1`, ..., `e_n` are known only by the Prover of the protocol. The `nizk` can be used to prove a relationship of the form,\r\n```",
+              "createdAt": "2023-12-11T18:53:27Z",
+              "updatedAt": "2023-12-11T18:53:27Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOF8lax85p2xKC",
+          "commit": {
+            "abbreviatedOid": "efe87a6"
+          },
+          "author": "andrewwhitehead",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2023-12-11T18:57:12Z",
+          "updatedAt": "2023-12-11T18:57:13Z",
+          "comments": [
+            {
+              "originalPosition": 84,
+              "body": "```suggestion\r\nNote that if the value `D` is constructed correctly (as in \\[3\\]), then `B = D * r2'`. Proving knowledge of \\[6\\] corresponds to proving knowledge of `r2'`, which means that the Prover does actually know the value `B = D * r2'`. If \\[6\\] holds, then that `B` value that the Prover knows will also have the \"correct form\" (as in \\[1\\]), including all (the disclosed and \"some\" undisclosed) messages.\r\n```",
+              "createdAt": "2023-12-11T18:57:13Z",
+              "updatedAt": "2023-12-11T18:57:13Z"
+            }
+          ]
         }
       ]
     }
