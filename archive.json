@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2023-12-12T00:09:19.863368+00:00",
+  "timestamp": "2023-12-14T00:09:08.052520+00:00",
   "repo": "decentralized-identity/bbs-signature",
   "labels": [
     {
@@ -35052,13 +35052,13 @@
       "labels": [],
       "body": "Couple of editorial updates\r\n- Updated abstract and some security considerations\r\n- Added academic works overview\r\n- Added header and presentation header usage section\r\n- Added section on post-quantum security",
       "createdAt": "2023-11-28T15:58:29Z",
-      "updatedAt": "2023-12-11T19:13:40Z",
+      "updatedAt": "2023-12-13T10:48:11Z",
       "baseRepository": "decentralized-identity/bbs-signature",
       "baseRefName": "main",
       "baseRefOid": "2a6973750033de1e05010af490d37c4a328adc76",
       "headRepository": "decentralized-identity/bbs-signature",
       "headRefName": "vasilis/editorial-changes",
-      "headRefOid": "6c4626952fbbc7fab467c50b2aa7ac8ce53405da",
+      "headRefOid": "3568e9a4b8877e33b03ffa8ee0a60aa4e578ad89",
       "closedAt": null,
       "mergedAt": null,
       "mergedBy": null,
@@ -35130,6 +35130,56 @@
           "createdAt": "2023-12-11T19:13:40Z",
           "updatedAt": "2023-12-11T19:13:40Z",
           "comments": []
+        },
+        {
+          "id": "PRR_kwDOF8lax85p4Z30",
+          "commit": {
+            "abbreviatedOid": "6c46269"
+          },
+          "author": "Wind4Greg",
+          "authorAssociation": "NONE",
+          "state": "APPROVED",
+          "body": "Tried to put in suggest some minor wording/English fixes. If they don't come through we can catch them during the \"nits\" phase.",
+          "createdAt": "2023-12-12T00:29:01Z",
+          "updatedAt": "2023-12-12T00:44:58Z",
+          "comments": [
+            {
+              "originalPosition": 5,
+              "body": "This document describes the BBS Signature scheme, a secure, multi-message digital signature protocol, supporting proving knowledge of a signature while selectively disclosing any subset of the signed messages. Concretely, the scheme allows for signing multiple messages whilst producing a single, constant size, digital signature. Additionally, the possessor of a BBS signatures is able to create zero-knowledge, proofs-of-knowledge of a signature, while selectively disclosing subsets of the signed messages. Being zero-knowledge, the BBS proofs do not reveal any information about the undisclosed messages or the signature it self, while at the same time, guarantying the authenticity and integrity of the disclosed messages.",
+              "createdAt": "2023-12-12T00:29:01Z",
+              "updatedAt": "2023-12-12T00:44:58Z"
+            },
+            {
+              "originalPosition": 5,
+              "body": "Was just trying to correct the word usage: \"Been\" ==> \"Being\".\r\n\r\n",
+              "createdAt": "2023-12-12T00:29:57Z",
+              "updatedAt": "2023-12-12T00:44:58Z"
+            },
+            {
+              "originalPosition": 63,
+              "body": "There are two special values defined by the BBS Scheme; the `header` and the `presentation_header`. The `header` value is chosen by the Signer and is bound to both a BBS signature and the BBS proofs generated using that signature. Specifically, the Prover is required to reveal the `header` to the proof Verifier, during every BBS proof presentation. As a result, the Signer SHOULD NOT include in the `header` any identifying information, that may have the potential of compromising the Prover's privacy. Suitable use cases taking advantage of the `header` value, are binding a BBS signature (and subsequent BBS proofs) to a specific application, deployment or domain, or binding the signature to specific sets of metadata etc..",
+              "createdAt": "2023-12-12T00:33:33Z",
+              "updatedAt": "2023-12-12T00:44:58Z"
+            },
+            {
+              "originalPosition": 63,
+              "body": "Change:\r\n\"the Signer SHOULD NOT include to the `header` any\" ==> \"the Signer SHOULD NOT include in the `header` any\"",
+              "createdAt": "2023-12-12T00:34:26Z",
+              "updatedAt": "2023-12-12T00:44:58Z"
+            },
+            {
+              "originalPosition": 65,
+              "body": "Similarly, the Prover can choose a `presentation_header` value to be bound to the BBS proof (in contrast to the `header` value that is chosen by the Signer and is bound to both BBS proof and signature). Verifying a BBS proof will guarantee the authenticity and integrity of the `presentation_header`. This makes it suitable for applications where the Prover may want to \"sign\" a message in addition to creating their BBS proof, in a way similar to how group signatures can work. Specifically, the Verifier will know that the message included in the `presentation_header` was \"signed\" by a member of the group, where group here being the Provers having received valid signatures from the specific Signer, but will not know from exactly which member of the group the message was signed. Another application of the `presentation_header` is to guarantee freshness of a BBS proof and to avoid replay attacks. An example of how this could be achieved, is by including a random value supplied by the Verifier to the `presentation_header` value.",
+              "createdAt": "2023-12-12T00:37:37Z",
+              "updatedAt": "2023-12-12T00:44:58Z"
+            },
+            {
+              "originalPosition": 65,
+              "body": "Just some small English fixes in the above.",
+              "createdAt": "2023-12-12T00:38:05Z",
+              "updatedAt": "2023-12-12T00:44:58Z"
+            }
+          ]
         }
       ]
     },
@@ -35304,13 +35354,13 @@
       "labels": [],
       "body": "Consistency corrections.",
       "createdAt": "2023-12-03T23:40:43Z",
-      "updatedAt": "2023-12-11T21:37:04Z",
+      "updatedAt": "2023-12-13T11:11:55Z",
       "baseRepository": "decentralized-identity/bbs-signature",
       "baseRefName": "main",
       "baseRefOid": "20c42d566583c3aed4b99b3386a4c19cfc42c3c4",
       "headRepository": "decentralized-identity/bbs-signature",
       "headRefName": "vasilis/edits",
-      "headRefOid": "aefaa3b23c6160a2002a172c7a0c4ce4956297b0",
+      "headRefOid": "e0a95b35a108d3d9a7d1c713330fb52c12accfa6",
       "closedAt": null,
       "mergedAt": null,
       "mergedBy": null,
@@ -35348,6 +35398,19 @@
           "body": "",
           "createdAt": "2023-12-04T19:32:54Z",
           "updatedAt": "2023-12-04T19:32:54Z",
+          "comments": []
+        },
+        {
+          "id": "PRR_kwDOF8lax85p4eF8",
+          "commit": {
+            "abbreviatedOid": "aefaa3b"
+          },
+          "author": "Wind4Greg",
+          "authorAssociation": "NONE",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2023-12-12T00:51:50Z",
+          "updatedAt": "2023-12-12T00:51:50Z",
           "comments": []
         }
       ]
@@ -35530,7 +35593,7 @@
       "labels": [],
       "body": "Based on the new proof from #288",
       "createdAt": "2023-12-11T10:59:49Z",
-      "updatedAt": "2023-12-11T21:57:35Z",
+      "updatedAt": "2023-12-13T18:24:08Z",
       "baseRepository": "decentralized-identity/bbs-signature",
       "baseRefName": "main",
       "baseRefOid": "2a6973750033de1e05010af490d37c4a328adc76",
@@ -35582,6 +35645,46 @@
               "updatedAt": "2023-12-11T18:57:13Z"
             }
           ]
+        }
+      ]
+    },
+    {
+      "number": 305,
+      "id": "PR_kwDOF8lax85h7QfK",
+      "title": "Making Pairing Friendly Curves draft reference informative",
+      "url": "https://github.com/decentralized-identity/bbs-signature/pull/305",
+      "state": "OPEN",
+      "author": "BasileiosKal",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "Redefine the relative functionality from [Pairing-Friendly Curves](https://datatracker.ietf.org/doc/draft-irtf-cfrg-pairing-friendly-curves/) in this draft.",
+      "createdAt": "2023-12-13T18:24:01Z",
+      "updatedAt": "2023-12-13T19:09:01Z",
+      "baseRepository": "decentralized-identity/bbs-signature",
+      "baseRefName": "main",
+      "baseRefOid": "20c42d566583c3aed4b99b3386a4c19cfc42c3c4",
+      "headRepository": "decentralized-identity/bbs-signature",
+      "headRefName": "vasilis/rm-pairing-friendly-curves-id",
+      "headRefOid": "ce1e38f3cb66052c19336e8a545638edbb5e3ca9",
+      "closedAt": null,
+      "mergedAt": null,
+      "mergedBy": null,
+      "mergeCommit": null,
+      "comments": [],
+      "reviews": [
+        {
+          "id": "PRR_kwDOF8lax85qHWuu",
+          "commit": {
+            "abbreviatedOid": "ce1e38f"
+          },
+          "author": "OR13",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "APPROVED",
+          "body": "even an informative reference to an expired ID will probably cause problems.",
+          "createdAt": "2023-12-13T19:09:01Z",
+          "updatedAt": "2023-12-13T19:09:01Z",
+          "comments": []
         }
       ]
     }
