@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2023-12-14T00:09:08.052520+00:00",
+  "timestamp": "2023-12-17T00:10:21.991048+00:00",
   "repo": "decentralized-identity/bbs-signature",
   "labels": [
     {
@@ -35045,25 +35045,35 @@
       "id": "PR_kwDOF8lax85gkn1i",
       "title": "Various editorial updates",
       "url": "https://github.com/decentralized-identity/bbs-signature/pull/298",
-      "state": "OPEN",
+      "state": "MERGED",
       "author": "BasileiosKal",
       "authorAssociation": "CONTRIBUTOR",
       "assignees": [],
       "labels": [],
       "body": "Couple of editorial updates\r\n- Updated abstract and some security considerations\r\n- Added academic works overview\r\n- Added header and presentation header usage section\r\n- Added section on post-quantum security",
       "createdAt": "2023-11-28T15:58:29Z",
-      "updatedAt": "2023-12-13T10:48:11Z",
+      "updatedAt": "2023-12-15T18:18:22Z",
       "baseRepository": "decentralized-identity/bbs-signature",
       "baseRefName": "main",
       "baseRefOid": "2a6973750033de1e05010af490d37c4a328adc76",
       "headRepository": "decentralized-identity/bbs-signature",
       "headRefName": "vasilis/editorial-changes",
       "headRefOid": "3568e9a4b8877e33b03ffa8ee0a60aa4e578ad89",
-      "closedAt": null,
-      "mergedAt": null,
-      "mergedBy": null,
-      "mergeCommit": null,
-      "comments": [],
+      "closedAt": "2023-12-15T18:18:22Z",
+      "mergedAt": "2023-12-15T18:18:22Z",
+      "mergedBy": "BasileiosKal",
+      "mergeCommit": {
+        "oid": "6cfa6a8ba1c38ed735c300c70be4f22099d73ee9"
+      },
+      "comments": [
+        {
+          "author": "BasileiosKal",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "Multiple approvals. Addressed review comments. Discussed on the WG call at the 11th of Dec. Merging. Thank you all!",
+          "createdAt": "2023-12-15T18:18:16Z",
+          "updatedAt": "2023-12-15T18:18:16Z"
+        }
+      ],
       "reviews": [
         {
           "id": "PRR_kwDOF8lax85pGIlC",
@@ -35354,13 +35364,13 @@
       "labels": [],
       "body": "Consistency corrections.",
       "createdAt": "2023-12-03T23:40:43Z",
-      "updatedAt": "2023-12-13T11:11:55Z",
+      "updatedAt": "2023-12-16T20:39:37Z",
       "baseRepository": "decentralized-identity/bbs-signature",
       "baseRefName": "main",
-      "baseRefOid": "20c42d566583c3aed4b99b3386a4c19cfc42c3c4",
+      "baseRefOid": "6cfa6a8ba1c38ed735c300c70be4f22099d73ee9",
       "headRepository": "decentralized-identity/bbs-signature",
       "headRefName": "vasilis/edits",
-      "headRefOid": "e0a95b35a108d3d9a7d1c713330fb52c12accfa6",
+      "headRefOid": "ddac8b6b8c2a4dfc49a163d952449776edd9041d",
       "closedAt": null,
       "mergedAt": null,
       "mergedBy": null,
@@ -35593,13 +35603,13 @@
       "labels": [],
       "body": "Based on the new proof from #288",
       "createdAt": "2023-12-11T10:59:49Z",
-      "updatedAt": "2023-12-13T18:24:08Z",
+      "updatedAt": "2023-12-16T20:56:01Z",
       "baseRepository": "decentralized-identity/bbs-signature",
       "baseRefName": "main",
-      "baseRefOid": "2a6973750033de1e05010af490d37c4a328adc76",
+      "baseRefOid": "6cfa6a8ba1c38ed735c300c70be4f22099d73ee9",
       "headRepository": "decentralized-identity/bbs-signature",
       "headRefName": "vasilis/appendix-d",
-      "headRefOid": "947970059dde19803b9532adb2585b47f200b381",
+      "headRefOid": "0caa45128c98cbf509a9e7766460f785c8944d0c",
       "closedAt": null,
       "mergedAt": null,
       "mergedBy": null,
@@ -35660,7 +35670,7 @@
       "labels": [],
       "body": "Redefine the relative functionality from [Pairing-Friendly Curves](https://datatracker.ietf.org/doc/draft-irtf-cfrg-pairing-friendly-curves/) in this draft.",
       "createdAt": "2023-12-13T18:24:01Z",
-      "updatedAt": "2023-12-13T19:09:01Z",
+      "updatedAt": "2023-12-16T20:07:12Z",
       "baseRepository": "decentralized-identity/bbs-signature",
       "baseRefName": "main",
       "baseRefOid": "20c42d566583c3aed4b99b3386a4c19cfc42c3c4",
@@ -35671,7 +35681,15 @@
       "mergedAt": null,
       "mergedBy": null,
       "mergeCommit": null,
-      "comments": [],
+      "comments": [
+        {
+          "author": "BasileiosKal",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "> even an informative reference to an expired ID will probably cause problems.\r\n\r\nThat's true, but it is not \"forbidden\" (see the [bls sigs](https://datatracker.ietf.org/doc/html/draft-irtf-cfrg-bls-signature-05) reference to the [h2c rfc](https://www.rfc-editor.org/rfc/rfc9380.html#I-D.irtf-cfrg-bls-signature)). Even a normative reference is not an issue for the crypto panel review phase (it will certainly be a problem in later stages though).",
+          "createdAt": "2023-12-16T20:07:11Z",
+          "updatedAt": "2023-12-16T20:07:11Z"
+        }
+      ],
       "reviews": [
         {
           "id": "PRR_kwDOF8lax85qHWuu",
@@ -35687,6 +35705,32 @@
           "comments": []
         }
       ]
+    },
+    {
+      "number": 306,
+      "id": "PR_kwDOF8lax85iLOex",
+      "title": "Reference h2c as an RFC",
+      "url": "https://github.com/decentralized-identity/bbs-signature/pull/306",
+      "state": "OPEN",
+      "author": "BasileiosKal",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "",
+      "createdAt": "2023-12-16T21:07:52Z",
+      "updatedAt": "2023-12-16T21:07:52Z",
+      "baseRepository": "decentralized-identity/bbs-signature",
+      "baseRefName": "main",
+      "baseRefOid": "6cfa6a8ba1c38ed735c300c70be4f22099d73ee9",
+      "headRepository": "decentralized-identity/bbs-signature",
+      "headRefName": "vasilis/h2c-rfc",
+      "headRefOid": "55fc1ade1af1fc6a899d15f85996c995716f90e1",
+      "closedAt": null,
+      "mergedAt": null,
+      "mergedBy": null,
+      "mergeCommit": null,
+      "comments": [],
+      "reviews": []
     }
   ]
 }
