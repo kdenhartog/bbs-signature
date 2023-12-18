@@ -155,22 +155,27 @@ Table of Contents
      11.2.  Informative References
    Appendix A.  BLS12-381 hash_to_curve Definition Using SHAKE-256
      A.1.  BLS12-381 G1
-   Appendix B.  Use Cases
-     B.1.  Non-correlating Security Token
-     B.2.  Improved Bearer Security Token
-     B.3.  Selectively Disclosure Enabled Identity Credentials
-   Appendix C.  Additional Test Vectors
-     C.1.  BLS12-381-SHAKE-256 Ciphersuite
-       C.1.1.  Signature Test Vectors
-       C.1.2.  Proof Test Vectors
-       C.1.3.  Hash to Scalar Test Vectors
-     C.2.  BLS12-381-SHA-256 Ciphersuite
-       C.2.1.  Signature Test Vectors
-       C.2.2.  Proof Test Vectors
-       C.2.3.  Hash to Scalar Test Vectors
-   Appendix D.  Proof Generation and Verification Algorithmic
+   Appendix B.  The BLS12-381 Curve
+     B.1.  Optimal Ate pairing
+     B.2.  Point Encoding
+       B.2.1.  Point Serialization
+       B.2.2.  Point De-serialization
+   Appendix C.  Use Cases
+     C.1.  Non-correlating Security Token
+     C.2.  Improved Bearer Security Token
+     C.3.  Selectively Disclosure Enabled Identity Credentials
+   Appendix D.  Additional Test Vectors
+     D.1.  BLS12-381-SHAKE-256 Ciphersuite
+       D.1.1.  Signature Test Vectors
+       D.1.2.  Proof Test Vectors
+       D.1.3.  Hash to Scalar Test Vectors
+     D.2.  BLS12-381-SHA-256 Ciphersuite
+       D.2.1.  Signature Test Vectors
+       D.2.2.  Proof Test Vectors
+       D.2.3.  Hash to Scalar Test Vectors
+   Appendix E.  Proof Generation and Verification Algorithmic
            Explanation
-   Appendix E.  Document History
+   Appendix F.  Document History
    Authors' Addresses
 
 1.  Introduction
@@ -211,7 +216,7 @@ Table of Contents
    validity information (for more details on the presentation header,
    see Section 3.3.6).
 
-   Refer to the Appendix B for an elaboration on situations where these
+   Refer to the Appendix C for an elaboration on situations where these
    properties are useful.
 
    Below is a basic diagram describing the main entities involved in the
@@ -882,12 +887,13 @@ Procedure:
    defined in Utility Operations (#utility-operations).  More
    specifically,
 
-   *  hash_to_scalar as defined in Section 4.2.2.
-   *  calculate_domain and calculate_challenge as defined in
-      Section 4.2.3 and Section 3.7.4 correspondingly.
+   *  hash_to_scalar is defined in Section 4.2.2
+   *  calculate_domain is defined in Section 4.2.3.
    *  serialize, signature_to_octets, octets_to_signature,
-      proof_to_octets, octets_to_proof and octets_to_pubkey as defined
+      proof_to_octets, octets_to_proof and octets_to_pubkey are defined
       in Section 4.2.4.
+   *  e is the pairing operation used (see Section 1.2), defined as part
+      of the ciphersuite.
 
    Each core operation will accept a vector of generators (points of G1)
    and optionally, a vector of messages.  The generators MUST be unique
@@ -2562,6 +2568,8 @@ Procedure:
       commitment and proof of possession schemes (for example, like the
       one described in Section 3.3 of [I-D.irtf-cfrg-bls-signature]).
 
+   *  e: The pairing operation used.
+
    *Serialization functions*:
 
    *  point_to_octets_E1: a function that returns the canonical
@@ -2587,10 +2595,14 @@ Procedure:
    The following two ciphersuites are based on the BLS12-381 elliptic
    curves defined in Section 4.2.1 of
    [I-D.irtf-cfrg-pairing-friendly-curves].  The targeted security level
-   of both suites in bits is k = 128.  The number of bits of the order
-   r, of the G1 and G2 subgroups, is log2(r) = 255.  The base points BP1
-   and BP2 of G1 and G2 are the points BP and BP' correspondingly, as
-   defined in Section 4.2.1 of [I-D.irtf-cfrg-pairing-friendly-curves].
+   of both suites in bits is k = 128 (the actual security leven is
+   closer to 126 bits).  The number of bits of the order r, of the G1
+   and G2 subgroups, is log2(r) = 255.  The base points BP1 and BP2 of
+   G1 and G2 are the points BP and BP' correspondingly, as defined in
+   Section 4.2.1 of [I-D.irtf-cfrg-pairing-friendly-curves].  For
+   completeness, BLS12-381 and the relevant functionality (base points
+   BP1 and BP2, the pairing e as well as the point encoding and decoding
+   operations) are defined in Appendix B.
 
    The first ciphersuite uses the hash-to-curve suite
    BLS12381G1_XOF:SHAKE-256_SSWU_RO_, defined by this document in
@@ -2660,23 +2672,30 @@ Procedure:
     P1 = "8929dfbc7e6642c4ed9cba0856e493f8b9d7d5fcb0c31ef8fdcd34d50648a5
           6c795e106e9eada6e0bda386b414150755"
 
+   *  e: the optimal Ate pairing (Appendix A.2 of
+      [I-D.irtf-cfrg-pairing-friendly-curves]), defined in Appendix B.1.
+
    *Serialization functions*:
 
-   *  point_to_octets_E1: follows the format documented in Appendix C
-      section 1 of [I-D.irtf-cfrg-pairing-friendly-curves] for the E1
-      elliptic curve, using compression (i.e., setting C_bit = 1).
+   *  point_to_octets_E1: as defined in Appendix B.2.1 for points of the
+      curve E1 (which follows the format documented in Appendix C.1 of
+      [I-D.irtf-cfrg-pairing-friendly-curves] for the E1 elliptic curve,
+      using compression).
 
-   *  point_to_octets_E2: follows the format documented in Appendix C
-      section 1 of [I-D.irtf-cfrg-pairing-friendly-curves] for the E2
-      elliptic curve, using compression (i.e., setting C_bit = 1).
+   *  point_to_octets_E2: as defined in Appendix B.2.1 for points of the
+      curve E2 (which follows the format documented in Appendix C.1 of
+      [I-D.irtf-cfrg-pairing-friendly-curves] for the E2 elliptic curve,
+      using compression).
 
-   *  octets_to_point_E1: follows the format documented in Appendix C
-      section 2 of [I-D.irtf-cfrg-pairing-friendly-curves] for the E1
-      elliptic curve.
+   *  octets_to_point_E1: as defined in Appendix B.2.2 (which follows
+      the format documented in Appendix C.2 of
+      [I-D.irtf-cfrg-pairing-friendly-curves]), returning INVALID if the
+      resulting point is not in E1.
 
-   *  octets_to_point_E2: follows the format documented in Appendix C
-      section 2 of [I-D.irtf-cfrg-pairing-friendly-curves] for the E2
-      elliptic curve.
+   *  octets_to_point_E2: as defined in Appendix B.2.2 (which follows
+      the format documented in Appendix C.2 of
+      [I-D.irtf-cfrg-pairing-friendly-curves]), returning INVALID if the
+      resulting point is not in E2.
 
 7.2.2.  BLS12-381-SHA-256
 
@@ -2703,23 +2722,30 @@ Procedure:
     P1 = "a8ce256102840821a3e94ea9025e4662b205762f9776b3a766c872b948f1fd
           225e7c59698588e70d11406d161b4e28c9"
 
+   *  e: the optimal Ate pairing (Appendix A.2 of
+      [I-D.irtf-cfrg-pairing-friendly-curves]), defined in Appendix B.1.
+
    *Serialization functions*:
 
-   *  point_to_octets_E1: follows the format documented in Appendix C
-      section 1 of [I-D.irtf-cfrg-pairing-friendly-curves] for the E1
-      elliptic curve, using compression (i.e., setting C_bit = 1).
+   *  point_to_octets_E1: as defined in Appendix B.2.1 for points of the
+      curve E1 (which follows the format documented in Appendix C.1 of
+      [I-D.irtf-cfrg-pairing-friendly-curves] for the E1 elliptic curve,
+      using compression).
 
-   *  point_to_octets_E2: follows the format documented in Appendix C
-      section 1 of [I-D.irtf-cfrg-pairing-friendly-curves] for the E2
-      elliptic curve, using compression (i.e., setting C_bit = 1).
+   *  point_to_octets_E2: as defined in Appendix B.2.1 for points of the
+      curve E2 (which follows the format documented in Appendix C.1 of
+      [I-D.irtf-cfrg-pairing-friendly-curves] for the E2 elliptic curve,
+      using compression).
 
-   *  octets_to_point_E1: follows the format documented in Appendix C
-      section 2 of [I-D.irtf-cfrg-pairing-friendly-curves] for the E1
-      elliptic curve.
+   *  octets_to_point_E1: as defined in Appendix B.2.2 (which follows
+      the format documented in Appendix C.2 of
+      [I-D.irtf-cfrg-pairing-friendly-curves]), returning INVALID if the
+      resulting point is not in E1.
 
-   *  octets_to_point_E2: follows the format documented in Appendix C
-      section 2 of [I-D.irtf-cfrg-pairing-friendly-curves] for the E2
-      elliptic curve.
+   *  octets_to_point_E2: as defined in Appendix B.2.2 (which follows
+      the format documented in Appendix C.2 of
+      [I-D.irtf-cfrg-pairing-friendly-curves]), returning INVALID if the
+      resulting point is not in E2.
 
 8.  Test Vectors
 
@@ -2815,8 +2841,8 @@ m_10 = ""
 8.3.  BLS12-381-SHAKE-256 Test Vectors
 
    Test vectors of the BLS12-381-SHAKE-256 ciphersuite defined in
-   Appendix C.1 ciphersuite.  Further fixtures are available in
-   Appendix C.1.
+   Appendix D.1 ciphersuite.  Further fixtures are available in
+   Appendix D.1.
 
 8.3.1.  Key Pair
 
@@ -3192,7 +3218,7 @@ proof = "853f4927bd7e4998af27df65566c0a071a33a5207d1af33ef7c3be04004ac5d
 
    Test vectors of the BLS12-381-SHA-256 (#bls12-381-sha-
    256-ciphersuite) ciphersuite.  Further fixtures are available in
-   Appendix C.2.
+   Appendix D.2.
 
 8.4.1.  Key Pair
 
@@ -3612,13 +3638,6 @@ proof = "a8da259a5ae7a9a8e5e4e809b8e7718b4d7ab913ed5781ebbff4814c762033e
               16, 15 June 2022, <https://datatracker.ietf.org/doc/html/
               draft-irtf-cfrg-hash-to-curve-16>.
 
-   [I-D.irtf-cfrg-pairing-friendly-curves]
-              Sakemi, Y., Kobayashi, T., Saito, T., and R. S. Wahby,
-              "Pairing-Friendly Curves", Work in Progress, Internet-
-              Draft, draft-irtf-cfrg-pairing-friendly-curves-11, 6
-              November 2022, <https://datatracker.ietf.org/doc/html/
-              draft-irtf-cfrg-pairing-friendly-curves-11>.
-
    [RFC2119]  Bradner, S., "Key words for use in RFCs to Indicate
               Requirement Levels", BCP 14, RFC 2119,
               DOI 10.17487/RFC2119, March 1997,
@@ -3713,6 +3732,13 @@ proof = "a8da259a5ae7a9a8e5e4e809b8e7718b4d7ab913ed5781ebbff4814c762033e
               <https://datatracker.ietf.org/doc/html/draft-ietf-jose-
               json-web-proof-02>.
 
+   [I-D.ietf-lwig-curve-representations]
+              Struik, R., "Alternative Elliptic Curve Representations",
+              Work in Progress, Internet-Draft, draft-ietf-lwig-curve-
+              representations-23, 21 January 2022,
+              <https://datatracker.ietf.org/doc/html/draft-ietf-lwig-
+              curve-representations-23>.
+
    [I-D.ietf-pquip-pqc-engineers]
               Banerjee, A., Reddy.K, T., Schoinianakis, D., and T.
               Hollebeek, "Post-Quantum Cryptography for Engineers", Work
@@ -3734,6 +3760,13 @@ proof = "a8da259a5ae7a9a8e5e4e809b8e7718b4d7ab913ed5781ebbff4814c762033e
               Internet-Draft, draft-irtf-cfrg-bls-signature-05, 16 June
               2022, <https://datatracker.ietf.org/doc/html/draft-irtf-
               cfrg-bls-signature-05>.
+
+   [I-D.irtf-cfrg-pairing-friendly-curves]
+              Sakemi, Y., Kobayashi, T., Saito, T., and R. S. Wahby,
+              "Pairing-Friendly Curves", Work in Progress, Internet-
+              Draft, draft-irtf-cfrg-pairing-friendly-curves-11, 6
+              November 2022, <https://datatracker.ietf.org/doc/html/
+              draft-irtf-cfrg-pairing-friendly-curves-11>.
 
    [ISO8601]  ISO, "Date and time — Representations for information
               interchange — Part 1: Basic rules",
@@ -3835,9 +3868,249 @@ A.1.  BLS12-381 G1
    the curve E' isogenous to BLS12-381 G1 is given in Appendix F.2
    [I-D.irtf-cfrg-hash-to-curve].
 
-Appendix B.  Use Cases
+Appendix B.  The BLS12-381 Curve
 
-B.1.  Non-correlating Security Token
+   This section defines BLS12-381.  The definitions of this section have
+   been originally described in [I-D.irtf-cfrg-pairing-friendly-curves],
+   where they are discussed in greater detail.
+
+   BLS12-381 are Barreto-Lynn-Scott curves, defined by two elliptic
+   curves E1 and E2, parameterized by an integer t.  In the case of
+   BLS12-381, t is defined as,
+
+   t = -2^63 - 2^62 - 2^60 - 2^57 - 2^48 - 2^16
+
+   The curves E1 and E2 are defined over the finite fields GF(p) and
+   GF(p^2) correspondingly, where p is defined as,
+
+   p = (t - 1)^2 * (t^4 - t^2 + 1) / 3 + t
+
+   Let (1, I) be the bases of the finite field GF(p^2), where I ^ 2 + 1
+   = 0 in GF(p^2).  We will denote an element y of GF(p^2) as a tuple y
+   = (y_0, y_1), where y_0 and y_1 elements of GF(p) for which it holds
+   y = y_0 * 1 + y_1 * I.  The two elliptic curves are defined by the
+   following equations,
+
+   E1: y ^ 2 = x ^ 3 + 4
+   E2: y ^ 2 = x ^ 3 + 4 * (I + 1)
+
+   The group G1 and G2 are defined as the the order r subgroup of E1
+   defined over GF(p) and E2 defined over GF(p^2) correspondingly, where
+   r is defined as,
+
+  r = 0x73eda753299d7d483339d80809a1d80553bda402fffe5bfeffffffff00000001
+
+   Note that r is a prime factor of p.  The target group G_T is defined
+   as the finite group GF(p^12) minus the element 0.
+
+   The base points of BLS12-381, encoded to octets using the procedure
+   defined in Appendix B.2.1 and then represented in hexadecimal format,
+   are defined as,
+
+BP1 = "97f1d3a73197d7942695638c4fa9ac0fc3688c4f9774b905a14e3a3f171bac586
+       c55e83ff97a1aeffb3af00adb22c6bb"
+BP2 = "93e02b6052719f607dacd3a088274f65596bd0d09920b61ab5da61bbdc7f50493
+       34cf11213945d57e5ac7d055d042b7e024aa2b2f08f0a91260805272dc51051c6
+       e47ad4fa403b02b4510b647ae3d1770bac0326a805bbefd48056c8c121bdb8"
+
+B.1.  Optimal Ate pairing
+
+   This section describes the optimal Ate pairing for BLS12-381.  The
+   pairing computation uses the following utility function.
+
+   res = Line_function(Q1, Q2, P)
+
+   Inputs:
+
+   - Q1 (REQUIRED), point of G2.
+   - Q2 (REQUIRED), point of G2.
+   - P (REQUIRED), point of G1.
+
+   Outputs:
+
+   - res: an element on the target group G_T.
+
+   Procedure:
+
+   1. (x_1, y_1) = Q1
+   2. (x_2, y_2) = Q2
+   3. (x, y) = P
+   4. if Q1 = Q2, set l = (3 * x_1^2) / (2 * y_1)
+   5. else if Q1 = - Q2, return x - x_1
+   6. else set l = (y_2 - y_1) / (x_2 - x_1)
+   7. return (l * (x - x_1) + y_1 - y)
+
+   Let c = t for t as defined above (Appendix B) and c_0, c_1, ... , c_L
+   in (-1, 0, 1) such that the sum of c_i * 2^i for i = 0, 1, ..., L
+   equals c.
+
+   Given a point P of G1, and a point Q of G2, the output e(P, Q) where
+   e the Ate pairing for BLS12-381 is calculated as follows,
+
+   1.  set f = 1 and T = Q
+   2.  if c_L = -1, set T = -T
+   3.  for i in (L-1, L-2, ..., 1, 0)
+   4.      f = f^2 * Line_function(T, T, P)
+   5.      T = T + T
+   6.      if c_i = 1,
+   7.          f = f * Line_function(T, Q, P)
+   8.          T = T + Q
+   9.      else if c_i = -1,
+   10.         f = f * Line_function(T, -Q, P)
+   11.         T = T - Q
+   12. f = f ^ ((p ^ 12 - 1) / r)
+   13. return f
+
+B.2.  Point Encoding
+
+   This section defines point encoding and decoding procedures for
+   BLS12-381.  Although more flexible point encoding procedures may
+   exist (for example [I-D.ietf-lwig-curve-representations]), the vast
+   majority of current libraries implementing BLS12-381 use (most of
+   them explicitly) the encoding method defined in Appendix C of
+   [I-D.irtf-cfrg-pairing-friendly-curves].  For this reason, the
+   ciphersuites defined in Section 7.2, use those encoding and decoding
+   procedures.  For completeness, those operations are defined in this
+   section as well.  See [I-D.irtf-cfrg-pairing-friendly-curves] for a
+   more detailed explanation of the encoding and decoding steps.  Note
+   also that we will only consider compressed point encoding (in
+   contrast to [I-D.irtf-cfrg-pairing-friendly-curves], which supports
+   both compressed and uncompressed point encoding).
+
+   In this section we will use the following notation,
+
+   *  For an octet string x, x[0] will denote the first octet (i.e., 8
+      most significant bits) of x.
+   *  On input an element y of GF(p) or GF(p^2), sqrt(y) will return the
+      square root of that element in the respective group, i.e., an
+      element a such that a^2 = y, or INVALID.
+   *  For clarity, we will use Identity_E1, Identity_E2 to denote the
+      identity points of E1 and E2 correspondingly (note that
+      Identity_E1 is the same point as Identity_G1 and Identity_E2 is
+      the same point as Identity_G2).
+
+   We first have to define the following utility operations.
+
+   The following procedure returns one bit corresponding to the sign of
+   an element of GF(p).
+
+   res = sign_GF_p(y)
+
+   Inputs:
+
+   - y (REQUIRED), point of the GF(p) group
+
+   Outputs:
+
+   - res, either 0 or 1
+
+   Procedure:
+
+   1. if y > (p - 1) / 2, return 1
+   2. return 0
+
+   The following procedure returns one bit corresponding to the sign of
+   an element in GF(p^2).
+
+   res = sign_GF_p^2(y)
+
+   Inputs:
+
+   - y (REQUIRED), point of the GF(p^2) group
+
+   Outputs:
+
+   - res, either 0 or 1
+
+   Procedure:
+
+   1. (y_0, y_1) = y
+   2. if y_1 is 0, return sign_GF_p(y_0)
+   3. if y_1 > (p - 1) / 2, return 1
+   4. return 0
+
+B.2.1.  Point Serialization
+
+   Let P = (x, y) the point to be serialized.
+
+   Compute three metadata bits C_bit, I_bit, and S_bit, as follows,
+
+   1.  C_bit is set to 1 (indicating that point compression is used).
+   2.  I_bit is 1 if P is either the Identity_E1 or Identity_E2 points,
+       otherwise it is 0.
+   3.  S_bit is 0 if I_bit is 1 (again note that the ciphersuites
+       described in this document always use point compression).
+       Otherwise (i.e., when point compression is used and P is not the
+       identity point of its respective curve), if P is a point on E1,
+       set S_bit = sign_GF_p(y), else if P is a point on E2, S_bit =
+       sign_GF_p^2(y).
+
+   Let m = (C_bit * 2^7) + (I_bit * 2^6) + (S_bit * 2^5) and set m_byte
+   = I2OSP(m, 1).  Define x_string as follows,
+
+   1.  If P = Identity_E1, set x_string = I2OSP(0, 48).
+   2.  If P is a point on E1 and P != Identity_E1, set x_string =
+       I2OSP(x, 48).
+   3.  If P = Identity_E2, set x_string = I2OSP(0, 96).
+   4.  If P is a point on E2 and P != Identity_E2, then let x_0 and x_1
+       elements of GF(p) such that x = (x_0, x_1) and set x_string =
+       I2OSP(x_1, 48) || I2OSP(x_0, 48).
+
+   Let s_string = x_string.  Set s_string[0] = x_string[0] OR m_byte,
+   where OR is computed for each bit.  Output s_string as the
+   serialization result of the point P.
+
+B.2.2.  Point De-serialization
+
+   Let m_byte = s_string[0] AND 0xE0, where AND is computed bitwise.  If
+   m_byte equals 0x20 or 0x60 or 0xE0, output INVALID and abort the
+   operation.  Otherwise, let C_bit equal the most significant bit of
+   m_byte, I_bit equal the second most significant bit of m_byte, and
+   S_bit equal the third most significant bit of m_byte.  If C_bit is 0
+   return INVALID and abort the operation (note again that we only
+   consider compressed encoding).
+
+   1.  Determine the curve of the encoded point as follows,
+
+       *  If s_string has length 48 octets, the encoded point is on the
+          curve E1.
+       *  If s_string has length 96 octets, the encoded point is on the
+          curve E2.
+       *  If s_string has any other length, output INVALID and abort the
+          operation.
+
+   2.  Let s_string[0] = s_string[0] AND 0x1F, where AND is computed
+       bitwise (this will set the three most significant bits of
+       s_string[0] to 0).
+
+   3.  If I_bit is 1, then the encoded point must be the Identity point
+       of the curve determined on step 1.  If s_string is not the all
+       zeros string, output INVALID and abort the operation.  Otherwise,
+       output the Identity point of the curve that was determined in
+       step 1 (i.e., either Identity_E1 or Identity_E2).
+
+   4.  Let x = OS2IP(s_string).
+
+   5.  If the curve that was determined in step 1 is E1,
+
+       *  Let y2 = x^3 + 4 in GF(p).
+       *  If y2 is not square in GF(p), output INVALID and abort the
+          operation.  Otherwise, let y = sqrt(y2) in GF(p) and set Y_bit
+          = sign_GF_p(y).
+
+   6.  If the curve that was determined in step 1 is E2,
+
+       *  Let y2 = x^3 + 4 * (I + 1) in GF(p^2).
+       *  If y2 is not square in GF(p^2), output INVALID and abort the
+          operation.  Otherwise, let y = sqrt(y2) in GF(p^2) and set
+          Y_bit = sign_GF_p^2(y).
+
+   7.  If S_bit equals Y_bit, output P = (x, y).  Otherwise, output P =
+       (x, -y).
+
+Appendix C.  Use Cases
+
+C.1.  Non-correlating Security Token
 
    In the most general sense BBS signatures can be used in any
    application where a cryptographically secured token is required but
@@ -3868,7 +4141,7 @@ B.1.  Non-correlating Security Token
    original access token and include that in the request instead, thus
    removing this vector of correlation.
 
-B.2.  Improved Bearer Security Token
+C.2.  Improved Bearer Security Token
 
    Bearer based security tokens such as JWT based access tokens used in
    the OAuth2.0 protocol are a highly popular format for expressing
@@ -3909,7 +4182,7 @@ B.2.  Improved Bearer Security Token
    mitigated.  A resource server also obtains the ability to detect a
    replay attack by ensuring the proof presented is unique.
 
-B.3.  Selectively Disclosure Enabled Identity Credentials
+C.3.  Selectively Disclosure Enabled Identity Credentials
 
    BBS signatures when applied to the problem space of identity
    credentials can help to enhance user privacy.  For example a digital
@@ -3921,15 +4194,15 @@ B.3.  Selectively Disclosure Enabled Identity Credentials
    important possible source of correlation for the holder across
    multiple presentations.
 
-Appendix C.  Additional Test Vectors
+Appendix D.  Additional Test Vectors
 
    *NOTE* These fixtures are a work in progress and subject to change
 
-C.1.  BLS12-381-SHAKE-256 Ciphersuite
+D.1.  BLS12-381-SHAKE-256 Ciphersuite
 
-C.1.1.  Signature Test Vectors
+D.1.1.  Signature Test Vectors
 
-C.1.1.1.  No Header Valid Signature
+D.1.1.1.  No Header Valid Signature
 
 m_1 = "9872ad089e452c7b6e283dfac2a80d58e8d0ff71cc4d5e310a1debdda4a45f02"
 m_2 = "c344136d9ab02da4dd5908bbba913ae6f58c2cc844b802a6f811f5fb075f9b80"
@@ -3957,7 +4230,7 @@ signature = "abfa513cdb323e47214b7c182fb623197a0681b753f897545a73d82ee13
              3a8ecf69db9aa09fe425df4e7687d99d779db5c66199c0dc9d2a442d331
              c43f56e060edc69a69ed2f13de3813b98ce6b05737"
 
-C.1.1.2.  Modified Message Signature
+D.1.1.2.  Modified Message Signature
 
    The following fixture should fail signature validation due to the
    message value being different from what was signed.
@@ -3976,7 +4249,7 @@ signature = "98eb37fceb31115bf647f2983aef578ad895e55f7451b1add02fa738224
 valid: "false"
 reason: "modified message"
 
-C.1.1.3.  Extra Unsigned Message Signature
+D.1.1.3.  Extra Unsigned Message Signature
 
    The following fixture should fail signature validation due to an
    additional message being supplied that was not signed.
@@ -3996,7 +4269,7 @@ signature = "98eb37fceb31115bf647f2983aef578ad895e55f7451b1add02fa738224
 valid: "false"
 reason: "extra unsigned message"
 
-C.1.1.4.  Missing Message Signature
+D.1.1.4.  Missing Message Signature
 
    The following fixture should fail signature validation due to missing
    messages that were originally present during the signing (the
@@ -4018,7 +4291,7 @@ signature = "97a296c83ed3626fe254d26021c5e9a087b580f1e8bc91bb51efb04420b
 valid: "false"
 reason: "missing messages"
 
-C.1.1.5.  Reordered Message Signature
+D.1.1.5.  Reordered Message Signature
 
    The following fixture should fail signature validation due to
    messages being re-ordered from the order in which they were signed.
@@ -4047,7 +4320,7 @@ signature = "97a296c83ed3626fe254d26021c5e9a087b580f1e8bc91bb51efb04420b
 valid: "false"
 reason: "re-ordered messages"
 
-C.1.1.6.  Wrong Public Key Signature
+D.1.1.6.  Wrong Public Key Signature
 
    The following fixture should fail signature validation due to public
    key used to verify is in-correct.
@@ -4075,7 +4348,7 @@ signature = "97a296c83ed3626fe254d26021c5e9a087b580f1e8bc91bb51efb04420b
 valid: "false"
 reason: "wrong public key"
 
-C.1.1.7.  Wrong Header Signature
+D.1.1.7.  Wrong Header Signature
 
    The following fixture should fail signature validation due to header
    value being modified from what was originally signed.
@@ -4103,9 +4376,9 @@ signature = "97a296c83ed3626fe254d26021c5e9a087b580f1e8bc91bb51efb04420b
 valid: "false"
 reason: "different header"
 
-C.1.2.  Proof Test Vectors
+D.1.2.  Proof Test Vectors
 
-C.1.2.1.  No Header Valid Proof
+D.1.2.1.  No Header Valid Proof
 
 m_1 = "9872ad089e452c7b6e283dfac2a80d58e8d0ff71cc4d5e310a1debdda4a45f02"
 m_2 = "c344136d9ab02da4dd5908bbba913ae6f58c2cc844b802a6f811f5fb075f9b80"
@@ -4153,7 +4426,7 @@ proof = "ada2a57ae3d869255d1533f74317b131ad4f0f24cae413ac40028d70f0cf037
          8b6b8e0f3b8303dfaedee84fba02d491994b95f965deb3c1295545bb9802d98
          449d98d1af18e9c60536146cfa7aa267bd888b25552dd2"
 
-C.1.2.2.  No Presentation Header Valid Proof
+D.1.2.2.  No Presentation Header Valid Proof
 
 m_1 = "9872ad089e452c7b6e283dfac2a80d58e8d0ff71cc4d5e310a1debdda4a45f02"
 m_2 = "c344136d9ab02da4dd5908bbba913ae6f58c2cc844b802a6f811f5fb075f9b80"
@@ -4200,7 +4473,7 @@ proof = "853f4927bd7e4998af27df65566c0a071a33a5207d1af33ef7c3be04004ac5d
          f8cedb7bbb5a269856b37e8ba16ba8604fb1681be22dc6b64827a8326691524
          b7c05ac462ec8d8eee64bc6e09df622bb974fba93a75f8"
 
-C.1.3.  Hash to Scalar Test Vectors
+D.1.3.  Hash to Scalar Test Vectors
 
    Using the following input message,
 
@@ -4218,11 +4491,11 @@ dst = "4242535f424c53313233383147315f584f463a5348414b452d3235365f5353575
 scalar = "0500031f786fde5326aa9370dd7ffe9535ec7a52cf2b8f432cad5d9acfb73c
           d3"
 
-C.2.  BLS12-381-SHA-256 Ciphersuite
+D.2.  BLS12-381-SHA-256 Ciphersuite
 
-C.2.1.  Signature Test Vectors
+D.2.1.  Signature Test Vectors
 
-C.2.1.1.  No Header Valid Signature
+D.2.1.1.  No Header Valid Signature
 
 m_1 = "9872ad089e452c7b6e283dfac2a80d58e8d0ff71cc4d5e310a1debdda4a45f02"
 m_2 = "c344136d9ab02da4dd5908bbba913ae6f58c2cc844b802a6f811f5fb075f9b80"
@@ -4250,7 +4523,7 @@ signature = "ae0b1807865598b3884e3e9b110e8faec662050dc9b4d95309d957fd30f
              6fc24161f6f8b5680f1f5d1b547be221547915ca665c7b3087a336d5e0c
              5fcfea62576afd13e563b730ef6d6d81f9944ab95b"
 
-C.2.1.2.  Modified Message Signature
+D.2.1.2.  Modified Message Signature
 
    The following fixture should fail signature validation due to the
    message value being different from what was signed.
@@ -4270,7 +4543,7 @@ signature = "88c0eb3bc1d97610c3a66d8a3a73f260f95a3028bccf7fff7d9851e2acd
 valid: "false"
 reason: "modified message"
 
-C.2.1.3.  Extra Unsigned Message Signature
+D.2.1.3.  Extra Unsigned Message Signature
 
    The following fixture should fail signature validation due to an
    additional message being supplied that was not signed.
@@ -4291,7 +4564,7 @@ signature = "88c0eb3bc1d97610c3a66d8a3a73f260f95a3028bccf7fff7d9851e2acd
 valid: "false"
 reason: "extra unsigned message"
 
-C.2.1.4.  Missing Message Signature
+D.2.1.4.  Missing Message Signature
 
    The following fixture should fail signature validation due to missing
    messages that were originally present during the signing (the
@@ -4314,7 +4587,7 @@ signature = "895cd9c0ccb9aca4de913218655346d718711472f2bf1f3e68916de106a
 valid: "false"
 reason: "missing messages"
 
-C.2.1.5.  Reordered Message Signature
+D.2.1.5.  Reordered Message Signature
 
    The following fixture should fail signature validation due to
    messages being re-ordered from the order in which they were signed.
@@ -4344,7 +4617,7 @@ signature = "895cd9c0ccb9aca4de913218655346d718711472f2bf1f3e68916de106a
 valid: "false"
 reason: "re-ordered messages"
 
-C.2.1.6.  Wrong Public Key Signature
+D.2.1.6.  Wrong Public Key Signature
 
    The following fixture should fail signature validation due to public
    key used to verify is in-correct.
@@ -4373,7 +4646,7 @@ signature = "895cd9c0ccb9aca4de913218655346d718711472f2bf1f3e68916de106a
 valid: "false"
 reason: "wrong public key"
 
-C.2.1.7.  Wrong Header Signature
+D.2.1.7.  Wrong Header Signature
 
    The following fixture should fail signature validation due to header
    value being modified from what was originally signed.
@@ -4402,9 +4675,9 @@ signature = "895cd9c0ccb9aca4de913218655346d718711472f2bf1f3e68916de106a
 valid: "false"
 reason: "different header"
 
-C.2.2.  Proof Test Vectors
+D.2.2.  Proof Test Vectors
 
-C.2.2.1.  No Header Valid Proof
+D.2.2.1.  No Header Valid Proof
 
 m_1 = "9872ad089e452c7b6e283dfac2a80d58e8d0ff71cc4d5e310a1debdda4a45f02"
 m_2 = "c344136d9ab02da4dd5908bbba913ae6f58c2cc844b802a6f811f5fb075f9b80"
@@ -4451,7 +4724,7 @@ proof = "958783d7d535fe1860a71ad5a7cf42df6527246300e3f3d94d67639c7e8a7db
          27517ffd634b99c1dc016a4086d24feff6f19f3c92fa11cc198830295ccc56e
          5f9527216765105eee34324c5f3834154943608a8ca652"
 
-C.2.2.2.  No Presentation Header Valid Proof
+D.2.2.2.  No Presentation Header Valid Proof
 
 m_1 = "9872ad089e452c7b6e283dfac2a80d58e8d0ff71cc4d5e310a1debdda4a45f02"
 m_2 = "c344136d9ab02da4dd5908bbba913ae6f58c2cc844b802a6f811f5fb075f9b80"
@@ -4498,7 +4771,7 @@ proof = "a8da259a5ae7a9a8e5e4e809b8e7718b4d7ab913ed5781ebbff4814c762033e
          7de2f0176db68cca1f55406a78c89c1a65716c00e9230098c6a9690a190b207
          20a7662ccd13b392fe08d045b99d5010f625cd74f7e90a"
 
-C.2.3.  Hash to Scalar Test Vectors
+D.2.3.  Hash to Scalar Test Vectors
 
    Using the following input message,
 
@@ -4516,7 +4789,7 @@ dst = "4242535f424c53313233383147315f584d443a5348412d3235365f535357555f5
 scalar = "0f90cbee27beb214e6545becb8404640d3612da5d6758dffeccd77ed716980
           7c"
 
-Appendix D.  Proof Generation and Verification Algorithmic Explanation
+Appendix E.  Proof Generation and Verification Algorithmic Explanation
 
    The following section provides a high level explanation of how the
    ProofGen and ProofVerify operations work.  ProofGen can be
@@ -4614,7 +4887,7 @@ Appendix D.  Proof Generation and Verification Algorithmic Explanation
    messages, as well as knowledge of the undisclosed messages and of the
    signature.
 
-Appendix E.  Document History
+Appendix F.  Document History
 
    -00
 
