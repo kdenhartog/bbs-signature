@@ -1698,7 +1698,7 @@ svg :is([fill="white"], [fill^="#fff"]) {
 </dd>
           <dd class="break"></dd>
 <dt id="section-1.2-4.15">hash_to_curve_g1(ostr, dst) -&gt; P</dt>
-          <dd style="margin-left: 1.5em" id="section-1.2-4.16">A cryptographic hash function that takes an arbitrary octet string as input and returns a point in G1, using the hash_to_curve operation defined in <span>[<a href="#I-D.irtf-cfrg-hash-to-curve" class="cite xref">I-D.irtf-cfrg-hash-to-curve</a>]</span> and the inputted dst as the domain separation tag for that operation (more specifically, the inputted dst will become the DST parameter for the hash_to_field operation, called by hash_to_curve).<a href="#section-1.2-4.16" class="pilcrow">¶</a>
+          <dd style="margin-left: 1.5em" id="section-1.2-4.16">A cryptographic hash function that takes an arbitrary octet string as input and returns a point in G1, using the hash_to_curve operation defined in <span>[<a href="#RFC9380" class="cite xref">RFC9380</a>]</span> and the inputted dst as the domain separation tag for that operation (more specifically, the inputted dst will become the DST parameter for the hash_to_field operation, called by hash_to_curve).<a href="#section-1.2-4.16" class="pilcrow">¶</a>
 </dd>
           <dd class="break"></dd>
 <dt id="section-1.2-4.17">point_to_octets_E1(P) -&gt; ostr, point_to_octets_E2(P) -&gt; ostr</dt>
@@ -1767,7 +1767,7 @@ document, are to be interpreted as described in <span>[<a href="#RFC2119" class=
             <p id="section-3.1-2.1.1">A pairing-friendly elliptic curve, plus associated functionality given in <a href="#notation" class="auto internal xref">Section 1.2</a>.<a href="#section-3.1-2.1.1" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="section-3.1-2.2">
-            <p id="section-3.1-2.2.1">A hash-to-curve suite as defined in <span>[<a href="#I-D.irtf-cfrg-hash-to-curve" class="cite xref">I-D.irtf-cfrg-hash-to-curve</a>]</span>, using the aforementioned pairing-friendly curve. This defines the hash_to_curve and expand_message operations, used by this document.<a href="#section-3.1-2.2.1" class="pilcrow">¶</a></p>
+            <p id="section-3.1-2.2.1">A hash-to-curve suite as defined in <span>[<a href="#RFC9380" class="cite xref">RFC9380</a>]</span>, using the aforementioned pairing-friendly curve. This defines the hash_to_curve and expand_message operations, used by this document.<a href="#section-3.1-2.2.1" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="section-3.1-2.3">
             <p id="section-3.1-2.3.1">get_random(n): returns a random octet string with a length of n bytes, sampled uniformly at random using a cryptographically secure pseudo-random number generator (CSPRNG) or a pseudo random function. See <span>[<a href="#RFC4086" class="cite xref">RFC4086</a>]</span> for recommendations and requirements on the generation of random numbers.<a href="#section-3.1-2.3.1" class="pilcrow">¶</a></p>
@@ -2776,7 +2776,7 @@ Procedure:
           <h4 id="name-generators-calculation">
 <a href="#section-4.1.1" class="section-number selfRef">4.1.1. </a><a href="#name-generators-calculation" class="section-name selfRef">Generators Calculation</a>
           </h4>
-<p id="section-4.1.1-1">The <code>create_generators</code> procedure defines how to create a set of randomly sampled points from the G1 subgroup, called the generators. It makes use of the primitives defined in <span>[<a href="#I-D.irtf-cfrg-hash-to-curve" class="cite xref">I-D.irtf-cfrg-hash-to-curve</a>]</span> (more specifically of <code>hash_to_curve</code> and <code>expand_message</code>) to hash a seed to a set of generators. Those primitives are implicitly defined by the ciphersuite, through the choice of a hash-to-curve suite (see the <code>hash_to_curve_suite</code> parameter in <a href="#ciphersuite-format" class="auto internal xref">Section 7.1</a>).<a href="#section-4.1.1-1" class="pilcrow">¶</a></p>
+<p id="section-4.1.1-1">The <code>create_generators</code> procedure defines how to create a set of randomly sampled points from the G1 subgroup, called the generators. It makes use of the primitives defined in <span>[<a href="#RFC9380" class="cite xref">RFC9380</a>]</span> (more specifically of <code>hash_to_curve</code> and <code>expand_message</code>) to hash a seed to a set of generators. Those primitives are implicitly defined by the ciphersuite, through the choice of a hash-to-curve suite (see the <code>hash_to_curve_suite</code> parameter in <a href="#ciphersuite-format" class="auto internal xref">Section 7.1</a>).<a href="#section-4.1.1-1" class="pilcrow">¶</a></p>
 <p id="section-4.1.1-2">Since <code>create_generators</code> generates constant points, as an optimization, implementations MAY cache its result for a specific <code>count</code> (which can be arbitrarily large, depending on the application). Care must be taken, to guarantee that the generators will be fetched from the cache in the same order they had when they where created (i.e., an application should not short or in any way rearrange the cached generators).<a href="#section-4.1.1-2" class="pilcrow">¶</a></p>
 <div class="alignLeft art-text artwork" id="section-4.1.1-3">
 <pre>generators = create_generators(count, api_id)
@@ -2991,8 +2991,8 @@ Procedure:
 <a href="#section-4.2.2" class="section-number selfRef">4.2.2. </a><a href="#name-hash-to-scalar" class="section-name selfRef">Hash to Scalar</a>
           </h4>
 <p id="section-4.2.2-1">This operation describes how to hash an arbitrary octet string to a scalar values in the multiplicative group of integers mod r (i.e., values in the range from  1 to r - 1).  This procedure acts as a helper function, used internally in various places within the operations described in the spec.<a href="#section-4.2.2-1" class="pilcrow">¶</a></p>
-<p id="section-4.2.2-2">The operation takes as input an octet string representing the octet string to hash (<code>msg</code>) and a domain separation tag (<code>dst</code>). The length of the dst MUST be less than 255 octets. See section 5.3.3 of <span>[<a href="#I-D.irtf-cfrg-hash-to-curve" class="cite xref">I-D.irtf-cfrg-hash-to-curve</a>]</span> for guidance on using larger dst values.<a href="#section-4.2.2-2" class="pilcrow">¶</a></p>
-<p id="section-4.2.2-3"><strong>Note</strong> This operation makes use of <code>expand_message</code> defined in <span>[<a href="#I-D.irtf-cfrg-hash-to-curve" class="cite xref">I-D.irtf-cfrg-hash-to-curve</a>]</span>. The operation <code>expand_message</code> may fail (abort). In that case, <code>hash_to_scalar</code> MUST also ABORT.<a href="#section-4.2.2-3" class="pilcrow">¶</a></p>
+<p id="section-4.2.2-2">The operation takes as input an octet string representing the octet string to hash (<code>msg</code>) and a domain separation tag (<code>dst</code>). The length of the dst MUST be less than 255 octets. See section 5.3.3 of <span>[<a href="#RFC9380" class="cite xref">RFC9380</a>]</span> for guidance on using larger dst values.<a href="#section-4.2.2-2" class="pilcrow">¶</a></p>
+<p id="section-4.2.2-3"><strong>Note</strong> This operation makes use of <code>expand_message</code> defined in <span>[<a href="#RFC9380" class="cite xref">RFC9380</a>]</span>. The operation <code>expand_message</code> may fail (abort). In that case, <code>hash_to_scalar</code> MUST also ABORT.<a href="#section-4.2.2-3" class="pilcrow">¶</a></p>
 <div class="alignLeft art-text artwork" id="section-4.2.2-4">
 <pre>hashed_scalar = hash_to_scalar(msg_octets, dst)
 
@@ -3442,7 +3442,7 @@ Procedure:
         <h3 id="name-implementing-hash_to_curve_">
 <a href="#section-6.5" class="section-number selfRef">6.5. </a><a href="#name-implementing-hash_to_curve_" class="section-name selfRef">Implementing hash_to_curve_g1</a>
         </h3>
-<p id="section-6.5-1">The security analysis models hash_to_curve_g1 as random oracles.  It is crucial that these functions are implemented using a cryptographically secure hash function.  For this purpose, implementations MUST meet the requirements of <span>[<a href="#I-D.irtf-cfrg-hash-to-curve" class="cite xref">I-D.irtf-cfrg-hash-to-curve</a>]</span>.<a href="#section-6.5-1" class="pilcrow">¶</a></p>
+<p id="section-6.5-1">The security analysis models hash_to_curve_g1 as random oracles.  It is crucial that these functions are implemented using a cryptographically secure hash function.  For this purpose, implementations MUST meet the requirements of <span>[<a href="#RFC9380" class="cite xref">RFC9380</a>]</span>.<a href="#section-6.5-1" class="pilcrow">¶</a></p>
 <p id="section-6.5-2">In addition, ciphersuites MUST specify unique domain separation tags for hash_to_curve.  Some guidance around defining this can be found in <a href="#ciphersuites" class="auto internal xref">Section 7</a>.<a href="#section-6.5-2" class="pilcrow">¶</a></p>
 </section>
 </div>
@@ -3542,10 +3542,10 @@ Procedure:
               <p id="section-7.1.2-3.3.1">octet_point_length: Number of bytes to represent a point encoded as an octet string outputted by the <code>point_to_octets_E*</code> function.<a href="#section-7.1.2-3.3.1" class="pilcrow">¶</a></p>
 </li>
             <li class="normal" id="section-7.1.2-3.4">
-              <p id="section-7.1.2-3.4.1">hash_to_curve_suite: The hash-to-curve ciphersuite id, in the form defined in <span>[<a href="#I-D.irtf-cfrg-hash-to-curve" class="cite xref">I-D.irtf-cfrg-hash-to-curve</a>]</span>. This defines the hash_to_curve_g1 (the hash_to_curve operation for the G1 subgroup, see the Notation defined in <a href="#notation" class="auto internal xref">Section 1.2</a>) and the expand_message (either expand_message_xmd or expand_message_xof) operations used in this document.<a href="#section-7.1.2-3.4.1" class="pilcrow">¶</a></p>
+              <p id="section-7.1.2-3.4.1">hash_to_curve_suite: The hash-to-curve ciphersuite id, in the form defined in <span>[<a href="#RFC9380" class="cite xref">RFC9380</a>]</span>. This defines the hash_to_curve_g1 (the hash_to_curve operation for the G1 subgroup, see the Notation defined in <a href="#notation" class="auto internal xref">Section 1.2</a>) and the expand_message (either expand_message_xmd or expand_message_xof) operations used in this document.<a href="#section-7.1.2-3.4.1" class="pilcrow">¶</a></p>
 </li>
             <li class="normal" id="section-7.1.2-3.5">
-              <p id="section-7.1.2-3.5.1">expand_len: Must be defined to be at least <code>ceil((ceil(log2(r))+k)/8)</code>, where <code>log2(r)</code> and <code>k</code> are defined by each ciphersuite (see Section 5 in <span>[<a href="#I-D.irtf-cfrg-hash-to-curve" class="cite xref">I-D.irtf-cfrg-hash-to-curve</a>]</span> for a more detailed explanation of this definition).<a href="#section-7.1.2-3.5.1" class="pilcrow">¶</a></p>
+              <p id="section-7.1.2-3.5.1">expand_len: Must be defined to be at least <code>ceil((ceil(log2(r))+k)/8)</code>, where <code>log2(r)</code> and <code>k</code> are defined by each ciphersuite (see Section 5 in <span>[<a href="#RFC9380" class="cite xref">RFC9380</a>]</span> for a more detailed explanation of this definition).<a href="#section-7.1.2-3.5.1" class="pilcrow">¶</a></p>
 </li>
             <li class="normal" id="section-7.1.2-3.6">
               <p id="section-7.1.2-3.6.1">P1: A fixed point in the G1 subgroup, different from the point BP1 (i.e., the base point of G1, see <a href="#terminology" class="auto internal xref">Section 1.1</a>). This leaves the base point "free", to be used with other protocols, like key commitment and proof of possession schemes (for example, like the one described in Section 3.3 of <span>[<a href="#I-D.irtf-cfrg-bls-signature" class="cite xref">I-D.irtf-cfrg-bls-signature</a>]</span>).<a href="#section-7.1.2-3.6.1" class="pilcrow">¶</a></p>
@@ -3584,7 +3584,7 @@ a function that returns the point P in the elliptic curve E2 corresponding to th
         </h3>
 <p id="section-7.2-1">The following two ciphersuites are based on the BLS12-381 elliptic curves defined in Section 4.2.1 of <span>[<a href="#I-D.irtf-cfrg-pairing-friendly-curves" class="cite xref">I-D.irtf-cfrg-pairing-friendly-curves</a>]</span>. The targeted security level of both suites in bits is <code>k = 128</code> (the actual security leven is closer to 126 bits). The number of bits of the order <code>r</code>, of the G1 and G2 subgroups, is <code>log2(r) = 255</code>. The base points <code>BP1</code> and <code>BP2</code> of G1 and G2 are the points <code>BP</code> and <code>BP'</code> correspondingly, as defined in Section 4.2.1 of <span>[<a href="#I-D.irtf-cfrg-pairing-friendly-curves" class="cite xref">I-D.irtf-cfrg-pairing-friendly-curves</a>]</span>. For completeness, BLS12-381 and the relevant functionality (base points <code>BP1</code> and <code>BP2</code>, the pairing <code>e</code> as well as the point encoding and decoding operations) are defined in <a href="#the-bls12-381-curve" class="auto internal xref">Appendix B</a>.<a href="#section-7.2-1" class="pilcrow">¶</a></p>
 <p id="section-7.2-2">The first ciphersuite uses the hash-to-curve suite <code>BLS12381G1_XOF:SHAKE-256_SSWU_RO_</code>, defined by this document in <a href="#bls12-381-hash_to_curve-def">Appendix A.1</a>, which is based on the SHAKE-256 extendable output function, as defined in Section 6.2 of <span>[<a href="#SHA3" class="cite xref">SHA3</a>]</span>.<a href="#section-7.2-2" class="pilcrow">¶</a></p>
-<p id="section-7.2-3">The second ciphersuite uses the hash-to-curve suite <code>BLS12381G1_XMD:SHA-256_SSWU_RO_</code>, defined in Section 8.8.1 of the <span>[<a href="#I-D.irtf-cfrg-hash-to-curve" class="cite xref">I-D.irtf-cfrg-hash-to-curve</a>]</span> document, which is based on the SHA-256, as defined in Section 6.2 of <span>[<a href="#SHA2" class="cite xref">SHA2</a>]</span> .<a href="#section-7.2-3" class="pilcrow">¶</a></p>
+<p id="section-7.2-3">The second ciphersuite uses the hash-to-curve suite <code>BLS12381G1_XMD:SHA-256_SSWU_RO_</code>, defined in Section 8.8.1 of the <span>[<a href="#RFC9380" class="cite xref">RFC9380</a>]</span> document, which is based on the SHA-256, as defined in Section 6.2 of <span>[<a href="#SHA2" class="cite xref">SHA2</a>]</span> .<a href="#section-7.2-3" class="pilcrow">¶</a></p>
 <p id="section-7.2-4">For both ciphersuites defined in this section, the fixed point <code>P1</code> of G1 is defined as the output of the <code>create_generators</code> procedure defined in <a href="#generators-calculation" class="auto internal xref">Section 4.1.1</a> instantiated with the parameters defined by each ciphersuite, with the inputs <code>count = 1</code>, not supplying an <code>api_id</code> value and making use of the following "Definitions" for the <code>seed_dst</code>, <code>generator_dst</code> and <code>generator_seed</code> variables;<a href="#section-7.2-4" class="pilcrow">¶</a></p>
 <div class="alignLeft art-text artwork" id="section-7.2-5">
 <pre>- seed_dst: ciphersuite_id || "H2G_HM2S_SIG_GENERATOR_SEED_" where
@@ -3670,7 +3670,7 @@ a function that returns the point P in the elliptic curve E2 corresponding to th
               <p id="section-7.2.2-2.3.1">octet_point_length: 48, based on the RECOMMENDED approach of <code>ceil(log2(p)/8)</code>.<a href="#section-7.2.2-2.3.1" class="pilcrow">¶</a></p>
 </li>
             <li class="normal" id="section-7.2.2-2.4">
-              <p id="section-7.2.2-2.4.1">hash_to_curve_suite: "BLS12381G1_XMD:SHA-256_SSWU_RO_" as defined in Section 8.8.1 of the <span>[<a href="#I-D.irtf-cfrg-hash-to-curve" class="cite xref">I-D.irtf-cfrg-hash-to-curve</a>]</span> for the G1 subgroup.<a href="#section-7.2.2-2.4.1" class="pilcrow">¶</a></p>
+              <p id="section-7.2.2-2.4.1">hash_to_curve_suite: "BLS12381G1_XMD:SHA-256_SSWU_RO_" as defined in Section 8.8.1 of the <span>[<a href="#RFC9380" class="cite xref">RFC9380</a>]</span> for the G1 subgroup.<a href="#section-7.2.2-2.4.1" class="pilcrow">¶</a></p>
 </li>
             <li class="normal" id="section-7.2.2-2.5">
               <p id="section-7.2.2-2.5.1">expand_len: 48 ( <code>= ceil((ceil(log2(r))+k)/8)</code>)<a href="#section-7.2.2-2.5.1" class="pilcrow">¶</a></p>
@@ -4722,6 +4722,10 @@ proof = "a8da259a5ae7a9a8e5e4e809b8e7718b4d7ab913ed5781ebbff4814c762033e
         <dd>
 <span class="refAuthor">Cremers, C.</span>, <span class="refAuthor">Garratt, L.</span>, <span class="refAuthor">Smyshlyaev, S.</span>, <span class="refAuthor">Sullivan, N.</span>, and <span class="refAuthor">C. Wood</span>, <span class="refTitle">"Randomness Improvements for Security Protocols"</span>, <span class="seriesInfo">RFC 8937</span>, <span class="seriesInfo">DOI 10.17487/RFC8937</span>, <time datetime="2020-10" class="refDate">October 2020</time>, <span>&lt;<a href="https://www.rfc-editor.org/info/rfc8937">https://www.rfc-editor.org/info/rfc8937</a>&gt;</span>. </dd>
 <dd class="break"></dd>
+<dt id="RFC9380">[RFC9380]</dt>
+        <dd>
+<span class="refAuthor">Faz-Hernandez, A.</span>, <span class="refAuthor">Scott, S.</span>, <span class="refAuthor">Sullivan, N.</span>, <span class="refAuthor">Wahby, R. S.</span>, and <span class="refAuthor">C. A. Wood</span>, <span class="refTitle">"Hashing to Elliptic Curves"</span>, <span class="seriesInfo">RFC 9380</span>, <span class="seriesInfo">DOI 10.17487/RFC9380</span>, <time datetime="2023-08" class="refDate">August 2023</time>, <span>&lt;<a href="https://www.rfc-editor.org/info/rfc9380">https://www.rfc-editor.org/info/rfc9380</a>&gt;</span>. </dd>
+<dd class="break"></dd>
 <dt id="SHA2">[SHA2]</dt>
         <dd>
 <span class="refAuthor">NIST</span>, <span class="refTitle">"Secure Hash Standard (SHS)"</span>, <span>&lt;<a href="https://nvlpubs.nist.gov/nistpubs/FIPS/NIST.FIPS.180-4.pdf">https://nvlpubs.nist.gov/nistpubs/FIPS/NIST.FIPS.180-4.pdf</a>&gt;</span>. </dd>
@@ -4841,8 +4845,8 @@ proof = "a8da259a5ae7a9a8e5e4e809b8e7718b4d7ab913ed5781ebbff4814c762033e
       <h2 id="name-bls12-381-hash_to_curve-def">
 <a href="#appendix-A" class="section-number selfRef">Appendix A. </a><a href="#name-bls12-381-hash_to_curve-def" class="section-name selfRef">BLS12-381 hash_to_curve Definition Using SHAKE-256</a>
       </h2>
-<p id="appendix-A-1">The following defines a hash_to_curve suite <span>[<a href="#I-D.irtf-cfrg-hash-to-curve" class="cite xref">I-D.irtf-cfrg-hash-to-curve</a>]</span> for the BLS12-381 curve for both the G1 and G2 subgroups using the extendable output function (xof) of SHAKE-256 as per the guidance defined in section 8.9 of <span>[<a href="#I-D.irtf-cfrg-hash-to-curve" class="cite xref">I-D.irtf-cfrg-hash-to-curve</a>]</span>.<a href="#appendix-A-1" class="pilcrow">¶</a></p>
-<p id="appendix-A-2">Note the notation used in the below definitions is sourced from <span>[<a href="#I-D.irtf-cfrg-hash-to-curve" class="cite xref">I-D.irtf-cfrg-hash-to-curve</a>]</span>.<a href="#appendix-A-2" class="pilcrow">¶</a></p>
+<p id="appendix-A-1">The following defines a hash_to_curve suite <span>[<a href="#RFC9380" class="cite xref">RFC9380</a>]</span> for the BLS12-381 curve for both the G1 and G2 subgroups using the extendable output function (xof) of SHAKE-256 as per the guidance defined in section 8.9 of <span>[<a href="#RFC9380" class="cite xref">RFC9380</a>]</span>.<a href="#appendix-A-1" class="pilcrow">¶</a></p>
+<p id="appendix-A-2">Note the notation used in the below definitions is sourced from <span>[<a href="#RFC9380" class="cite xref">RFC9380</a>]</span>.<a href="#appendix-A-2" class="pilcrow">¶</a></p>
 <div id="bls12-381-g1">
 <section id="appendix-A.1">
         <h3 id="name-bls12-381-g1">
@@ -4851,7 +4855,7 @@ proof = "a8da259a5ae7a9a8e5e4e809b8e7718b4d7ab913ed5781ebbff4814c762033e
 <p id="appendix-A.1-1">The suite of <code>BLS12381G1_XOF:SHAKE-256_SSWU_RO_</code> is defined as follows:<a href="#appendix-A.1-1" class="pilcrow">¶</a></p>
 <div class="alignLeft art-text artwork" id="appendix-A.1-2">
 <pre>* encoding type: hash_to_curve (Section 3 of
-                 [@!I-D.irtf-cfrg-hash-to-curve])
+                 [@!RFC9380])
 
 * E: y^2 = x^3 + 4
 
@@ -4865,14 +4869,14 @@ proof = "a8da259a5ae7a9a8e5e4e809b8e7718b4d7ab913ed5781ebbff4814c762033e
 * k: 128
 
 * expand_message: expand_message_xof (Section 5.3.2 of
-                  [@!I-D.irtf-cfrg-hash-to-curve])
+                  [@!RFC9380])
 
 * hash: SHAKE-256
 
 * L: 64
 
 * f: Simplified SWU for AB == 0 (Section 6.6.3 of
-     [@!I-D.irtf-cfrg-hash-to-curve])
+     [@!RFC9380])
 
 * Z: 11
 
@@ -4885,14 +4889,14 @@ proof = "a8da259a5ae7a9a8e5e4e809b8e7718b4d7ab913ed5781ebbff4814c762033e
                 cef35ef55a23215a316ceaa5d1cc48e98e172be0
 
 *  iso_map: the 11-isogeny map from E' to E given in Appendix E.2 of
-            [@!I-D.irtf-cfrg-hash-to-curve]
+            [@!RFC9380]
 
 *  h_eff: 0xd201000000010001
 
 </pre><a href="#appendix-A.1-2" class="pilcrow">¶</a>
 </div>
-<p id="appendix-A.1-3">Note that the h_eff values for this suite are copied from that defined for the <code>BLS12381G1_XMD:SHA-256_SSWU_RO_</code> suite defined in section 8.8.1 of <span>[<a href="#I-D.irtf-cfrg-hash-to-curve" class="cite xref">I-D.irtf-cfrg-hash-to-curve</a>]</span>.<a href="#appendix-A.1-3" class="pilcrow">¶</a></p>
-<p id="appendix-A.1-4">An optimized example implementation of the Simplified SWU mapping to the curve E' isogenous to BLS12-381 G1 is given in Appendix F.2 <span>[<a href="#I-D.irtf-cfrg-hash-to-curve" class="cite xref">I-D.irtf-cfrg-hash-to-curve</a>]</span>.<a href="#appendix-A.1-4" class="pilcrow">¶</a></p>
+<p id="appendix-A.1-3">Note that the <code>h_eff</code> values for this suite are copied from that defined for the <code>BLS12381G1_XMD:SHA-256_SSWU_RO_</code> suite defined in section 8.8.1 of <span>[<a href="#RFC9380" class="cite xref">RFC9380</a>]</span>.<a href="#appendix-A.1-3" class="pilcrow">¶</a></p>
+<p id="appendix-A.1-4">An optimized example implementation of the Simplified SWU mapping to the curve E' isogenous to BLS12-381 G1 is given in Appendix F.2 <span>[<a href="#RFC9380" class="cite xref">RFC9380</a>]</span>.<a href="#appendix-A.1-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 </section>

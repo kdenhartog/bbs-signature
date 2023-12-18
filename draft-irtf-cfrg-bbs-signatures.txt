@@ -366,11 +366,10 @@ Table of Contents
       G1, G2, and GT subgroups respectively.
    hash_to_curve_g1(ostr, dst) -> P  A cryptographic hash function that
       takes an arbitrary octet string as input and returns a point in
-      G1, using the hash_to_curve operation defined in
-      [I-D.irtf-cfrg-hash-to-curve] and the inputted dst as the domain
-      separation tag for that operation (more specifically, the inputted
-      dst will become the DST parameter for the hash_to_field operation,
-      called by hash_to_curve).
+      G1, using the hash_to_curve operation defined in [RFC9380] and the
+      inputted dst as the domain separation tag for that operation (more
+      specifically, the inputted dst will become the DST parameter for
+      the hash_to_field operation, called by hash_to_curve).
    point_to_octets_E1(P) -> ostr, point_to_octets_E2(P) -> ostr  returns
       the canonical representation of the point P of the elliptic curve
       E1 or E2 as an octet string.  This operation is also known as
@@ -426,8 +425,8 @@ Table of Contents
    *  A pairing-friendly elliptic curve, plus associated functionality
       given in Section 1.2.
 
-   *  A hash-to-curve suite as defined in [I-D.irtf-cfrg-hash-to-curve],
-      using the aforementioned pairing-friendly curve.  This defines the
+   *  A hash-to-curve suite as defined in [RFC9380], using the
+      aforementioned pairing-friendly curve.  This defines the
       hash_to_curve and expand_message operations, used by this
       document.
 
@@ -1589,12 +1588,11 @@ Procedure:
 
    The create_generators procedure defines how to create a set of
    randomly sampled points from the G1 subgroup, called the generators.
-   It makes use of the primitives defined in
-   [I-D.irtf-cfrg-hash-to-curve] (more specifically of hash_to_curve and
-   expand_message) to hash a seed to a set of generators.  Those
-   primitives are implicitly defined by the ciphersuite, through the
-   choice of a hash-to-curve suite (see the hash_to_curve_suite
-   parameter in Section 7.1).
+   It makes use of the primitives defined in [RFC9380] (more
+   specifically of hash_to_curve and expand_message) to hash a seed to a
+   set of generators.  Those primitives are implicitly defined by the
+   ciphersuite, through the choice of a hash-to-curve suite (see the
+   hash_to_curve_suite parameter in Section 7.1).
 
    Since create_generators generates constant points, as an
    optimization, implementations MAY cache its result for a specific
@@ -1822,12 +1820,11 @@ Procedure:
    The operation takes as input an octet string representing the octet
    string to hash (msg) and a domain separation tag (dst).  The length
    of the dst MUST be less than 255 octets.  See section 5.3.3 of
-   [I-D.irtf-cfrg-hash-to-curve] for guidance on using larger dst
-   values.
+   [RFC9380] for guidance on using larger dst values.
 
    *Note* This operation makes use of expand_message defined in
-   [I-D.irtf-cfrg-hash-to-curve].  The operation expand_message may fail
-   (abort).  In that case, hash_to_scalar MUST also ABORT.
+   [RFC9380].  The operation expand_message may fail (abort).  In that
+   case, hash_to_scalar MUST also ABORT.
 
  hashed_scalar = hash_to_scalar(msg_octets, dst)
 
@@ -2339,8 +2336,7 @@ Procedure:
    The security analysis models hash_to_curve_g1 as random oracles.  It
    is crucial that these functions are implemented using a
    cryptographically secure hash function.  For this purpose,
-   implementations MUST meet the requirements of
-   [I-D.irtf-cfrg-hash-to-curve].
+   implementations MUST meet the requirements of [RFC9380].
 
    In addition, ciphersuites MUST specify unique domain separation tags
    for hash_to_curve.  Some guidance around defining this can be found
@@ -2551,16 +2547,16 @@ Procedure:
       as an octet string outputted by the point_to_octets_E* function.
 
    *  hash_to_curve_suite: The hash-to-curve ciphersuite id, in the form
-      defined in [I-D.irtf-cfrg-hash-to-curve].  This defines the
-      hash_to_curve_g1 (the hash_to_curve operation for the G1 subgroup,
-      see the Notation defined in Section 1.2) and the expand_message
-      (either expand_message_xmd or expand_message_xof) operations used
-      in this document.
+      defined in [RFC9380].  This defines the hash_to_curve_g1 (the
+      hash_to_curve operation for the G1 subgroup, see the Notation
+      defined in Section 1.2) and the expand_message (either
+      expand_message_xmd or expand_message_xof) operations used in this
+      document.
 
    *  expand_len: Must be defined to be at least
       ceil((ceil(log2(r))+k)/8), where log2(r) and k are defined by each
-      ciphersuite (see Section 5 in [I-D.irtf-cfrg-hash-to-curve] for a
-      more detailed explanation of this definition).
+      ciphersuite (see Section 5 in [RFC9380] for a more detailed
+      explanation of this definition).
 
    *  P1: A fixed point in the G1 subgroup, different from the point BP1
       (i.e., the base point of G1, see Section 1.1).  This leaves the
@@ -2612,8 +2608,8 @@ Procedure:
 
    The second ciphersuite uses the hash-to-curve suite
    BLS12381G1_XMD:SHA-256_SSWU_RO_, defined in Section 8.8.1 of the
-   [I-D.irtf-cfrg-hash-to-curve] document, which is based on the SHA-
-   256, as defined in Section 6.2 of [SHA2] .
+   [RFC9380] document, which is based on the SHA-256, as defined in
+   Section 6.2 of [SHA2] .
 
    For both ciphersuites defined in this section, the fixed point P1 of
    G1 is defined as the output of the create_generators procedure
@@ -2710,8 +2706,7 @@ Procedure:
       ceil(log2(p)/8).
 
    *  hash_to_curve_suite: "BLS12381G1_XMD:SHA-256_SSWU_RO_" as defined
-      in Section 8.8.1 of the [I-D.irtf-cfrg-hash-to-curve] for the G1
-      subgroup.
+      in Section 8.8.1 of the [RFC9380] for the G1 subgroup.
 
    *  expand_len: 48 ( = ceil((ceil(log2(r))+k)/8))
 
@@ -3658,6 +3653,11 @@ proof = "a8da259a5ae7a9a8e5e4e809b8e7718b4d7ab913ed5781ebbff4814c762033e
               Protocols", RFC 8937, DOI 10.17487/RFC8937, October 2020,
               <https://www.rfc-editor.org/info/rfc8937>.
 
+   [RFC9380]  Faz-Hernandez, A., Scott, S., Sullivan, N., Wahby, R. S.,
+              and C. A. Wood, "Hashing to Elliptic Curves", RFC 9380,
+              DOI 10.17487/RFC9380, August 2023,
+              <https://www.rfc-editor.org/info/rfc9380>.
+
    [SHA2]     NIST, "Secure Hash Standard (SHS)",
               <https://nvlpubs.nist.gov/nistpubs/FIPS/
               NIST.FIPS.180-4.pdf>.
@@ -3808,21 +3808,20 @@ proof = "a8da259a5ae7a9a8e5e4e809b8e7718b4d7ab913ed5781ebbff4814c762033e
 
 Appendix A.  BLS12-381 hash_to_curve Definition Using SHAKE-256
 
-   The following defines a hash_to_curve suite
-   [I-D.irtf-cfrg-hash-to-curve] for the BLS12-381 curve for both the G1
-   and G2 subgroups using the extendable output function (xof) of
-   SHAKE-256 as per the guidance defined in section 8.9 of
-   [I-D.irtf-cfrg-hash-to-curve].
+   The following defines a hash_to_curve suite [RFC9380] for the
+   BLS12-381 curve for both the G1 and G2 subgroups using the extendable
+   output function (xof) of SHAKE-256 as per the guidance defined in
+   section 8.9 of [RFC9380].
 
    Note the notation used in the below definitions is sourced from
-   [I-D.irtf-cfrg-hash-to-curve].
+   [RFC9380].
 
 A.1.  BLS12-381 G1
 
    The suite of BLS12381G1_XOF:SHAKE-256_SSWU_RO_ is defined as follows:
 
 * encoding type: hash_to_curve (Section 3 of
-                 [@!I-D.irtf-cfrg-hash-to-curve])
+                 [@!RFC9380])
 
 * E: y^2 = x^3 + 4
 
@@ -3836,14 +3835,14 @@ A.1.  BLS12-381 G1
 * k: 128
 
 * expand_message: expand_message_xof (Section 5.3.2 of
-                  [@!I-D.irtf-cfrg-hash-to-curve])
+                  [@!RFC9380])
 
 * hash: SHAKE-256
 
 * L: 64
 
 * f: Simplified SWU for AB == 0 (Section 6.6.3 of
-     [@!I-D.irtf-cfrg-hash-to-curve])
+     [@!RFC9380])
 
 * Z: 11
 
@@ -3856,17 +3855,17 @@ A.1.  BLS12-381 G1
                 cef35ef55a23215a316ceaa5d1cc48e98e172be0
 
 *  iso_map: the 11-isogeny map from E' to E given in Appendix E.2 of
-            [@!I-D.irtf-cfrg-hash-to-curve]
+            [@!RFC9380]
 
 *  h_eff: 0xd201000000010001
 
    Note that the h_eff values for this suite are copied from that
    defined for the BLS12381G1_XMD:SHA-256_SSWU_RO_ suite defined in
-   section 8.8.1 of [I-D.irtf-cfrg-hash-to-curve].
+   section 8.8.1 of [RFC9380].
 
    An optimized example implementation of the Simplified SWU mapping to
    the curve E' isogenous to BLS12-381 G1 is given in Appendix F.2
-   [I-D.irtf-cfrg-hash-to-curve].
+   [RFC9380].
 
 Appendix B.  The BLS12-381 Curve
 
