@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2023-12-17T00:10:21.991048+00:00",
+  "timestamp": "2023-12-19T00:09:32.252887+00:00",
   "repo": "decentralized-identity/bbs-signature",
   "labels": [
     {
@@ -4288,13 +4288,16 @@
       "state": "OPEN",
       "author": "alessandroguggino",
       "authorAssociation": "CONTRIBUTOR",
-      "assignees": [],
+      "assignees": [
+        "BasileiosKal"
+      ],
       "labels": [
+        "pending-close",
         "blind-sign-extension"
       ],
       "body": "I found something new from the Blind signature extension. I know that you are now focused on the core draft but I leave it here :)\r\n\r\nIn `BlindMessagesProofGen`:\r\nhttps://github.com/decentralized-identity/bbs-signature/blob/5fba426d415b85b6156a0c001e605482bdf3b770/draft-blind-bbs-signatures.md?plain=1#L249\r\nIn `BlindMessagesProofVerify`:\r\nhttps://github.com/decentralized-identity/bbs-signature/blob/5fba426d415b85b6156a0c001e605482bdf3b770/draft-blind-bbs-signatures.md?plain=1#L284\r\n\r\nThe values in `c` and `cv` are inconsistent: we should decide which one to follow.\r\n1) `c = hash(U || U~ || nonce)` and `cv = hash(U || U^ || nonce)` + add `U` (known messages) as input parameter in _BlindMessagesProofVerify_\r\n**or**\r\n2) `c = hash(commitment || U~ || nonce)` and `cv = hash(commitment || U^ || nonce)`\r\n\r\nP.S. I'm going to open a pull request to remove the unuseful escape chars and, if you want, update the draft to snake_case notation",
       "createdAt": "2022-05-11T08:25:05Z",
-      "updatedAt": "2022-05-11T09:02:36Z",
+      "updatedAt": "2023-12-18T19:51:34Z",
       "closedAt": null,
       "comments": [
         {
@@ -6642,7 +6645,7 @@
       "id": "I_kwDOF8lax85ryK3Y",
       "title": "Need to add new paper as reference",
       "url": "https://github.com/decentralized-identity/bbs-signature/issues/279",
-      "state": "OPEN",
+      "state": "CLOSED",
       "author": "Wind4Greg",
       "authorAssociation": "NONE",
       "assignees": [],
@@ -6652,9 +6655,17 @@
       ],
       "body": "We need the new IACR/Eurocrypt paper as a reference since this is the basis for our algorithms now.",
       "createdAt": "2023-07-17T18:09:37Z",
-      "updatedAt": "2023-07-31T18:12:32Z",
-      "closedAt": null,
-      "comments": []
+      "updatedAt": "2023-12-18T19:45:12Z",
+      "closedAt": "2023-12-18T19:45:12Z",
+      "comments": [
+        {
+          "author": "BasileiosKal",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "Discussed on the WG call at the 18th of Dec. Closing as resolved.",
+          "createdAt": "2023-12-18T19:45:12Z",
+          "updatedAt": "2023-12-18T19:45:12Z"
+        }
+      ]
     },
     {
       "number": 280,
@@ -6692,15 +6703,15 @@
       "id": "I_kwDOF8lax85u2e6E",
       "title": "Update hash-to-curve reference",
       "url": "https://github.com/decentralized-identity/bbs-signature/issues/283",
-      "state": "OPEN",
+      "state": "CLOSED",
       "author": "andrewwhitehead",
       "authorAssociation": "CONTRIBUTOR",
       "assignees": [],
       "labels": [],
       "body": "It's an RFC now: https://datatracker.ietf.org/doc/rfc9380/",
       "createdAt": "2023-08-21T16:56:57Z",
-      "updatedAt": "2023-08-21T16:56:57Z",
-      "closedAt": null,
+      "updatedAt": "2023-12-18T22:24:09Z",
+      "closedAt": "2023-12-18T22:24:09Z",
       "comments": []
     },
     {
@@ -6724,15 +6735,15 @@
       "id": "I_kwDOF8lax85xLB26",
       "title": "Use non-zero scalars",
       "url": "https://github.com/decentralized-identity/bbs-signature/issues/285",
-      "state": "OPEN",
+      "state": "CLOSED",
       "author": "BasileiosKal",
       "authorAssociation": "CONTRIBUTOR",
       "assignees": [],
       "labels": [],
       "body": "R.n. in the document we describe inputs (like messages, parts of the signature etc) as \"Scalars\". We should require them to be non-zero though.\r\n\r\nChanging the `scalar` to `non-zero scalar` in the inputs description is probably enough?? (i.e., no need to add the explicit tests during the operation).",
       "createdAt": "2023-09-15T16:05:39Z",
-      "updatedAt": "2023-10-23T18:41:03Z",
-      "closedAt": null,
+      "updatedAt": "2023-12-18T19:34:50Z",
+      "closedAt": "2023-12-18T19:34:50Z",
       "comments": [
         {
           "author": "BasileiosKal",
@@ -6740,6 +6751,13 @@
           "body": "Discussed on the WG call at the 23rd of Oct. Will need points the non zero check needs to happen.",
           "createdAt": "2023-10-23T18:41:02Z",
           "updatedAt": "2023-10-23T18:41:02Z"
+        },
+        {
+          "author": "BasileiosKal",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "Discussed on the WG call 18th of Dec. Closing as resolved.",
+          "createdAt": "2023-12-18T19:34:50Z",
+          "updatedAt": "2023-12-18T19:34:50Z"
         }
       ]
     },
@@ -6788,15 +6806,15 @@
       "id": "I_kwDOF8lax852V10F",
       "title": "Serialize returns INVALID",
       "url": "https://github.com/decentralized-identity/bbs-signature/issues/295",
-      "state": "OPEN",
+      "state": "CLOSED",
       "author": "rolfhaenni",
       "authorAssociation": "NONE",
       "assignees": [],
       "labels": [],
       "body": "The serialize() algorithm in Section 4.2.4.1 does not include the case where an element of the input array is a string.\r\nHowever, exactly this happens in Lines 4 of coreSign(), where the string comm passed as input value to serialize(). Therefore, currently serialize() would return the value INVALID. Besides, the commitment is missing in Line 2 of CoreVerify().\r\n",
       "createdAt": "2023-11-09T11:36:43Z",
-      "updatedAt": "2023-12-04T20:34:27Z",
-      "closedAt": null,
+      "updatedAt": "2023-12-18T19:31:09Z",
+      "closedAt": "2023-12-18T19:31:09Z",
       "comments": [
         {
           "author": "BasileiosKal",
@@ -6804,6 +6822,13 @@
           "body": "This is absolutely correct! Resolved by [PR 297](https://github.com/decentralized-identity/bbs-signature/pull/297). The `commitment` value is removed since it did not seem to serve much its original purpose, which was to support Blind BBS Signatures, now [its own document](https://github.com/decentralized-identity/bbs-signature/issues/292).\r\n\r\nThank you for raising the issue! Will mark it as resolved and close it if there are no objections.",
           "createdAt": "2023-12-04T20:34:26Z",
           "updatedAt": "2023-12-04T20:34:26Z"
+        },
+        {
+          "author": "BasileiosKal",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "Discussed on WG call at the 18th of Dec. Closing as resolved.",
+          "createdAt": "2023-12-18T19:31:09Z",
+          "updatedAt": "2023-12-18T19:31:09Z"
         }
       ]
     }
@@ -35357,25 +35382,35 @@
       "id": "PR_kwDOF8lax85g_wIE",
       "title": "More editorial updates",
       "url": "https://github.com/decentralized-identity/bbs-signature/pull/301",
-      "state": "OPEN",
+      "state": "MERGED",
       "author": "BasileiosKal",
       "authorAssociation": "CONTRIBUTOR",
       "assignees": [],
       "labels": [],
       "body": "Consistency corrections.",
       "createdAt": "2023-12-03T23:40:43Z",
-      "updatedAt": "2023-12-16T20:39:37Z",
+      "updatedAt": "2023-12-18T19:17:56Z",
       "baseRepository": "decentralized-identity/bbs-signature",
       "baseRefName": "main",
       "baseRefOid": "6cfa6a8ba1c38ed735c300c70be4f22099d73ee9",
       "headRepository": "decentralized-identity/bbs-signature",
       "headRefName": "vasilis/edits",
-      "headRefOid": "ddac8b6b8c2a4dfc49a163d952449776edd9041d",
-      "closedAt": null,
-      "mergedAt": null,
-      "mergedBy": null,
-      "mergeCommit": null,
-      "comments": [],
+      "headRefOid": "7e91db81a67988d388f6c749341757d1cabfb58f",
+      "closedAt": "2023-12-18T19:17:56Z",
+      "mergedAt": "2023-12-18T19:17:56Z",
+      "mergedBy": "BasileiosKal",
+      "mergeCommit": {
+        "oid": "3bd6abe382095a4a8317a8d5a71023c8e9183924"
+      },
+      "comments": [
+        {
+          "author": "BasileiosKal",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "Discussed on the WG call at the 18th of Dec. Multiple approvals. Merging.",
+          "createdAt": "2023-12-18T19:17:53Z",
+          "updatedAt": "2023-12-18T19:17:53Z"
+        }
+      ],
       "reviews": [
         {
           "id": "PRR_kwDOF8lax85pGO6I",
@@ -35421,6 +35456,52 @@
           "body": "",
           "createdAt": "2023-12-12T00:51:50Z",
           "updatedAt": "2023-12-12T00:51:50Z",
+          "comments": []
+        },
+        {
+          "id": "PRR_kwDOF8lax85qh_TQ",
+          "commit": {
+            "abbreviatedOid": "8ce7627"
+          },
+          "author": "Wind4Greg",
+          "authorAssociation": "NONE",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2023-12-18T16:36:48Z",
+          "updatedAt": "2023-12-18T16:36:48Z",
+          "comments": []
+        },
+        {
+          "id": "PRR_kwDOF8lax85qi-0z",
+          "commit": {
+            "abbreviatedOid": "8ce7627"
+          },
+          "author": "andrewwhitehead",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2023-12-18T19:16:23Z",
+          "updatedAt": "2023-12-18T19:16:23Z",
+          "comments": [
+            {
+              "originalPosition": 904,
+              "body": "```suggestion\r\nwhich is exactly what [Verify](#signature-verification-verify) checks for `A = Abar * r1'`. So seting `A = Abar * r1'`, the values `A`, `e`, `B` will form a valid BBS signature. Note that the verifier doesn't know `r1'`, `e` or all the values to compute `B`. However, they know that the Prover knows them, and as we saw above, knowledge of those values means knowledge of a valid signature on (among others) the disclosed messages.\r\n```",
+              "createdAt": "2023-12-18T19:16:23Z",
+              "updatedAt": "2023-12-18T19:16:23Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOF8lax85qi-9_",
+          "commit": {
+            "abbreviatedOid": "8ce7627"
+          },
+          "author": "andrewwhitehead",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2023-12-18T19:16:46Z",
+          "updatedAt": "2023-12-18T19:16:46Z",
           "comments": []
         }
       ]
@@ -35603,18 +35684,26 @@
       "labels": [],
       "body": "Based on the new proof from #288",
       "createdAt": "2023-12-11T10:59:49Z",
-      "updatedAt": "2023-12-16T20:56:01Z",
+      "updatedAt": "2023-12-18T21:59:37Z",
       "baseRepository": "decentralized-identity/bbs-signature",
       "baseRefName": "main",
-      "baseRefOid": "6cfa6a8ba1c38ed735c300c70be4f22099d73ee9",
+      "baseRefOid": "3bd6abe382095a4a8317a8d5a71023c8e9183924",
       "headRepository": "decentralized-identity/bbs-signature",
       "headRefName": "vasilis/appendix-d",
-      "headRefOid": "0caa45128c98cbf509a9e7766460f785c8944d0c",
+      "headRefOid": "87f7847860d1e6089c33413af01e785e52ae977f",
       "closedAt": null,
       "mergedAt": null,
       "mergedBy": null,
       "mergeCommit": null,
-      "comments": [],
+      "comments": [
+        {
+          "author": "BasileiosKal",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "Discussed on the WG call at the 18th of Dec. Conflicts need resolving.",
+          "createdAt": "2023-12-18T19:21:53Z",
+          "updatedAt": "2023-12-18T19:21:53Z"
+        }
+      ],
       "reviews": [
         {
           "id": "PRR_kwDOF8lax85p2ulV",
@@ -35655,6 +35744,59 @@
               "updatedAt": "2023-12-11T18:57:13Z"
             }
           ]
+        },
+        {
+          "id": "PRR_kwDOF8lax85qiE1y",
+          "commit": {
+            "abbreviatedOid": "03c5e16"
+          },
+          "author": "Wind4Greg",
+          "authorAssociation": "NONE",
+          "state": "APPROVED",
+          "body": "Nice write up!",
+          "createdAt": "2023-12-18T16:49:50Z",
+          "updatedAt": "2023-12-18T16:49:50Z",
+          "comments": []
+        },
+        {
+          "id": "PRR_kwDOF8lax85qi_4y",
+          "commit": {
+            "abbreviatedOid": "03c5e16"
+          },
+          "author": "andrewwhitehead",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2023-12-18T19:19:37Z",
+          "updatedAt": "2023-12-18T19:19:37Z",
+          "comments": [
+            {
+              "originalPosition": 42,
+              "body": "```suggestion\r\n- Prove possession of a valid signature. As defined above, a signature `(A, e)`, on messages `msg_1, ..., msg_L` is valid if `A = B * 1/(e + SK)`, where `B` as in \\[1\\]. However, the Prover cannot reveal neither `A`, `e` nor `B` to the Verifier (signature is uniquely identifiable and `B` will reveal information about the signed messages, even the undisclosed ones). To get around this, the Prover needs to hide the signature `(A, e)` and the value of `B`, in a way that will allow proving knowledge of such elements with the aforementioned relationship (i.e., that `A = B * 1/(e + SK)`), without revealing their value. We do this by randomizing them. To do that, they take uniformly random `r1, r2` in `[1, r-1]`, and calculate,\r\n```",
+              "createdAt": "2023-12-18T19:19:37Z",
+              "updatedAt": "2023-12-18T19:19:38Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOF8lax85qjAdo",
+          "commit": {
+            "abbreviatedOid": "03c5e16"
+          },
+          "author": "andrewwhitehead",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2023-12-18T19:21:26Z",
+          "updatedAt": "2023-12-18T19:21:26Z",
+          "comments": [
+            {
+              "originalPosition": 101,
+              "body": "```suggestion\r\nTo sum up; in order to validate the proof, a Verifier checks that `e(Abar, PK) = e(Bbar, BP2)` and verifies the `nizk`. Validating the proof will guarantee the authenticity and integrity of the disclosed messages, as well as knowledge of the undisclosed messages and of the signature.\r\n```",
+              "createdAt": "2023-12-18T19:21:26Z",
+              "updatedAt": "2023-12-18T19:21:26Z"
+            }
+          ]
         }
       ]
     },
@@ -35663,24 +35805,26 @@
       "id": "PR_kwDOF8lax85h7QfK",
       "title": "Making Pairing Friendly Curves draft reference informative",
       "url": "https://github.com/decentralized-identity/bbs-signature/pull/305",
-      "state": "OPEN",
+      "state": "MERGED",
       "author": "BasileiosKal",
       "authorAssociation": "CONTRIBUTOR",
       "assignees": [],
       "labels": [],
       "body": "Redefine the relative functionality from [Pairing-Friendly Curves](https://datatracker.ietf.org/doc/draft-irtf-cfrg-pairing-friendly-curves/) in this draft.",
       "createdAt": "2023-12-13T18:24:01Z",
-      "updatedAt": "2023-12-16T20:07:12Z",
+      "updatedAt": "2023-12-18T22:19:23Z",
       "baseRepository": "decentralized-identity/bbs-signature",
       "baseRefName": "main",
-      "baseRefOid": "20c42d566583c3aed4b99b3386a4c19cfc42c3c4",
+      "baseRefOid": "3bd6abe382095a4a8317a8d5a71023c8e9183924",
       "headRepository": "decentralized-identity/bbs-signature",
       "headRefName": "vasilis/rm-pairing-friendly-curves-id",
-      "headRefOid": "ce1e38f3cb66052c19336e8a545638edbb5e3ca9",
-      "closedAt": null,
-      "mergedAt": null,
-      "mergedBy": null,
-      "mergeCommit": null,
+      "headRefOid": "b398c96b3d53b6cbb9695bfa7bea8498e730b3ec",
+      "closedAt": "2023-12-18T22:19:23Z",
+      "mergedAt": "2023-12-18T22:19:23Z",
+      "mergedBy": "BasileiosKal",
+      "mergeCommit": {
+        "oid": "cd87c8ddbe129e7f8ff45371485ea0d1d6ea80b1"
+      },
       "comments": [
         {
           "author": "BasileiosKal",
@@ -35688,6 +35832,20 @@
           "body": "> even an informative reference to an expired ID will probably cause problems.\r\n\r\nThat's true, but it is not \"forbidden\" (see the [bls sigs](https://datatracker.ietf.org/doc/html/draft-irtf-cfrg-bls-signature-05) reference to the [h2c rfc](https://www.rfc-editor.org/rfc/rfc9380.html#I-D.irtf-cfrg-bls-signature)). Even a normative reference is not an issue for the crypto panel review phase (it will certainly be a problem in later stages though).",
           "createdAt": "2023-12-16T20:07:11Z",
           "updatedAt": "2023-12-16T20:07:11Z"
+        },
+        {
+          "author": "BasileiosKal",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "Discussed on the WG call at the 18th of Dec. Will resolve conflicts and merge after that.",
+          "createdAt": "2023-12-18T19:25:22Z",
+          "updatedAt": "2023-12-18T19:25:22Z"
+        },
+        {
+          "author": "BasileiosKal",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "Conflicts resolved. Multiple approvals. Merging. Thank you all!",
+          "createdAt": "2023-12-18T22:19:15Z",
+          "updatedAt": "2023-12-18T22:19:15Z"
         }
       ],
       "reviews": [
@@ -35703,6 +35861,45 @@
           "createdAt": "2023-12-13T19:09:01Z",
           "updatedAt": "2023-12-13T19:09:01Z",
           "comments": []
+        },
+        {
+          "id": "PRR_kwDOF8lax85qiBSM",
+          "commit": {
+            "abbreviatedOid": "ce1e38f"
+          },
+          "author": "Wind4Greg",
+          "authorAssociation": "NONE",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2023-12-18T16:41:28Z",
+          "updatedAt": "2023-12-18T16:41:28Z",
+          "comments": []
+        },
+        {
+          "id": "PRR_kwDOF8lax85qi9RK",
+          "commit": {
+            "abbreviatedOid": "ce1e38f"
+          },
+          "author": "andrewwhitehead",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2023-12-18T19:11:35Z",
+          "updatedAt": "2023-12-18T19:11:35Z",
+          "comments": []
+        },
+        {
+          "id": "PRR_kwDOF8lax85qjCil",
+          "commit": {
+            "abbreviatedOid": "ce1e38f"
+          },
+          "author": "selfissued",
+          "authorAssociation": "NONE",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2023-12-18T19:27:31Z",
+          "updatedAt": "2023-12-18T19:27:31Z",
+          "comments": []
         }
       ]
     },
@@ -35711,26 +35908,130 @@
       "id": "PR_kwDOF8lax85iLOex",
       "title": "Reference h2c as an RFC",
       "url": "https://github.com/decentralized-identity/bbs-signature/pull/306",
-      "state": "OPEN",
+      "state": "MERGED",
       "author": "BasileiosKal",
       "authorAssociation": "CONTRIBUTOR",
       "assignees": [],
       "labels": [],
       "body": "",
       "createdAt": "2023-12-16T21:07:52Z",
-      "updatedAt": "2023-12-16T21:07:52Z",
+      "updatedAt": "2023-12-18T22:24:09Z",
       "baseRepository": "decentralized-identity/bbs-signature",
       "baseRefName": "main",
-      "baseRefOid": "6cfa6a8ba1c38ed735c300c70be4f22099d73ee9",
+      "baseRefOid": "3bd6abe382095a4a8317a8d5a71023c8e9183924",
       "headRepository": "decentralized-identity/bbs-signature",
       "headRefName": "vasilis/h2c-rfc",
-      "headRefOid": "55fc1ade1af1fc6a899d15f85996c995716f90e1",
+      "headRefOid": "0b78cae7582c4720880bd460256e21cfdddc9e62",
+      "closedAt": "2023-12-18T22:24:09Z",
+      "mergedAt": "2023-12-18T22:24:09Z",
+      "mergedBy": "BasileiosKal",
+      "mergeCommit": {
+        "oid": "05411383bcf867af786f7b9b194b077aab36ccf3"
+      },
+      "comments": [
+        {
+          "author": "BasileiosKal",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "Discussed on the WG call at the 18th of Dec. Will resolve the conflicts and merge.",
+          "createdAt": "2023-12-18T19:26:30Z",
+          "updatedAt": "2023-12-18T19:26:30Z"
+        },
+        {
+          "author": "BasileiosKal",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "Resolved conflicts. Multiple approvals. Merging. Thank you everybody!",
+          "createdAt": "2023-12-18T22:24:02Z",
+          "updatedAt": "2023-12-18T22:24:02Z"
+        }
+      ],
+      "reviews": [
+        {
+          "id": "PRR_kwDOF8lax85qh_tf",
+          "commit": {
+            "abbreviatedOid": "55fc1ad"
+          },
+          "author": "Wind4Greg",
+          "authorAssociation": "NONE",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2023-12-18T16:37:47Z",
+          "updatedAt": "2023-12-18T16:37:47Z",
+          "comments": []
+        },
+        {
+          "id": "PRR_kwDOF8lax85qi9-I",
+          "commit": {
+            "abbreviatedOid": "55fc1ad"
+          },
+          "author": "andrewwhitehead",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2023-12-18T19:13:45Z",
+          "updatedAt": "2023-12-18T19:13:45Z",
+          "comments": []
+        }
+      ]
+    },
+    {
+      "number": 307,
+      "id": "PR_kwDOF8lax85iS7XI",
+      "title": "IETF idnits",
+      "url": "https://github.com/decentralized-identity/bbs-signature/pull/307",
+      "state": "OPEN",
+      "author": "BasileiosKal",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "",
+      "createdAt": "2023-12-18T18:58:04Z",
+      "updatedAt": "2023-12-18T22:49:26Z",
+      "baseRepository": "decentralized-identity/bbs-signature",
+      "baseRefName": "main",
+      "baseRefOid": "3bd6abe382095a4a8317a8d5a71023c8e9183924",
+      "headRepository": "decentralized-identity/bbs-signature",
+      "headRefName": "vasilis/datatracker-nits",
+      "headRefOid": "8f32d8c8976dfebc89f78dc3af4d9507c3409ed3",
       "closedAt": null,
       "mergedAt": null,
       "mergedBy": null,
       "mergeCommit": null,
       "comments": [],
-      "reviews": []
+      "reviews": [
+        {
+          "id": "PRR_kwDOF8lax85qjM03",
+          "commit": {
+            "abbreviatedOid": "dc7ef45"
+          },
+          "author": "Wind4Greg",
+          "authorAssociation": "NONE",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2023-12-18T19:59:11Z",
+          "updatedAt": "2023-12-18T19:59:11Z",
+          "comments": []
+        },
+        {
+          "id": "PRR_kwDOF8lax85qj9vv",
+          "commit": {
+            "abbreviatedOid": "d5d9f92"
+          },
+          "author": "andrewwhitehead",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2023-12-18T22:30:24Z",
+          "updatedAt": "2023-12-18T22:30:24Z",
+          "comments": [
+            {
+              "originalPosition": 62,
+              "body": "```suggestion\r\n  *  ADD\\_INFO is an optional octet string indicating any additional information used to uniquely qualify the ciphersuite. When present this value MUST only contain ASCII encoded characters with codes between 0x21 and 0x7e (inclusive) and MUST end with an underscore (ASCII code: 0x5f). The last character MUST be the only underscore.\r\n```",
+              "createdAt": "2023-12-18T22:30:24Z",
+              "updatedAt": "2023-12-18T22:30:24Z"
+            }
+          ]
+        }
+      ]
     }
   ]
 }
