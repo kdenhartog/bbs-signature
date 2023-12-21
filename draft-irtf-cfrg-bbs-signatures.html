@@ -12,10 +12,10 @@
 <meta content="
        This document describes the BBS Signature scheme, a secure, multi-message digital signature protocol, supporting proving knowledge of a signature while selectively disclosing any subset of the signed messages. Concretely, the scheme allows for signing multiple messages whilst producing a single, constant size, digital signature. Additionally, the possessor of a BBS signatures is able to create zero-knowledge, proofs-of-knowledge of a signature, while selectively disclosing subsets of the signed messages. Being zero-knowledge, the BBS proofs do not reveal any information about the undisclosed messages or the signature it self, while at the same time, guarantying the authenticity and integrity of the disclosed messages. 
     " name="description">
-<meta content="xml2rfc 3.18.2" name="generator">
+<meta content="xml2rfc 3.19.0" name="generator">
 <meta content="draft-irtf-cfrg-bbs-signatures-latest" name="ietf.draft">
 <!-- Generator version information:
-  xml2rfc 3.18.2
+  xml2rfc 3.19.0
     Python 3.11.6
     ConfigArgParse 1.7
     google-i18n-address 3.1.0
@@ -1031,7 +1031,7 @@ svg :is([fill="white"], [fill^="#fff"]) {
 </tr></thead>
 <tfoot><tr>
 <td class="left">Looker, et al.</td>
-<td class="center">Expires 20 June 2024</td>
+<td class="center">Expires 23 June 2024</td>
 <td class="right">[Page]</td>
 </tr></tfoot>
 </table>
@@ -1044,12 +1044,12 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <dd class="internet-draft">draft-irtf-cfrg-bbs-signatures-latest</dd>
 <dt class="label-published">Published:</dt>
 <dd class="published">
-<time datetime="2023-12-18" class="published">18 December 2023</time>
+<time datetime="2023-12-21" class="published">21 December 2023</time>
     </dd>
 <dt class="label-intended-status">Intended Status:</dt>
 <dd class="intended-status">Informational</dd>
 <dt class="label-expires">Expires:</dt>
-<dd class="expires"><time datetime="2024-06-20">20 June 2024</time></dd>
+<dd class="expires"><time datetime="2024-06-23">23 June 2024</time></dd>
 <dt class="label-authors">Authors:</dt>
 <dd class="authors">
 <div class="author">
@@ -1103,7 +1103,7 @@ svg :is([fill="white"], [fill^="#fff"]) {
         time. It is inappropriate to use Internet-Drafts as reference
         material or to cite them other than as "work in progress."<a href="#section-boilerplate.1-3" class="pilcrow">¶</a></p>
 <p id="section-boilerplate.1-4">
-        This Internet-Draft will expire on 20 June 2024.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
+        This Internet-Draft will expire on 23 June 2024.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="copyright">
@@ -2319,7 +2319,7 @@ Procedure:
           <h4 id="name-coreproofgen">
 <a href="#section-3.6.3" class="section-number selfRef">3.6.3. </a><a href="#name-coreproofgen" class="section-name selfRef">CoreProofGen</a>
           </h4>
-<p id="section-3.6.3-1">This operation computes a zero-knowledge proof-of-knowledge of a signature, while optionally selectively disclosing from the original set of signed messages. The Prover may also supply a presentation header (<code>ph</code>). See <a href="#header-and-presentation-header-usage" class="auto internal xref">Section 3.3.6</a> for more details. Validating the resulting proof (using the <code>CoreProofVerify</code> algorithm defined in <a href="#coreproofverify" class="auto internal xref">Section 3.6.4</a>), guarantees the integrity and authenticity of the revealed messages, as well as the possession of a valid signature (for the public key <code>PK</code>) by the Prover.<a href="#section-3.6.3-1" class="pilcrow">¶</a></p>
+<p id="section-3.6.3-1">This operation computes a zero-knowledge proof-of-knowledge of a signature, while optionally selectively disclosing from the original set of signed messages. The Prover may also supply a presentation header (<code>ph</code>). See <a href="#header-and-presentation-header-usage" class="auto internal xref">Section 3.3.6</a> for more details. Validating the resulting proof (using the <code>CoreProofVerify</code> algorithm defined in <a href="#coreproofverify" class="auto internal xref">Section 3.6.4</a>), guarantees the integrity and authenticity of the revealed messages, as well as the possession of a valid signature (for the public key <code>PK</code>) by the Prover. See <a href="#proof-generation-and-verification-algorithmic-explanation" class="auto internal xref">Appendix E</a> for a high level explanation on the inner-workings of the algorithm.<a href="#section-3.6.3-1" class="pilcrow">¶</a></p>
 <p id="section-3.6.3-2">The <code>CoreProofGen</code> operation will accept that signature as an input. It is RECOMMENDED to validate that signature, using the inputted public key <code>PK</code> and <code>generators</code> set, against the supplied <code>messages</code> and <code>header</code>, with the <code>CoreVerify</code> operation defined in <a href="#coreverify" class="auto internal xref">Section 3.6.2</a>.<a href="#section-3.6.3-2" class="pilcrow">¶</a></p>
 <p id="section-3.6.3-3">The messages supplied in this operation MUST be in the same order as when supplied to <code>CoreSign</code> (<a href="#coresign" class="auto internal xref">Section 3.6.1</a>). To specify which of those messages will be disclosed, the Prover can supply the list of indexes (<code>disclosed_indexes</code>) that the disclosed messages have in the array of signed messages. Each element in <code>disclosed_indexes</code> MUST be a non-negative integer, in the range from 0 to <code>length(messages) - 1</code>.<a href="#section-3.6.3-3" class="pilcrow">¶</a></p>
 <p id="section-3.6.3-4">The operation works by first calculating a set of random scalars using the <code>calculate_random_scalars</code> operation defined in <a href="#random-scalars" class="auto internal xref">Section 4.2.1</a>, utilized to blind the signature and the undisclosed messages (see <a href="#randomness-requirements" class="auto internal xref">Section 6.7</a> for considerations and requirements on random scalars generation). It then initializes the proof using the <code>ProofInit</code> subroutine defined in <a href="#proof-initialization" class="auto internal xref">Section 3.7.1</a>. The result will be passed to the challenge calculation operation (<code>ProofChallengeCalculate</code>, defined in <a href="#challenge-calculation" class="auto internal xref">Section 3.7.4</a>). The outputted challenge, together with the initialization result, will be used by the <code>ProofFinalize</code> subroutine defined in <a href="#proof-finalization" class="auto internal xref">Section 3.7.2</a>, which will return the proof value.<a href="#section-3.6.3-4" class="pilcrow">¶</a></p>
@@ -2463,7 +2463,7 @@ Procedure:
         <h3 id="name-proof-protocol-subroutines">
 <a href="#section-3.7" class="section-number selfRef">3.7. </a><a href="#name-proof-protocol-subroutines" class="section-name selfRef">Proof Protocol Subroutines</a>
         </h3>
-<p id="section-3.7-1">This section describes the subroutines used by the <code>CoreProofGen</code> (<a href="#coreproofgen" class="auto internal xref">Section 3.6.3</a>) and <code>CoreProofVerify</code> (<a href="#coreproofverify" class="auto internal xref">Section 3.6.4</a>) operations.<a href="#section-3.7-1" class="pilcrow">¶</a></p>
+<p id="section-3.7-1">This section describes the subroutines used by the <code>CoreProofGen</code> (<a href="#coreproofgen" class="auto internal xref">Section 3.6.3</a>) and <code>CoreProofVerify</code> (<a href="#coreproofverify" class="auto internal xref">Section 3.6.4</a>) operations. See <a href="#proof-generation-and-verification-algorithmic-explanation" class="auto internal xref">Appendix E</a>, for a high-level intuitive overview of the procedure used to generate and verify a BBS proof.<a href="#section-3.7-1" class="pilcrow">¶</a></p>
 <div id="proof-initialization">
 <section id="section-3.7.1">
           <h4 id="name-proof-initialization">
@@ -4683,7 +4683,7 @@ proof = "a8da259a5ae7a9a8e5e4e809b8e7718b4d7ab913ed5781ebbff4814c762033e
       <h2 id="name-acknowledgements">
 <a href="#section-10" class="section-number selfRef">10. </a><a href="#name-acknowledgements" class="section-name selfRef">Acknowledgements</a>
       </h2>
-<p id="section-10-1">The authors would like to acknowledge the significant amount of academic work that preceeded the development of this document. In particular the original work of <span>[<a href="#BBS04" class="cite xref">BBS04</a>]</span> which was subsequently developed in <span>[<a href="#ASM06" class="cite xref">ASM06</a>]</span> and in <span>[<a href="#CDL16" class="cite xref">CDL16</a>]</span>. This last academic work is the one mostly used by this document.<a href="#section-10-1" class="pilcrow">¶</a></p>
+<p id="section-10-1">The authors would like to acknowledge the significant amount of academic work that preceeded the development of this document. In particular the original work of <span>[<a href="#BBS04" class="cite xref">BBS04</a>]</span> which was subsequently developed in <span>[<a href="#ASM06" class="cite xref">ASM06</a>]</span> <span>[<a href="#CL04" class="cite xref">CL04</a>]</span> <span>[<a href="#BBDT16" class="cite xref">BBDT16</a>]</span> <span>[<a href="#CDL16" class="cite xref">CDL16</a>]</span> and in <span>[<a href="#TZ23" class="cite xref">TZ23</a>]</span>. This last academic work is the one mostly used by this document.<a href="#section-10-1" class="pilcrow">¶</a></p>
 <p id="section-10-2">The current state of this document is the product of the work of the Decentralized Identity Foundation Applied Cryptography Working group, which includes numerous active participants. In particular, the following individuals contributed ideas, feedback and wording that influenced this specification:<a href="#section-10-2" class="pilcrow">¶</a></p>
 <p id="section-10-3">Orie Steele, Christian Paquin, Alessandro Guggino, Tomislav Markovski and Greg Bernstein.<a href="#section-10-3" class="pilcrow">¶</a></p>
 <p id="section-10-4">Additionally, the authors would like to acknoledge Jacques Traore and Antoine Dumanois, for their crucial contributions to this document.<a href="#section-10-4" class="pilcrow">¶</a></p>
@@ -5941,57 +5941,60 @@ proof = "a8da259a5ae7a9a8e5e4e809b8e7718b4d7ab913ed5781ebbff4814c762033e
       <h2 id="name-proof-generation-and-verifi">
 <a href="#appendix-E" class="section-number selfRef">Appendix E. </a><a href="#name-proof-generation-and-verifi" class="section-name selfRef">Proof Generation and Verification Algorithmic Explanation</a>
       </h2>
-<p id="appendix-E-1">The following section provides a high level explanation of how the ProofGen and ProofVerify operations work. ProofGen can be categorized as a generic non-interactive zero-knowledge proof-of-knowledge (<code>nizk</code>). A <code>nizk</code> works as follows; Assume the group points <code>J_0</code>, <code>J_1</code>, ..., <code>J_n</code> and the exponents <code>e_0</code>, <code>e_1</code>, ..., <code>e_n</code>. Assume also that all the group point are publicly known, while only the exponent <code>e_0</code> is known to the verifier and the exponents <code>e_1</code>, ..., <code>e_n</code> are known only by the Prover. The <code>nizk</code> can be used to prove a relationship of the form,<a href="#appendix-E-1" class="pilcrow">¶</a></p>
+<p id="appendix-E-1">The following section provides a high-level explanation of how the <code>CoreProofGen</code> and <code>CoreProofVerify</code> operations work, as presented in Appendix B of <span>[<a href="#TZ23" class="cite xref">TZ23</a>]</span> and used by this document. The <code>CoreProofGen</code> procedure uses a generic non-interactive zero-knowledge proof-of-knowledge (<code>nizk</code>) protocol, executed between a Prover and a Verifier. A <code>nizk</code> works as follows; Assume the group points <code>J_0</code>, <code>J_1</code>, ..., <code>J_n</code> and the exponents <code>e_0</code>, <code>e_1</code>, ..., <code>e_n</code>. Assume also that all the group points are publicly known, while only the exponent <code>e_0</code> is known to the Verifier of the <code>nizk</code> and the exponents <code>e_1</code>, ..., <code>e_n</code> are known only by the Prover of the protocol. The <code>nizk</code> can be used to prove a relationship of the form,<a href="#appendix-E-1" class="pilcrow">¶</a></p>
 <div class="alignLeft art-text artwork" id="appendix-E-2">
 <pre>J_O * e_0 = J_1 * e_1 + J_2 * e_2 + ... + J_n * e_n
 
 </pre><a href="#appendix-E-2" class="pilcrow">¶</a>
 </div>
-<p id="appendix-E-3">While revealing nothing about the secret exponents (i.e., <code>e_1</code>, ..., <code>e_n</code>).<a href="#appendix-E-3" class="pilcrow">¶</a></p>
-<p id="appendix-E-4">For BBS, let the Prover be in possession of a BBS signature <code>(A, e)</code> on messages <code>msg_1, ..., msg_L</code> and a <code>domain</code> value (see <a href="#signature-generation-sign">Sign</a>). Let <code>A = B * (1/(e + SK))</code> where <code>SK</code> the signer's secret key and,<a href="#appendix-E-4" class="pilcrow">¶</a></p>
+<p id="appendix-E-3">While revealing nothing about the secret exponents (i.e., <code>e_1</code>, ..., <code>e_n</code>), other than the fact that the Prover knows them.<a href="#appendix-E-3" class="pilcrow">¶</a></p>
+<p id="appendix-E-4">For BBS, let the Prover be in possession of a BBS signature <code>(A, e)</code> on messages <code>msg_1, ..., msg_L</code> and a <code>domain</code> value (see  <code>CoreSign</code> defined in <a href="#coresign" class="auto internal xref">Section 3.6.1</a>). Let <code>A = B * (1/(e + SK))</code> where <code>SK</code> the Signer's secret key and,<a href="#appendix-E-4" class="pilcrow">¶</a></p>
 <div class="alignLeft art-text artwork" id="appendix-E-5">
-<pre>[1]    B = P1 + Q_1 * domain + H_1 * msg_1 + ... + H_L * msg_L
+<pre>[1]     B = P1 + Q_1 * domain + H_1 * msg_1 + ... + H_L * msg_L
 
 </pre><a href="#appendix-E-5" class="pilcrow">¶</a>
 </div>
 <p id="appendix-E-6">Let <code>(i1, ..., iR)</code> be the indexes of the messages the Prover wants to disclose and <code>(j1, ..., jU)</code> be the indexes corresponding to undisclosed messages (i.e., <code>(j1, ..., jU) = (1, 2, ..., L) \ (i1, ..., iR)</code>). To prove knowledge of a signature on the disclosed messages, work as follows;<a href="#appendix-E-6" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="appendix-E-7.1">
-          <p id="appendix-E-7.1.1">Prove possession of a valid signature. As defined above, a signature <code>(A, e)</code>, on messages <code>msg_1, ..., msg_L</code> is valid, if <code>A = B * 1/(e + SK)</code>, where <code>B</code> as in [1]. However we cannot reveal neither <code>A</code>, <code>e</code> nor <code>B</code> to the verifier (signature is uniquely identifiable and <code>B</code> will reveal information about the signed messages, even the undisclosed ones). To get around this, we need to hide the signature <code>(A, e)</code> and the value of <code>B</code>, in a way that will allow proving knowledge of such ellements with the aformentioned relationship (i.e., that <code>A = B * 1/(e + SK)</code>), without revealing their value. We do this by randomizing them. To do that, take uniformly random <code>r1</code> in <code>[1, r-1]</code>, and calculate,<a href="#appendix-E-7.1.1" class="pilcrow">¶</a></p>
+          <p id="appendix-E-7.1.1">Prove possession of a valid signature. As defined above, a signature <code>(A, e)</code>, on messages <code>msg_1, ..., msg_L</code> is valid if <code>A = B * 1/(e + SK)</code>, where <code>B</code> as in [1]. However, the Prover cannot reveal neither <code>A</code>, <code>e</code> nor <code>B</code> to the Verifier (signature is uniquely identifiable and <code>B</code> will reveal information about the signed messages, even the undisclosed ones). To get around this, the Prover needs to hide the signature <code>(A, e)</code> and the value of <code>B</code>, in a way that will allow proving knowledge of such elements with the aforementioned relationship (i.e., that <code>A = B * 1/(e + SK)</code>), without revealing their value. The Prover will do this by randomizing them. To do that, they take uniformly random <code>r1, r2</code> in <code>[1, r-1]</code>, and calculate,<a href="#appendix-E-7.1.1" class="pilcrow">¶</a></p>
 <div class="alignLeft art-text artwork" id="appendix-E-7.1.2">
-<pre>[2]    Abar = A * r1,
-[3]    Bbar = B * r1 + Abar * (-e)
+<pre>[2]     Abar = A * (r1 * r2)
+[3]     D = B * r2
+[4]     Bbar = D * r1 + Abar * (-e)
 
 </pre><a href="#appendix-E-7.1.2" class="pilcrow">¶</a>
 </div>
-<p id="appendix-E-7.1.3">The values <code>(Abar, Bbar)</code> will be part of the proof and are used to prove possession of a BBS signature, without revealing the signature itself. Note that; if <code>Abar</code> and <code>Bbar</code> are constructed using a valid BBS signatures as above, then <code>Abar * SK = Bbar =&gt; e(Abar, PK) = e(Bbar, BP2)</code> where <code>SK</code>, <code>PK</code> the signer's secret and public key and <code>BP2</code> the base element in <code>G2</code> (used to create the signer’s <code>PK</code>, see <a href="#public-key" class="auto internal xref">Section 3.4.2</a>). This last equation is something that the verifier can check. This also serves to bind the proof to the signer's <code>PK</code>.<a href="#appendix-E-7.1.3" class="pilcrow">¶</a></p>
+<p id="appendix-E-7.1.3">The values <code>(Abar, D, Bbar)</code> will be part of the proof and are used to prove possession of a BBS signature, without revealing the signature itself. Note that; if <code>Abar</code>, <code>D</code> and <code>Bbar</code> are constructed using a valid BBS signature as above, then <code>Abar * SK = Bbar</code> which is equivalent to <code>e(Abar, PK) = e(Bbar, BP2)</code>, where <code>SK</code>, <code>PK</code> the Signer's secret and public key and <code>BP2</code> the base generator of <code>G2</code> (used to create the Signer’s <code>PK</code>, see <a href="#public-key" class="auto internal xref">Section 3.4.2</a>). This last equation is something that the Verifier can check using the Signer's <code>PK</code>.<a href="#appendix-E-7.1.3" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="appendix-E-7.2">
-          <p id="appendix-E-7.2.1">Prove that the disclosed messages are signed by that signature. Set the following,<a href="#appendix-E-7.2.1" class="pilcrow">¶</a></p>
+          <p id="appendix-E-7.2.1">Prove that the disclosed messages are signed as part of that signature. The Prover will start by setting the following,<a href="#appendix-E-7.2.1" class="pilcrow">¶</a></p>
 <div class="alignLeft art-text artwork" id="appendix-E-7.2.2">
-<pre>[4]    D = P1 + Q_1 * domain + H_i1 * msg_i1 + ... + H_iR * msg_iR
-[5]    r1' = r1 ^ -1 mod r
+<pre>[5]     r2' = (1 / r2) mod r
 
 </pre><a href="#appendix-E-7.2.2" class="pilcrow">¶</a>
 </div>
-<p id="appendix-E-7.2.3">If the <code>Abar</code> and <code>Bbar</code> values are constructed using a valid BBS signature as in [2] and [3], then the following equation will hold,<a href="#appendix-E-7.2.3" class="pilcrow">¶</a></p>
+<p id="appendix-E-7.2.3">If the <code>Abar</code>, <code>D</code> and <code>Bbar</code> values are constructed using a valid BBS signature as in [2], [3] and [4], then the following will hold,<a href="#appendix-E-7.2.3" class="pilcrow">¶</a></p>
 <div class="alignLeft art-text artwork" id="appendix-E-7.2.4">
-<pre>[6]    D = Bbar * r1' + Abar * (e * r1') - H_ji * msg_j1 - ...
-                                                 ... - H_jU * msg_jU
+<pre>[6]     P1 + Q_1 * domain + H_i1 * msg_i1 + ... + H_iR * msg_iR =
+                        D * r2' - H_ji * msg_j1 - ... - H_jU * msg_jU
 
 </pre><a href="#appendix-E-7.2.4" class="pilcrow">¶</a>
 </div>
 </li>
       </ul>
-<p id="appendix-E-8">Note that the verifier will know the elements in the left side of [6] (i.e., <code>D</code>, or rather they will know all the values needed to calculate <code>D</code>, as it depends on the public <code>doamin</code> value and the disclosed messages) but not the exponents in the right side (i.e., <code>r1'</code>, <code>e</code> and the undisclosed messages: <code>msg_j1, ..., msg_jU</code>). However, using a <code>nizk</code>, the Prover can convince the verifier that they (the Prover) know the exponents that satisfy that equation, without disclosing them.<a href="#appendix-E-8" class="pilcrow">¶</a></p>
-<p id="appendix-E-9">If the above equation ([6]) holds, and <code>e(Abar, PK) = e(Bbar, BP2)</code>, one could solve [6] to get <code>B = Bbar * r1' + Abar * e * r1'</code> (where <code>B</code> as in [1]). Note that <code>B</code> will also contain the disclosed messages. Then, using the properties of pairings, one can see that,<a href="#appendix-E-9" class="pilcrow">¶</a></p>
-<div class="alignLeft art-text artwork" id="appendix-E-10">
-<pre>e(Abar * r1', PK + BP2 * e) = (B, BP2)
+<p id="appendix-E-8">Note that the Verifier will know the elements in the left side of [6] (i.e., <code>P1</code>, <code>Q_1</code>, <code>H_i1</code>, ..., <code>H_iR</code> and the disclosed messages: <code>msg_i1</code>, ..., <code>msg_iR</code>) as well as the base points of the right side (i.e., the points <code>D</code> and <code>H_j1, ..., H_jU</code>). They will not however know the exponents on the right side of [6] (i.e., <code>r2'</code> and the undisclosed messages: <code>msg_j1, ..., msg_jU</code>). The same holds for equation [4] where the Verifier will know the left side of the equation (i.e., <code>Bbar</code>) and the base points of the right side (i.e., <code>D</code> and <code>Abar</code>) but not the exponents (i.e., <code>r1</code> and <code>-e</code>).<a href="#appendix-E-8" class="pilcrow">¶</a></p>
+<p id="appendix-E-9">To convince the Verifier that both [4] and [6] hold, the Prover can use a <code>nizk</code>, to prove that they know the exponents that satisfy those equations, without disclosing them.<a href="#appendix-E-9" class="pilcrow">¶</a></p>
+<p id="appendix-E-10">Note that if the value <code>D</code> is constructed correctly (as in [3]), then <code>B = D * r2'</code>. Proving knowledge of [6] corresponds to proving knowledge of <code>r2'</code>, which means that the Prover does actually know a value <code>B = D * r2'</code>. If [6] holds, then that <code>B</code> value that the Prover knows (i.e., <code>D * r2'</code>) will also have the "correct form" for <code>B</code> (as in [1]), including all (the disclosed and "some" undisclosed) messages.<a href="#appendix-E-10" class="pilcrow">¶</a></p>
+<p id="appendix-E-11">All that remains is proving that this <code>B</code> value the Prover knows, is also "signed" by the Signer i.e., that the Prover also knows values <code>A</code> and <code>e</code>, such that <code>A = B * 1/(e + SK)</code> or, equivalently, that <code>e(A, PK + BP2 * e) = e(B, BP2)</code>, which is what <code>CoreVerify</code> checks to validate a signature (see <a href="#coreverify" class="auto internal xref">Section 3.6.2</a>).<a href="#appendix-E-11" class="pilcrow">¶</a></p>
+<p id="appendix-E-12">Note that, the Prover will use a <code>nizk</code> to showcase (among other things), knowledge of values <code>r1</code> and <code>e</code> so that [4] holds (<code>Bbar</code>, <code>D</code> and <code>Abar</code> will be part of the proof and hence known to the Verifier). Setting <code>r1' = (1 / r1) mod r</code> (note that proving knowledge of <code>r1</code> indirectly proves knowledge of <code>r1'</code> as well), using [4] and the fact that <code>e(Abar, PK) = e(Bbar, BP2)</code> we can get that,<a href="#appendix-E-12" class="pilcrow">¶</a></p>
+<div class="alignLeft art-text artwork" id="appendix-E-13">
+<pre>e(Abar * r1' * r2', PK + BP2 * e) = e(D * r2', BP2) = e(B, BP2)
 
-</pre><a href="#appendix-E-10" class="pilcrow">¶</a>
+</pre><a href="#appendix-E-13" class="pilcrow">¶</a>
 </div>
-<p id="appendix-E-11">which is exactly what <a href="#signature-verification-verify">Verify</a> checks for <code>A = Abar * r1'</code>. So seting <code>A = Abar * r1'</code>, the values <code>A</code>, <code>e</code>, <code>B</code> will form a valid BBS signature. Note that the verifier doesn't know <code>r1'</code>, <code>e</code> or all the values to compute <code>B</code>. However, they know that the Prover knows them, and as we saw above, knowledge of those values means knowledge of a valid signature on (among others) the disclosed messages.<a href="#appendix-E-11" class="pilcrow">¶</a></p>
-<p id="appendix-E-12">To sum up; in order to validate the proof, a verifier checks that <code>e(Abar, PK) = e(Bbar, BP2)</code> and verifies the <code>nizk</code>. Validating the proof, will guarantee the authenticity and integrity of the disclosed messages, as well as knowledge of the undisclosed messages and of the signature.<a href="#appendix-E-12" class="pilcrow">¶</a></p>
+<p id="appendix-E-14">Note that the above is what <code>CoreVerify</code> checks, for <code>A = Abar * r1' * r2'</code>. Since the Prover showcased knowledge of <code>r1'</code> and <code>r2'</code> and revealed <code>Abar</code> as part of the proof, the Verifier can be assured that the Prover knows the value <code>A = Abar * r1' * r2'</code>. So setting <code>A = Abar * r1' * r2'</code>, the values <code>A</code>, <code>e</code>, <code>B</code> that the Prover showed knowledge of, will form a valid BBS signature. Note that the Verifier doesn't know <code>A</code> (since they don't know <code>r1'</code> and <code>r2'</code>), <code>e</code> or <code>B</code> (since they don't know <code>r2'</code> or the undisclosed messages). However, they know that the prover knows them and as we saw above, these values form a valid signature on (among others) the disclosed messages.<a href="#appendix-E-14" class="pilcrow">¶</a></p>
+<p id="appendix-E-15">To sum up; in order to validate the proof, a Verifier checks that <code>e(Abar, PK) = e(Bbar, BP2)</code> and verifies the <code>nizk</code>. Validating the proof will guarantee the authenticity and integrity of the disclosed messages, as well as knowledge of the undisclosed messages and of the signature.<a href="#appendix-E-15" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="document-history">
