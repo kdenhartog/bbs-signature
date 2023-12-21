@@ -6048,39 +6048,46 @@ proof = "a8da259a5ae7a9a8e5e4e809b8e7718b4d7ab913ed5781ebbff4814c762033e
 </li>
       </ul>
 <p id="appendix-F-7">-03<a href="#appendix-F-7" class="pilcrow">¶</a></p>
-<ul class="normal">
-<li class="normal" id="appendix-F-8.1">Updated core operation based on new <a href="https://eprint.iacr.org/2023/275">academic paper</a><a href="#appendix-F-8.1" class="pilcrow">¶</a>
+<ul class="compact">
+<li class="compact" id="appendix-F-8.1">Updated core operation based on new <a href="https://eprint.iacr.org/2023/275">academic paper</a><a href="#appendix-F-8.1" class="pilcrow">¶</a>
 </li>
-        <li class="normal" id="appendix-F-8.2">Variety of editorial updates<a href="#appendix-F-8.2" class="pilcrow">¶</a>
+        <li class="compact" id="appendix-F-8.2">Variety of editorial updates<a href="#appendix-F-8.2" class="pilcrow">¶</a>
 </li>
-        <li class="normal" id="appendix-F-8.3">Updated exception and error handling<a href="#appendix-F-8.3" class="pilcrow">¶</a>
+        <li class="compact" id="appendix-F-8.3">Updated exception and error handling<a href="#appendix-F-8.3" class="pilcrow">¶</a>
 </li>
-        <li class="normal" id="appendix-F-8.4">Added extension point for the operation with which the generators are created, allowing ciphersuites to define different operations for creating the generator points.<a href="#appendix-F-8.4" class="pilcrow">¶</a>
+        <li class="compact" id="appendix-F-8.4">Added extension point for the operation with which the generators are created, allowing ciphersuites to define different operations for creating the generator points.<a href="#appendix-F-8.4" class="pilcrow">¶</a>
 </li>
-        <li class="normal" id="appendix-F-8.5">Added extension point for the operation with which the input messages are mapped to scalar values, allowing ciphersuites to define different message-to-scalar mapping operations<a href="#appendix-F-8.5" class="pilcrow">¶</a>
+        <li class="compact" id="appendix-F-8.5">Added extension point for the operation with which the input messages are mapped to scalar values, allowing ciphersuites to define different message-to-scalar mapping operations<a href="#appendix-F-8.5" class="pilcrow">¶</a>
 </li>
-        <li class="normal" id="appendix-F-8.6">Added signature/proof fixtures with an empty header or an empty presentation header input<a href="#appendix-F-8.6" class="pilcrow">¶</a>
+        <li class="compact" id="appendix-F-8.6">Added signature/proof fixtures with an empty header or an empty presentation header input<a href="#appendix-F-8.6" class="pilcrow">¶</a>
 </li>
-        <li class="normal" id="appendix-F-8.7">
-          <p id="appendix-F-8.7.1">Updated the fixtures to use variable length messages (one of which is now the empty message "")<a href="#appendix-F-8.7.1" class="pilcrow">¶</a></p>
+        <li class="compact" id="appendix-F-8.7">Updated the fixtures to use variable length messages (one of which is now the empty message "")<a href="#appendix-F-8.7" class="pilcrow">¶</a>
 </li>
-        <li class="normal" id="appendix-F-8.8">
-          <p id="appendix-F-8.8.1">04<a href="#appendix-F-8.8.1" class="pilcrow">¶</a></p>
+      </ul>
+<p id="appendix-F-9">-04<a href="#appendix-F-9" class="pilcrow">¶</a></p>
+<ul class="compact">
+<li class="compact" id="appendix-F-10.1">Restructure Proof Generation and Verification operation to different subroutines.<a href="#appendix-F-10.1" class="pilcrow">¶</a>
 </li>
-        <li class="normal" id="appendix-F-8.9">
-          <p id="appendix-F-8.9.1">Restructure Proof Generation and Verification operation to different subroutines.<a href="#appendix-F-8.9.1" class="pilcrow">¶</a></p>
+        <li class="compact" id="appendix-F-10.2">Separate high-level (Interface) operations from low-level (Core) operations.<a href="#appendix-F-10.2" class="pilcrow">¶</a>
 </li>
-        <li class="normal" id="appendix-F-8.10">
-          <p id="appendix-F-8.10.1">Separate high-level (Interface) operations from low-level (Core) operations.<a href="#appendix-F-8.10.1" class="pilcrow">¶</a></p>
+        <li class="compact" id="appendix-F-10.3">Update the ciphersuite ID to remove from it the <code>create_generators</code> and <code>map_message_to_scalar</code> IDs, since those are defined as part of the high-level interface instead of the ciphersuite.<a href="#appendix-F-10.3" class="pilcrow">¶</a>
 </li>
-        <li class="normal" id="appendix-F-8.11">
-          <p id="appendix-F-8.11.1">Update the ciphersuite ID to remove from it the <code>create_generators</code> and <code>map_message_to_scalar</code> IDs, since those are defined as part of the high-level interface instead of the ciphersuite.<a href="#appendix-F-8.11.1" class="pilcrow">¶</a></p>
+        <li class="compact" id="appendix-F-10.4">Add a <code>commitment</code> optional value to the <code>CoreSign</code> operation. The <code>commitment</code> value is added to allow using BBS as part of other protocols but is ignored in this document.<a href="#appendix-F-10.4" class="pilcrow">¶</a>
 </li>
-        <li class="normal" id="appendix-F-8.12">
-          <p id="appendix-F-8.12.1">Add a <code>commitment</code> optional value to the <code>CoreSign</code> operation. The <code>commitment</code> value is added to allow using BBS as part of other protocols but is ignored in this document.<a href="#appendix-F-8.12.1" class="pilcrow">¶</a></p>
+        <li class="compact" id="appendix-F-10.5">Update test-vectors display.<a href="#appendix-F-10.5" class="pilcrow">¶</a>
 </li>
-        <li class="normal" id="appendix-F-8.13">
-          <p id="appendix-F-8.13.1">Update test-vectors display.<a href="#appendix-F-8.13.1" class="pilcrow">¶</a></p>
+      </ul>
+<p id="appendix-F-11">-05<a href="#appendix-F-11" class="pilcrow">¶</a></p>
+<ul class="compact">
+<li class="compact" id="appendix-F-12.1">Proof Generation and Verification operations updated based on Appendix B of <span>[<a href="#TZ23" class="cite xref">TZ23</a>]</span>.<a href="#appendix-F-12.1" class="pilcrow">¶</a>
+</li>
+        <li class="compact" id="appendix-F-12.2">Test vectors updated based on the new proof generation procedure.<a href="#appendix-F-12.2" class="pilcrow">¶</a>
+</li>
+        <li class="compact" id="appendix-F-12.3">Removed the optional <code>commitment</code> value from the <code>CoreSign</code> operation, as the intended use case (blind signatures) will be addressed differently and in another document.<a href="#appendix-F-12.3" class="pilcrow">¶</a>
+</li>
+        <li class="compact" id="appendix-F-12.4">Changed the reference to <span>[<a href="#I-D.irtf-cfrg-pairing-friendly-curves" class="cite xref">I-D.irtf-cfrg-pairing-friendly-curves</a>]</span> from Normative to Informative, by re-defining the relevant functionality to this document.<a href="#appendix-F-12.4" class="pilcrow">¶</a>
+</li>
+        <li class="compact" id="appendix-F-12.5">Various editorial updates.<a href="#appendix-F-12.5" class="pilcrow">¶</a>
 </li>
       </ul>
 </section>
