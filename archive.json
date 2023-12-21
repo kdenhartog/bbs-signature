@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2023-12-19T00:09:32.252887+00:00",
+  "timestamp": "2023-12-21T00:09:07.264933+00:00",
   "repo": "decentralized-identity/bbs-signature",
   "labels": [
     {
@@ -35684,13 +35684,13 @@
       "labels": [],
       "body": "Based on the new proof from #288",
       "createdAt": "2023-12-11T10:59:49Z",
-      "updatedAt": "2023-12-18T21:59:37Z",
+      "updatedAt": "2023-12-19T18:10:18Z",
       "baseRepository": "decentralized-identity/bbs-signature",
       "baseRefName": "main",
       "baseRefOid": "3bd6abe382095a4a8317a8d5a71023c8e9183924",
       "headRepository": "decentralized-identity/bbs-signature",
       "headRefName": "vasilis/appendix-d",
-      "headRefOid": "87f7847860d1e6089c33413af01e785e52ae977f",
+      "headRefOid": "7a2a7a86ba1a4fb495534c79fe6ef43020185c99",
       "closedAt": null,
       "mergedAt": null,
       "mergedBy": null,
@@ -35985,13 +35985,13 @@
       "labels": [],
       "body": "",
       "createdAt": "2023-12-18T18:58:04Z",
-      "updatedAt": "2023-12-18T22:49:26Z",
+      "updatedAt": "2023-12-20T16:57:57Z",
       "baseRepository": "decentralized-identity/bbs-signature",
       "baseRefName": "main",
-      "baseRefOid": "3bd6abe382095a4a8317a8d5a71023c8e9183924",
+      "baseRefOid": "05411383bcf867af786f7b9b194b077aab36ccf3",
       "headRepository": "decentralized-identity/bbs-signature",
       "headRefName": "vasilis/datatracker-nits",
-      "headRefOid": "8f32d8c8976dfebc89f78dc3af4d9507c3409ed3",
+      "headRefOid": "1228eb614835318fde6fa6884e555d9f7492a3e3",
       "closedAt": null,
       "mergedAt": null,
       "mergedBy": null,
@@ -36030,6 +36030,19 @@
               "updatedAt": "2023-12-18T22:30:24Z"
             }
           ]
+        },
+        {
+          "id": "PRR_kwDOF8lax85qxVW7",
+          "commit": {
+            "abbreviatedOid": "1228eb6"
+          },
+          "author": "dwaite",
+          "authorAssociation": "MEMBER",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2023-12-20T16:57:57Z",
+          "updatedAt": "2023-12-20T16:57:57Z",
+          "comments": []
         }
       ]
     }
