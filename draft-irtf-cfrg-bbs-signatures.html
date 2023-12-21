@@ -2,7 +2,7 @@
 <html lang="en" class="Internet-Draft">
 <head>
 <meta charset="utf-8">
-<meta content="Common,Greek,Latin" name="scripts">
+<meta content="Common,Latin" name="scripts">
 <meta content="initial-scale=1.0" name="viewport">
 <title>The BBS Signature Scheme</title>
 <meta content="Tobias Looker" name="author">
@@ -1540,7 +1540,7 @@ svg :is([fill="white"], [fill^="#fff"]) {
                                                      |
                                                      |
                                                      |
-                                      (4)* Send proof + disclosed msgs
+                                    (4)* Send proof + disclosed msgs
                                                      |
                                                      |
                                                     \ /
@@ -1905,9 +1905,9 @@ Inputs:
                            above.
 - key_info (OPTIONAL), an octet string. Defaults to an empty string if
                        not supplied.
-- key_dst (OPTIONAL), an octet string representing the domain separation tag.
-                      Defaults to the octet string ciphersuite_id || "KEYGEN_DST_"
-                      if not supplied.
+- key_dst (OPTIONAL), an octet string representing the domain separation
+                      tag. Defaults to the octet string
+                      ciphersuite_id || "KEYGEN_DST_" if not supplied.
 
 Outputs:
 
@@ -2375,8 +2375,14 @@ Deserialization:
 Procedure:
 
 1. random_scalars = calculate_random_scalars(5+U)
-2. init_res = ProofInit(PK, signature_result, generators, random_scalars,
-                          header, messages, undisclosed_indexes, api_id)
+2. init_res = ProofInit(PK,
+                        signature_result,
+                        generators,
+                        random_scalars,
+                        header,
+                        messages,
+                        undisclosed_indexes,
+                        api_id)
 3. if init_res is INVALID, return INVALID
 4. challenge = ProofChallengeCalculate(init_res, disclosed_indexes,
                                                  disclosed_messages, ph)
@@ -2683,8 +2689,8 @@ Procedure:
 <p id="section-3.7.4-2">As inputs, this operation will accept the proof generation or verification initialization result, as outputted by the <code>ProofInit</code> (<a href="#proof-initialization" class="auto internal xref">Section 3.7.1</a>) or <code>ProofVerifyInit</code> (<a href="#proof-verification-initialization" class="auto internal xref">Section 3.7.3</a>) operations (<code>init_res</code>). It will additionally accept the set of scalars representing the messages the Prover disclosed (<code>disclosed_messages</code>) as well as the list of indexes those messages had in the vector of signed messages (<code>disclosed_indexes</code>), together with the presentation header (<code>ph</code>).<a href="#section-3.7.4-2" class="pilcrow">¶</a></p>
 <p id="section-3.7.4-3">This operation makes use of the <code>serialize</code> function, defined in <a href="#serialize" class="auto internal xref">Section 4.2.4.1</a>.<a href="#section-3.7.4-3" class="pilcrow">¶</a></p>
 <div class="alignLeft art-text artwork" id="section-3.7.4-4">
-<pre>challenge = ProofChallengeCalculate(init_res, disclosed_messages, disclosed_indexes, ph,
-                                                                 api_id)
+<pre>challenge = ProofChallengeCalculate(init_res, disclosed_messages,
+                                          disclosed_indexes, ph, api_id)
 
 Inputs:
 - init_res (REQUIRED), vector representing the value returned after
@@ -2752,7 +2758,7 @@ Procedure:
 
 </pre><a href="#section-3.8-4" class="pilcrow">¶</a>
 </div>
-<p id="section-3.8-5">Where <code>ciphersuite_id</code> is defined by the ciphersuite and the <code>ADD_INFO</code> value is an optional octet string indicating any additional information used to uniquely qualify the Interface. When <code>ADD_INFO</code> is present, it MUST only contain ASCII encoded characters with codes between 0x21 and 0x7e (inclusive) and MUST end with an underscore (ASCII code: 0x5f), other than the last character the string MUST not contain any other underscores (ASCII code: 0x5f). The <code>api_id</code> value, MUST be used by all subroutines an Interface calls, to ensure proper domain separation.<a href="#section-3.8-5" class="pilcrow">¶</a></p>
+<p id="section-3.8-5">Where <code>ciphersuite_id</code> is defined by the ciphersuite and the <code>ADD_INFO</code> value is an optional octet string indicating any additional information used to uniquely qualify the Interface. When <code>ADD_INFO</code> is present, it MUST only contain ASCII encoded characters with codes between 0x21 and 0x7e (inclusive) and MUST end with an underscore (ASCII code: 0x5f), other than the last character the string MUST NOT contain any other underscores (ASCII code: 0x5f). The <code>api_id</code> value, MUST be used by all subroutines an Interface calls, to ensure proper domain separation.<a href="#section-3.8-5" class="pilcrow">¶</a></p>
 <p id="section-3.8-6">Interfaces are meant to make it easier to use BBS Signature as part of other protocols with different requirements (for example, different types of input messages or different ways to create the generators), or to extend BBS Signatures with additional functionality (for example, using blinded messages as in <span>[<a href="#CDL16" class="cite xref">CDL16</a>]</span>). Documents defining new BBS Interfaces, other than adhering to the requirements listed in this section, should also include a detailed and peer reviewed analyses showcasing that, under reasonable cryptographic assumptions, the documented scheme is secure under the required security definitions and threat model of each protocol. In other words, Interfaces must be treated like Ciphersuites (<a href="#ciphersuites" class="auto internal xref">Section 7</a>), in the sense that applications should avoid creating their own, proprietary Interfaces.<a href="#section-3.8-6" class="pilcrow">¶</a></p>
 </section>
 </div>
@@ -2777,7 +2783,7 @@ Procedure:
 <a href="#section-4.1.1" class="section-number selfRef">4.1.1. </a><a href="#name-generators-calculation" class="section-name selfRef">Generators Calculation</a>
           </h4>
 <p id="section-4.1.1-1">The <code>create_generators</code> procedure defines how to create a set of randomly sampled points from the G1 subgroup, called the generators. It makes use of the primitives defined in <span>[<a href="#RFC9380" class="cite xref">RFC9380</a>]</span> (more specifically of <code>hash_to_curve</code> and <code>expand_message</code>) to hash a seed to a set of generators. Those primitives are implicitly defined by the ciphersuite, through the choice of a hash-to-curve suite (see the <code>hash_to_curve_suite</code> parameter in <a href="#ciphersuite-format" class="auto internal xref">Section 7.1</a>).<a href="#section-4.1.1-1" class="pilcrow">¶</a></p>
-<p id="section-4.1.1-2">Since <code>create_generators</code> generates constant points, as an optimization, implementations MAY cache its result for a specific <code>count</code> (which can be arbitrarily large, depending on the application). Care must be taken, to guarantee that the generators will be fetched from the cache in the same order they had when they where created (i.e., an application should not short or in any way rearrange the cached generators).<a href="#section-4.1.1-2" class="pilcrow">¶</a></p>
+<p id="section-4.1.1-2">Since <code>create_generators</code> generates constant points, as an optimization, implementations MAY cache its result for a specific <code>count</code> (which can be arbitrarily large, depending on the application). Care must be taken, to guarantee that the generators will be fetched from the cache in the same order they had when they where created (i.e., an application should not sort or in any way rearrange the cached generators).<a href="#section-4.1.1-2" class="pilcrow">¶</a></p>
 <div class="alignLeft art-text artwork" id="section-4.1.1-3">
 <pre>generators = create_generators(count, api_id)
 
@@ -3475,7 +3481,7 @@ Procedure:
 <p id="section-6.8-4">If a BBS Interface accepts both octet strings and scalar values as messages, where depending on the message's type different operations will be used to map it to a scalar (e.g., <code>hash_to_scalar</code> for octet strings and the identity operation for scalars), it must still ensure that the properties described in <a href="#define-a-new-map-to-scalar" class="auto internal xref">Section 4.1.2.1</a> holds. To that end, the application MUST ensure that it is clear to all participants, which message should be considered an octet string and which a scalar.<a href="#section-6.8-4" class="pilcrow">¶</a></p>
 <p id="section-6.8-5">As an example, if the type (i.e., octet string or scalar) of the messages inputted to the BBS Interface, is uniquely determined by its index in the messages list (for example, first message is an octet string, second message a scalar etc.,), the map between message index and message type (determined by the Signer), could be made available as part of the Signer's public parameters (similar to <span>[<a href="#UPROVE" class="cite xref">UPROVE</a>]</span>). This map would then be passed to the BBS Interface, which will use it to correctly map each message to a scalar. Another option, is to sign such configurations as part of the <code>header</code> parameter of the BBS signature (see <a href="#signature-generation-sign" class="auto internal xref">Section 3.5.1</a>). In this case, the map does not need to be published by the Signer.<a href="#section-6.8-5" class="pilcrow">¶</a></p>
 <p id="section-6.8-6">If the application defines that the first (or last) <code>n</code> messages will be scalars and everything else octet strings, it could just publish the <code>n</code> value as part of the Signer's public parameters or again sign it as part of the <code>header</code> value.<a href="#section-6.8-6" class="pilcrow">¶</a></p>
-<p id="section-6.8-7">In any case, the privacy considerations described in <a href="#privacy-considerations" class="auto internal xref">Section 5</a> MUST ΝΟΤ be violated, for example, by using unique pre-processing rules or maps between message index and type. To validate the consistency of the message processing rules, the Prover could use mechanisms like the ones described in <span>[<a href="#I-D.ietf-privacypass-key-consistency" class="cite xref">I-D.ietf-privacypass-key-consistency</a>]</span>.<a href="#section-6.8-7" class="pilcrow">¶</a></p>
+<p id="section-6.8-7">In any case, the privacy considerations described in <a href="#privacy-considerations" class="auto internal xref">Section 5</a> MUST NOT be violated, for example, by using unique pre-processing rules or maps between message index and type. To validate the consistency of the message processing rules, the Prover could use mechanisms like the ones described in <span>[<a href="#I-D.ietf-privacypass-key-consistency" class="cite xref">I-D.ietf-privacypass-key-consistency</a>]</span>.<a href="#section-6.8-7" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="post-quantum-security">
@@ -3519,7 +3525,7 @@ Procedure:
               <p id="section-7.1.1-3.1.1">H2C_SUITE_ID is the suite ID of the hash-to-curve suite used to define the hash_to_curve function.<a href="#section-7.1.1-3.1.1" class="pilcrow">¶</a></p>
 </li>
             <li class="normal" id="section-7.1.1-3.2">
-              <p id="section-7.1.1-3.2.1">ADD_INFO is an optional octet string indicating any additional information used to uniquely qualify the ciphersuite. When present this value MUST only contain ASCII encoded characters with codes between 0x21 and 0x7e (inclusive) and MUST end with an underscore (ASCII code: 0x5f), other than the last character the string MUST not contain any other underscores (ASCII code: 0x5f).<a href="#section-7.1.1-3.2.1" class="pilcrow">¶</a></p>
+              <p id="section-7.1.1-3.2.1">ADD_INFO is an optional octet string indicating any additional information used to uniquely qualify the ciphersuite. When present this value MUST only contain ASCII encoded characters with codes between 0x21 and 0x7e (inclusive) and MUST end with an underscore (ASCII code: 0x5f). The last character MUST be the only underscore.<a href="#section-7.1.1-3.2.1" class="pilcrow">¶</a></p>
 </li>
           </ul>
 </section>
@@ -4751,11 +4757,11 @@ proof = "a8da259a5ae7a9a8e5e4e809b8e7718b4d7ab913ed5781ebbff4814c762033e
 <dd class="break"></dd>
 <dt id="BBB17">[BBB17]</dt>
         <dd>
-<span class="refAuthor">Bünz, B.</span>, <span class="refAuthor">Bootle, J.</span>, <span class="refAuthor">Boneh, D.</span>, <span class="refAuthor">Poelstra, A.</span>, <span class="refAuthor">Wuille, P.</span>, and <span class="refAuthor">G. Maxwell</span>, <span class="refTitle">"Bulletproofs: Short Proofs for Confidential Transactions and More"</span>, <span class="seriesInfo">In 2018 IEEE Symposium on Security and Privacy</span>, <time datetime="2017" class="refDate">2017</time>, <span>&lt;<a href="https://ia.cr/2017/1066">https://ia.cr/2017/1066</a>&gt;</span>. </dd>
+<span class="refAuthor">Bunz, B.</span>, <span class="refAuthor">Bootle, J.</span>, <span class="refAuthor">Boneh, D.</span>, <span class="refAuthor">Poelstra, A.</span>, <span class="refAuthor">Wuille, P.</span>, and <span class="refAuthor">G. Maxwell</span>, <span class="refTitle">"Bulletproofs: Short Proofs for Confidential Transactions and More"</span>, <span class="seriesInfo">In 2018 IEEE Symposium on Security and Privacy</span>, <time datetime="2017" class="refDate">2017</time>, <span>&lt;<a href="https://ia.cr/2017/1066">https://ia.cr/2017/1066</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="BBDT16">[BBDT16]</dt>
         <dd>
-<span class="refAuthor">Barki, A.</span>, <span class="refAuthor">Brunet, S.</span>, <span class="refAuthor">Desmoulins, N.</span>, and <span class="refAuthor">J. Traoré</span>, <span class="refTitle">"Improved Algebraic MACs and Practical Keyed-Verification Anonymous Credentials"</span>, <span class="seriesInfo">In International Conference on Selected Areas in Cryptography</span>, <time datetime="1016" class="refDate">1016</time>, <span>&lt;<a href="https://link.springer.com/chapter/10.1007/978-3-319-69453-5_20">https://link.springer.com/chapter/10.1007/978-3-319-69453-5_20</a>&gt;</span>. </dd>
+<span class="refAuthor">Barki, A.</span>, <span class="refAuthor">Brunet, S.</span>, <span class="refAuthor">Desmoulins, N.</span>, and <span class="refAuthor">J. Traore</span>, <span class="refTitle">"Improved Algebraic MACs and Practical Keyed-Verification Anonymous Credentials"</span>, <span class="seriesInfo">In International Conference on Selected Areas in Cryptography</span>, <time datetime="1016" class="refDate">1016</time>, <span>&lt;<a href="https://link.springer.com/chapter/10.1007/978-3-319-69453-5_20">https://link.springer.com/chapter/10.1007/978-3-319-69453-5_20</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="BBS04">[BBS04]</dt>
         <dd>
@@ -4807,7 +4813,7 @@ proof = "a8da259a5ae7a9a8e5e4e809b8e7718b4d7ab913ed5781ebbff4814c762033e
 <dd class="break"></dd>
 <dt id="ISO8601">[ISO8601]</dt>
         <dd>
-<span class="refAuthor">ISO</span>, <span class="refTitle">"Date and time — Representations for information interchange — Part 1: Basic rules"</span>, <span>&lt;<a href="https://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-90Ar1.pdf">https://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-90Ar1.pdf</a>&gt;</span>. </dd>
+<span class="refAuthor">ISO</span>, <span class="refTitle">"Date and time - Representations for information interchange - Part 1: Basic rules"</span>, <span>&lt;<a href="https://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-90Ar1.pdf">https://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-90Ar1.pdf</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="RFC3629">[RFC3629]</dt>
         <dd>
@@ -5965,7 +5971,7 @@ proof = "a8da259a5ae7a9a8e5e4e809b8e7718b4d7ab913ed5781ebbff4814c762033e
 
 </pre><a href="#appendix-E-7.1.2" class="pilcrow">¶</a>
 </div>
-<p id="appendix-E-7.1.3">The values <code>(Abar, D, Bbar)</code> will be part of the proof and are used to prove possession of a BBS signature, without revealing the signature itself. Note that; if <code>Abar</code>, <code>D</code> and <code>Bbar</code> are constructed using a valid BBS signature as above, then <code>Abar * SK = Bbar</code> which is equivalent to <code>e(Abar, PK) = e(Bbar, BP2)</code>, where <code>SK</code>, <code>PK</code> the Signer's secret and public key and <code>BP2</code> the base generator of <code>G2</code> (used to create the Signer’s <code>PK</code>, see <a href="#public-key" class="auto internal xref">Section 3.4.2</a>). This last equation is something that the Verifier can check using the Signer's <code>PK</code>.<a href="#appendix-E-7.1.3" class="pilcrow">¶</a></p>
+<p id="appendix-E-7.1.3">The values <code>(Abar, D, Bbar)</code> will be part of the proof and are used to prove possession of a BBS signature, without revealing the signature itself. Note that; if <code>Abar</code> and <code>Bbar</code> are constructed using a valid BBS signature as above, then <code>Abar * SK = Bbar</code> which is equivalent to <code>e(Abar, PK) = e(Bbar, BP2)</code>, where <code>SK</code>, <code>PK</code> the Signer's secret and public key and <code>BP2</code> the base generator of <code>G2</code> (used to create the Signer’s <code>PK</code>, see <a href="#public-key" class="auto internal xref">Section 3.4.2</a>). This last equation is something that the Verifier can check using the Signer's <code>PK</code>.<a href="#appendix-E-7.1.3" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="appendix-E-7.2">
           <p id="appendix-E-7.2.1">Prove that the disclosed messages are signed as part of that signature. The Prover will start by setting the following,<a href="#appendix-E-7.2.1" class="pilcrow">¶</a></p>

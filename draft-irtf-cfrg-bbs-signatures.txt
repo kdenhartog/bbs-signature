@@ -239,7 +239,7 @@ Table of Contents
                                                         |
                                                         |
                                                         |
-                                         (4)* Send proof + disclosed msgs
+                                       (4)* Send proof + disclosed msgs
                                                         |
                                                         |
                                                        \ /
@@ -621,9 +621,9 @@ Inputs:
                            above.
 - key_info (OPTIONAL), an octet string. Defaults to an empty string if
                        not supplied.
-- key_dst (OPTIONAL), an octet string representing the domain separation tag.
-                      Defaults to the octet string ciphersuite_id || "KEYGEN_DST_"
-                      if not supplied.
+- key_dst (OPTIONAL), an octet string representing the domain separation
+                      tag. Defaults to the octet string
+                      ciphersuite_id || "KEYGEN_DST_" if not supplied.
 
 Outputs:
 
@@ -1115,8 +1115,14 @@ Deserialization:
 Procedure:
 
 1. random_scalars = calculate_random_scalars(5+U)
-2. init_res = ProofInit(PK, signature_result, generators, random_scalars,
-                          header, messages, undisclosed_indexes, api_id)
+2. init_res = ProofInit(PK,
+                        signature_result,
+                        generators,
+                        random_scalars,
+                        header,
+                        messages,
+                        undisclosed_indexes,
+                        api_id)
 3. if init_res is INVALID, return INVALID
 4. challenge = ProofChallengeCalculate(init_res, disclosed_indexes,
                                                  disclosed_messages, ph)
@@ -1465,8 +1471,8 @@ Procedure:
    This operation makes use of the serialize function, defined in
    Section 4.2.4.1.
 
-challenge = ProofChallengeCalculate(init_res, disclosed_messages, disclosed_indexes, ph,
-                                                                 api_id)
+challenge = ProofChallengeCalculate(init_res, disclosed_messages,
+                                          disclosed_indexes, ph, api_id)
 
 Inputs:
 - init_res (REQUIRED), vector representing the value returned after
@@ -1551,7 +1557,7 @@ Procedure:
    information used to uniquely qualify the Interface.  When ADD_INFO is
    present, it MUST only contain ASCII encoded characters with codes
    between 0x21 and 0x7e (inclusive) and MUST end with an underscore
-   (ASCII code: 0x5f), other than the last character the string MUST not
+   (ASCII code: 0x5f), other than the last character the string MUST NOT
    contain any other underscores (ASCII code: 0x5f).  The api_id value,
    MUST be used by all subroutines an Interface calls, to ensure proper
    domain separation.
@@ -1602,7 +1608,7 @@ Procedure:
    count (which can be arbitrarily large, depending on the application).
    Care must be taken, to guarantee that the generators will be fetched
    from the cache in the same order they had when they where created
-   (i.e., an application should not short or in any way rearrange the
+   (i.e., an application should not sort or in any way rearrange the
    cached generators).
 
 generators = create_generators(count, api_id)
@@ -2455,7 +2461,7 @@ Procedure:
    it as part of the header value.
 
    In any case, the privacy considerations described in Section 5 MUST
-   ΝΟΤ be violated, for example, by using unique pre-processing rules or
+   NOT be violated, for example, by using unique pre-processing rules or
    maps between message index and type.  To validate the consistency of
    the message processing rules, the Prover could use mechanisms like
    the ones described in [I-D.ietf-privacypass-key-consistency].
@@ -2528,8 +2534,8 @@ Procedure:
       information used to uniquely qualify the ciphersuite.  When
       present this value MUST only contain ASCII encoded characters with
       codes between 0x21 and 0x7e (inclusive) and MUST end with an
-      underscore (ASCII code: 0x5f), other than the last character the
-      string MUST not contain any other underscores (ASCII code: 0x5f).
+      underscore (ASCII code: 0x5f).  The last character MUST be the
+      only underscore.
 
 7.1.2.  Additional Parameters
 
@@ -3683,13 +3689,13 @@ proof = "a8da259a5ae7a9a8e5e4e809b8e7718b4d7ab913ed5781ebbff4814c762033e
               Springer, Berlin, Heidelberg, 2006,
               <https://link.springer.com/chapter/10.1007/11832072_8>.
 
-   [BBB17]    Bünz, B., Bootle, J., Boneh, D., Poelstra, A., Wuille, P.,
+   [BBB17]    Bunz, B., Bootle, J., Boneh, D., Poelstra, A., Wuille, P.,
               and G. Maxwell, "Bulletproofs: Short Proofs for
               Confidential Transactions and More", In 2018 IEEE
               Symposium on Security and Privacy, 2017,
               <https://ia.cr/2017/1066>.
 
-   [BBDT16]   Barki, A., Brunet, S., Desmoulins, N., and J. Traoré,
+   [BBDT16]   Barki, A., Brunet, S., Desmoulins, N., and J. Traore,
               "Improved Algebraic MACs and Practical Keyed-Verification
               Anonymous Credentials", In International Conference on
               Selected Areas in Cryptography, 1016,
@@ -3771,8 +3777,8 @@ proof = "a8da259a5ae7a9a8e5e4e809b8e7718b4d7ab913ed5781ebbff4814c762033e
               November 2022, <https://datatracker.ietf.org/doc/html/
               draft-irtf-cfrg-pairing-friendly-curves-11>.
 
-   [ISO8601]  ISO, "Date and time — Representations for information
-              interchange — Part 1: Basic rules",
+   [ISO8601]  ISO, "Date and time - Representations for information
+              interchange - Part 1: Basic rules",
               <https://nvlpubs.nist.gov/nistpubs/SpecialPublications/
               NIST.SP.800-90Ar1.pdf>.
 
@@ -4842,7 +4848,7 @@ Appendix E.  Proof Generation and Verification Algorithmic Explanation
 
       The values (Abar, D, Bbar) will be part of the proof and are used
       to prove possession of a BBS signature, without revealing the
-      signature itself.  Note that; if Abar, D and Bbar are constructed
+      signature itself.  Note that; if Abar and Bbar are constructed
       using a valid BBS signature as above, then Abar * SK = Bbar which
       is equivalent to e(Abar, PK) = e(Bbar, BP2), where SK, PK the
       Signer's secret and public key and BP2 the base generator of G2
