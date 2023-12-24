@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2023-12-21T00:09:07.264933+00:00",
+  "timestamp": "2023-12-24T00:10:13.011927+00:00",
   "repo": "decentralized-identity/bbs-signature",
   "labels": [
     {
@@ -35677,24 +35677,26 @@
       "id": "PR_kwDOF8lax85hquld",
       "title": "Update proofgen algorithm explanation",
       "url": "https://github.com/decentralized-identity/bbs-signature/pull/304",
-      "state": "OPEN",
+      "state": "MERGED",
       "author": "BasileiosKal",
       "authorAssociation": "CONTRIBUTOR",
       "assignees": [],
       "labels": [],
       "body": "Based on the new proof from #288",
       "createdAt": "2023-12-11T10:59:49Z",
-      "updatedAt": "2023-12-19T18:10:18Z",
+      "updatedAt": "2023-12-21T20:17:16Z",
       "baseRepository": "decentralized-identity/bbs-signature",
       "baseRefName": "main",
       "baseRefOid": "3bd6abe382095a4a8317a8d5a71023c8e9183924",
       "headRepository": "decentralized-identity/bbs-signature",
       "headRefName": "vasilis/appendix-d",
-      "headRefOid": "7a2a7a86ba1a4fb495534c79fe6ef43020185c99",
-      "closedAt": null,
-      "mergedAt": null,
-      "mergedBy": null,
-      "mergeCommit": null,
+      "headRefOid": "d70140dac5a89a81ff297875d973a991064cbcd0",
+      "closedAt": "2023-12-21T20:17:15Z",
+      "mergedAt": "2023-12-21T20:17:15Z",
+      "mergedBy": "BasileiosKal",
+      "mergeCommit": {
+        "oid": "f8135b06b8e8a8331f78232cc223b7e6d447f6a7"
+      },
       "comments": [
         {
           "author": "BasileiosKal",
@@ -35702,6 +35704,13 @@
           "body": "Discussed on the WG call at the 18th of Dec. Conflicts need resolving.",
           "createdAt": "2023-12-18T19:21:53Z",
           "updatedAt": "2023-12-18T19:21:53Z"
+        },
+        {
+          "author": "BasileiosKal",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "Conflicts resolved. Multiple approvals. Discussed on the last WG call (18th of Dec, 2023). Merging. Thank you!",
+          "createdAt": "2023-12-21T20:17:12Z",
+          "updatedAt": "2023-12-21T20:17:12Z"
         }
       ],
       "reviews": [
@@ -35797,6 +35806,19 @@
               "updatedAt": "2023-12-18T19:21:26Z"
             }
           ]
+        },
+        {
+          "id": "PRR_kwDOF8lax85q5xT5",
+          "commit": {
+            "abbreviatedOid": "7a2a7a8"
+          },
+          "author": "tplooker",
+          "authorAssociation": "MEMBER",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2023-12-21T19:09:29Z",
+          "updatedAt": "2023-12-21T19:09:29Z",
+          "comments": []
         }
       ]
     },
@@ -35978,25 +36000,35 @@
       "id": "PR_kwDOF8lax85iS7XI",
       "title": "IETF idnits",
       "url": "https://github.com/decentralized-identity/bbs-signature/pull/307",
-      "state": "OPEN",
+      "state": "MERGED",
       "author": "BasileiosKal",
       "authorAssociation": "CONTRIBUTOR",
       "assignees": [],
       "labels": [],
       "body": "",
       "createdAt": "2023-12-18T18:58:04Z",
-      "updatedAt": "2023-12-20T16:57:57Z",
+      "updatedAt": "2023-12-21T20:48:19Z",
       "baseRepository": "decentralized-identity/bbs-signature",
       "baseRefName": "main",
-      "baseRefOid": "05411383bcf867af786f7b9b194b077aab36ccf3",
+      "baseRefOid": "f8135b06b8e8a8331f78232cc223b7e6d447f6a7",
       "headRepository": "decentralized-identity/bbs-signature",
       "headRefName": "vasilis/datatracker-nits",
-      "headRefOid": "1228eb614835318fde6fa6884e555d9f7492a3e3",
-      "closedAt": null,
-      "mergedAt": null,
-      "mergedBy": null,
-      "mergeCommit": null,
-      "comments": [],
+      "headRefOid": "3f644fd2a230dd6f50cfe947b7558ba60c5373a5",
+      "closedAt": "2023-12-21T20:48:19Z",
+      "mergedAt": "2023-12-21T20:48:19Z",
+      "mergedBy": "BasileiosKal",
+      "mergeCommit": {
+        "oid": "47a37686d12001217d2014065d6ef3ed8c410e23"
+      },
+      "comments": [
+        {
+          "author": "BasileiosKal",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "Multiple approvals. Editorial update. Merging. Thank you!",
+          "createdAt": "2023-12-21T20:48:13Z",
+          "updatedAt": "2023-12-21T20:48:13Z"
+        }
+      ],
       "reviews": [
         {
           "id": "PRR_kwDOF8lax85qjM03",
@@ -36042,6 +36074,19 @@
           "body": "",
           "createdAt": "2023-12-20T16:57:57Z",
           "updatedAt": "2023-12-20T16:57:57Z",
+          "comments": []
+        },
+        {
+          "id": "PRR_kwDOF8lax85q5xc1",
+          "commit": {
+            "abbreviatedOid": "1228eb6"
+          },
+          "author": "tplooker",
+          "authorAssociation": "MEMBER",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2023-12-21T19:09:59Z",
+          "updatedAt": "2023-12-21T19:09:59Z",
           "comments": []
         }
       ]
