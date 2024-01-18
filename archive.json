@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2024-01-16T00:09:30.631654+00:00",
+  "timestamp": "2024-01-18T00:09:40.764556+00:00",
   "repo": "decentralized-identity/bbs-signature",
   "labels": [
     {
@@ -6829,6 +6829,62 @@
           "body": "Discussed on WG call at the 18th of Dec. Closing as resolved.",
           "createdAt": "2023-12-18T19:31:09Z",
           "updatedAt": "2023-12-18T19:31:09Z"
+        }
+      ]
+    },
+    {
+      "number": 308,
+      "id": "I_kwDOF8lax858YEuo",
+      "title": "Misspelling in api_id",
+      "url": "https://github.com/decentralized-identity/bbs-signature/issues/308",
+      "state": "OPEN",
+      "author": "RockstaYT",
+      "authorAssociation": "NONE",
+      "assignees": [],
+      "labels": [],
+      "body": "Hey there,\r\n\r\nFirst some context.\r\nWe are students of the Bern University of Applied Sciences.\r\nWe are making a Java implementation of your Draft as a pre-requisite of our Bachelors thesis.\r\nsee: https://github.com/RockstaYT/P2_BBS_Signature\r\n\r\nAs part of this project we also went over the Draft and saw some spelling errors.\r\nWould be nice if you could fix them if you have time :)\r\n\r\nFirst error is:\r\n\r\n`ciphersuite and and \"H2GHM2S\"` in 3.5. BBS Signature Interface\r\n\r\nShouldn't it be `ciphersuite and and \"H2G_HM2S_\"`?",
+      "createdAt": "2024-01-17T17:52:01Z",
+      "updatedAt": "2024-01-17T17:52:01Z",
+      "closedAt": null,
+      "comments": []
+    },
+    {
+      "number": 309,
+      "id": "I_kwDOF8lax858YJUA",
+      "title": "Referencing wrong step in pseudocode",
+      "url": "https://github.com/decentralized-identity/bbs-signature/issues/309",
+      "state": "OPEN",
+      "author": "RockstaYT",
+      "authorAssociation": "NONE",
+      "assignees": [],
+      "labels": [],
+      "body": "In 3.6.1 CoreSign there is the note\r\n`Note When computing step 12 of`\r\n\r\nbut it should be\r\n`Note When computing step 4 of`\r\n\r\nas there is no step 12.\r\n\r\nIn the same note at the end\r\n\r\n`Implementations MAY elect to check (SK + e) = 0 mod r prior to step 9, and or A != Identity_G1 after step 9`\r\n\r\nshould be\r\n\r\n`Implementations MAY elect to check (SK + e) = 0 mod r prior to step 4, and or A != Identity_G1 after step 4`",
+      "createdAt": "2024-01-17T18:02:22Z",
+      "updatedAt": "2024-01-17T18:04:24Z",
+      "closedAt": null,
+      "comments": []
+    },
+    {
+      "number": 310,
+      "id": "I_kwDOF8lax858Z9V4",
+      "title": "Checking wrong number of generators in proof validation",
+      "url": "https://github.com/decentralized-identity/bbs-signature/issues/310",
+      "state": "OPEN",
+      "author": "RockstaYT",
+      "authorAssociation": "NONE",
+      "assignees": [],
+      "labels": [],
+      "body": "In 3.5.4 Proof verification, U + R + 1 generators are created.\r\nR = number of disclosed index\r\nU = number of commitments + 2 \r\n\r\nThen in 3.7.3, a verification of the number of generators takes place:\r\n`11. if length(generators) != L + 1, return INVALID`\r\n\r\nwhere L = number of commitments + number of disclosed indexes.\r\n\r\nThis is incorrect.\r\nAssuming 0 commitments and 0 disclosed indexes:\r\nR = 0, U = 0 + 2, generators created (U + R + 1) = 3\r\n\r\nL = 0 (as no commitments and no messages to be disclosed), generators checked (L + 1) = 1\r\n\r\nMy proposition:\r\n\r\n**Instead of checking L + 1, it should be L + 3.**",
+      "createdAt": "2024-01-17T23:27:17Z",
+      "updatedAt": "2024-01-17T23:58:49Z",
+      "closedAt": null,
+      "comments": [
+        {
+          "author": "RockstaYT",
+          "authorAssociation": "NONE",
+          "body": "After tinkering more with the code, wondering why it did not work i found out something more.\r\nThe challenge check in CoreProofVerify was returning INVALID.\r\n\r\nI looked at the objects and saw that init_res was different in the ProofVerify step than the ProofGen Step.\r\n\r\nIn the ProofGen we generate then number of messages + 1 number of generators.\r\nIn the ProofVerify we generate U (number of commitments) + number of disclosed indexes + 2.\r\nThe problem for me lies with:\r\n`1. proof_len_floor = 2 * octet_point_length + 3 * octet_scalar_length`\r\n\r\nThe Proof had 5 Elements + msg scalars, but with the newest draft it was updated to 7 Elements + msg scalars.\r\nso the proof_len_floor value is incorrect, but that is also the value which is used to calculate U.\r\n\r\nThe correct version would be:\r\n`1. proof_len_floor = 3 * octet_point_length + 4 * octet_scalar_length`\r\nWith that U would be correct and represent the number of msg scalars.\r\n\r\nNow there is still an error.\r\n\r\nR + U + 2 is not completely correct.\r\n\r\nRemember in ProofGen we only generate total messages + 1 generators.\r\nR + U should represent the number of total messages (number of disclosed indexes + those messages which are not disclosed).\r\nSo it should be **R + U + 1**\r\n\r\nWith that we generate the correct number of generators.\r\nSo instead of changing L + 1 to L + 3, we need to change the proof_len_floor calc and the amount of generators to be generated.\r\n\r\n",
+          "createdAt": "2024-01-17T23:58:49Z",
+          "updatedAt": "2024-01-17T23:58:49Z"
         }
       ]
     }
