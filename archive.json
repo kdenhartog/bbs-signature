@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2024-01-18T00:09:40.764556+00:00",
+  "timestamp": "2024-01-21T00:10:38.892419+00:00",
   "repo": "decentralized-identity/bbs-signature",
   "labels": [
     {
@@ -6844,9 +6844,17 @@
       "labels": [],
       "body": "Hey there,\r\n\r\nFirst some context.\r\nWe are students of the Bern University of Applied Sciences.\r\nWe are making a Java implementation of your Draft as a pre-requisite of our Bachelors thesis.\r\nsee: https://github.com/RockstaYT/P2_BBS_Signature\r\n\r\nAs part of this project we also went over the Draft and saw some spelling errors.\r\nWould be nice if you could fix them if you have time :)\r\n\r\nFirst error is:\r\n\r\n`ciphersuite and and \"H2GHM2S\"` in 3.5. BBS Signature Interface\r\n\r\nShouldn't it be `ciphersuite and and \"H2G_HM2S_\"`?",
       "createdAt": "2024-01-17T17:52:01Z",
-      "updatedAt": "2024-01-17T17:52:01Z",
+      "updatedAt": "2024-01-18T17:42:35Z",
       "closedAt": null,
-      "comments": []
+      "comments": [
+        {
+          "author": "Wind4Greg",
+          "authorAssociation": "NONE",
+          "body": "Hi @RockstaYT, glad to see another implementation under way. I don't think there is a Java implementation yet. I've been working on a JavaScript only implementation [JavaScript BBS Signatures](https://www.npmjs.com/package/@grottonetworking/bbs-signatures), there are some in TypeScript, and Rust that I know of. \r\n\r\nNote that we have weekly calls Mondays 11AM (PST) via [DIF Applied Crypto WG](https://identity.foundation/working-groups/crypto.html). Also note that DIF is free to join for individuals and gives you access to the zoom calls and slack channel. We go over the latest issues on the call.",
+          "createdAt": "2024-01-18T17:42:34Z",
+          "updatedAt": "2024-01-18T17:42:34Z"
+        }
+      ]
     },
     {
       "number": 309,
@@ -6887,6 +6895,22 @@
           "updatedAt": "2024-01-17T23:58:49Z"
         }
       ]
+    },
+    {
+      "number": 311,
+      "id": "I_kwDOF8lax858f6gr",
+      "title": "Mistake in Test Vector for SHA-256 MsgToScalars",
+      "url": "https://github.com/decentralized-identity/bbs-signature/issues/311",
+      "state": "OPEN",
+      "author": "RockstaYT",
+      "authorAssociation": "NONE",
+      "assignees": [],
+      "labels": [],
+      "body": "In the Test vector \"[D.2.3. ](https://datatracker.ietf.org/doc/html/draft-irtf-cfrg-bbs-signatures-05#appendix-D.2.3)[Hash to Scalar Test Vectors](https://datatracker.ietf.org/doc/html/draft-irtf-cfrg-bbs-signatures-05#name-hash-to-scalar-test-vectors-2)\"\r\nthe dst is \"4242535f424c53313233383147315f584d443a5348412d3235365f535357555f524f5f4832475f484d32535f4832535f\"\r\n\r\nin your own [files](https://github.com/decentralized-identity/bbs-signature/blob/main/tooling/fixtures/fixture_data/bls12-381-sha-256/MapMessageToScalarAsHash.json) the used dst is as follows:\r\n\"4242535f424c53313233383147315f584d443a5348412d3235365f535357555f524f5f4832475f484d32535f4d41505f4d53475f544f5f5343414c41525f41535f484153485f\"\r\n\r\nWith the dst in your files the test vector works",
+      "createdAt": "2024-01-18T17:23:04Z",
+      "updatedAt": "2024-01-18T17:23:04Z",
+      "closedAt": null,
+      "comments": []
     }
   ],
   "pulls": [
