@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2024-01-21T00:10:38.892419+00:00",
+  "timestamp": "2024-01-23T00:09:55.273995+00:00",
   "repo": "decentralized-identity/bbs-signature",
   "labels": [
     {
@@ -6844,7 +6844,7 @@
       "labels": [],
       "body": "Hey there,\r\n\r\nFirst some context.\r\nWe are students of the Bern University of Applied Sciences.\r\nWe are making a Java implementation of your Draft as a pre-requisite of our Bachelors thesis.\r\nsee: https://github.com/RockstaYT/P2_BBS_Signature\r\n\r\nAs part of this project we also went over the Draft and saw some spelling errors.\r\nWould be nice if you could fix them if you have time :)\r\n\r\nFirst error is:\r\n\r\n`ciphersuite and and \"H2GHM2S\"` in 3.5. BBS Signature Interface\r\n\r\nShouldn't it be `ciphersuite and and \"H2G_HM2S_\"`?",
       "createdAt": "2024-01-17T17:52:01Z",
-      "updatedAt": "2024-01-18T17:42:35Z",
+      "updatedAt": "2024-01-22T18:58:24Z",
       "closedAt": null,
       "comments": [
         {
@@ -6853,6 +6853,13 @@
           "body": "Hi @RockstaYT, glad to see another implementation under way. I don't think there is a Java implementation yet. I've been working on a JavaScript only implementation [JavaScript BBS Signatures](https://www.npmjs.com/package/@grottonetworking/bbs-signatures), there are some in TypeScript, and Rust that I know of. \r\n\r\nNote that we have weekly calls Mondays 11AM (PST) via [DIF Applied Crypto WG](https://identity.foundation/working-groups/crypto.html). Also note that DIF is free to join for individuals and gives you access to the zoom calls and slack channel. We go over the latest issues on the call.",
           "createdAt": "2024-01-18T17:42:34Z",
           "updatedAt": "2024-01-18T17:42:34Z"
+        },
+        {
+          "author": "RockstaYT",
+          "authorAssociation": "NONE",
+          "body": "Hey @Wind4Greg, thank you for the invite!\r\nI was accepted yesterday as an DIF Member, but sadly im not receiving the slack invite.\r\nMaybe you could fix that in todays call.\r\nMy email would either be joel.roblesgasser@proton.me (preffered) or joel.robles@ryu.land\r\nWill delete this comment tomorrow, as it doesnt add anything to the discussion :)",
+          "createdAt": "2024-01-22T18:58:23Z",
+          "updatedAt": "2024-01-22T18:58:23Z"
         }
       ]
     },
